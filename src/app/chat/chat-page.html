@@ -1,0 +1,1119 @@
+<a class="skip-link" href="#chat-prompt">Ir para a conversa</a>
+<div class="workspace app">
+  <aside class="rail" aria-label="Navegação do atendimento">
+    <div class="rail-top">
+      <a class="brand brand-plate" routerLink="/" aria-label="Pague Menos, início"
+        ><img src="assets/brand/logo-pague-menos.svg" alt="Pague Menos" width="154" height="50"
+      /></a>
+      <button class="new-care" type="button" (click)="open('new')">
+        <span class="new-care-icon"><pm-icon name="Plus" /></span><span>Novo atendimento</span>
+      </button>
+    </div>
+    <nav class="rail-journey" aria-label="Sua jornada">
+      <p class="eyebrow rail-eyebrow">Sua jornada</p>
+      <ol class="journey">
+        <li
+          class="journey-step"
+          [class.is-active]="!store.count()"
+          [class.is-done]="store.count() > 0"
+        >
+          <span class="step-mark">1</span>
+          <span class="step-copy"><strong>Conversa</strong><small>Entender o cuidado</small></span>
+        </li>
+        <li class="journey-step" [class.is-active]="store.count() > 0">
+          <span class="step-mark">2</span>
+          <span class="step-copy"><strong>Seu kit</strong><small>Escolher e ajustar</small></span>
+        </li>
+        <li class="journey-step">
+          <span class="step-mark">3</span>
+          <span class="step-copy"
+            ><strong>Pagamento</strong><small>Confirmar e receber</small></span
+          >
+        </li>
+      </ol>
+    </nav>
+    <div class="rail-bottom">
+      <section class="rail-help">
+        <span class="rail-help-icon"><pm-icon name="Cross" /></span>
+        <strong>Precisa de orientação?</strong>
+        <p>Fale com um farmacêutico sobre sintomas, uso e interações.</p>
+        <button class="rail-help-btn" type="button" (click)="open('help')">Abrir canal</button>
+      </section>
+      <button class="profile rail-user" type="button" (click)="open('profile')">
+        <span class="avatar avatar-sm">{{ config.mode === 'demo' ? 'MS' : 'VC' }}</span
+        ><span class="rail-user-copy"
+          ><strong>{{ config.mode === 'demo' ? 'Marina S.' : 'Meu cuidado' }}</strong
+          ><small>Perfil de cuidado</small></span
+        ><pm-icon class="rail-user-chev" name="ChevronRight" />
+      </button>
+      <p class="rail-demo">
+        {{ config.mode === 'demo' ? 'Demonstração · dados públicos' : 'Pague Menos' }}
+      </p>
+    </div>
+  </aside>
+
+  <section class="chat-shell" aria-label="Atendimento Pague Menos">
+    <header class="chat-header">
+      <button
+        class="icon-button icon-btn mobile-menu"
+        type="button"
+        title="Abrir navegação"
+        aria-label="Abrir navegação"
+        (click)="open('menu')"
+      >
+        <pm-icon name="Menu" />
+      </button>
+      <div class="chat-heading">
+        <span class="live-mark" aria-hidden="true"></span>
+        <div>
+          <h1>Cuidado assistido</h1>
+          <p>
+            {{ config.mode === 'demo' ? 'Conversa com o Precinho · demonstração' : 'Conversa com o Precinho' }}
+          </p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button
+          class="location delivery-pill"
+          type="button"
+          (click)="open('profile')"
+          title="Preferências e CEP"
+        >
+          <pm-icon name="MapPin" /><span>{{
+            store.postalCode() || (config.mode === 'demo' ? 'São Paulo, SP' : 'Informar CEP')
+          }}</span
+          ><pm-icon class="chev" name="ChevronDown" /></button
+        ><button
+          class="avatar avatar-button"
+          type="button"
+          (click)="open('profile')"
+          title="Meu cuidado"
+          aria-label="Meu cuidado"
+        >
+          {{ config.mode === 'demo' ? 'MS' : 'VC' }}</button
+        ><button
+          class="icon-button icon-btn mobile-kit-btn"
+          type="button"
+          (click)="open('kit')"
+          title="Abrir seu kit"
+          [attr.aria-label]="'Abrir seu kit, ' + store.count() + ' itens'"
+        >
+          <pm-icon name="ShoppingBag" />
+          @if (store.count()) {
+            <span class="kit-badge">{{ store.count() }}</span>
+          }
+        </button>
+      </div>
+    </header>
+
+    <main
+      class="chat-scroll"
+      #scroll
+      (scroll)="onScroll()"
+      tabindex="0"
+      aria-label="Histórico da conversa"
+    >
+      @if (!store.messages().length) {
+        <section class="welcome" aria-labelledby="welcome-title">
+          <h2 id="welcome-title">
+            Como podemos <em>cuidar</em> de você hoje?<span class="title-plus" aria-hidden="true"
+              >+</span
+            >
+          </h2>
+          <p class="welcome-lede">
+            Conte o que você precisa. Eu organizo o cuidado, monto o kit e finalizo a compra
+            <strong>com você</strong> — sem sair da conversa.
+          </p>
+          <div class="intent-grid" aria-label="Comece por uma necessidade">
+            @for (intent of intents; track intent.title) {
+              <button class="intent-card" type="button" (click)="send(intent.prompt)">
+                <span class="intent-top"
+                  ><span class="intent-icon"><pm-icon [name]="intent.icon" /></span
+                  ><span class="intent-arrow"><pm-icon name="ArrowRight" /></span
+                ></span>
+                <h3>{{ intent.title }}</h3>
+                <p>{{ intent.description }}</p>
+                <span class="intent-thumbs" aria-hidden="true">
+                  @for (image of intent.images; track image) {
+                    <img
+                      class="intent-thumb"
+                      [src]="'assets/products/' + image"
+                      alt=""
+                      width="40"
+                      height="40"
+                    />
+                  }
+                </span>
+              </button>
+            }
+          </div>
+          <div class="trust-row">
+            <span class="trust-item"><pm-icon name="ShieldCheck" />Sugestões responsáveis</span
+            ><span class="trust-item"><pm-icon name="UserRound" />Você confirma cada etapa</span
+            ><button class="trust-item" type="button" (click)="open('help')">
+              <pm-icon name="Cross" />Farmacêutico por perto
+            </button>
+          </div>
+        </section>
+      }
+
+      <div class="thread" role="log" aria-label="Mensagens" aria-live="off">
+        @for (message of store.messages(); track message.id) {
+          <article
+            class="message msg"
+            [attr.data-status]="message.status"
+            [class.user-message]="message.role === 'user'"
+            [class.msg-user]="message.role === 'user'"
+            [class.msg-assistant]="message.role === 'assistant'"
+            [attr.aria-label]="message.role === 'user' ? 'Sua mensagem' : 'Resposta do atendimento'"
+          >
+            @if (message.role === 'user') {
+              <div class="user-bubble">{{ message.content }}</div>
+              @if (message.attachments?.length) {
+                <ul class="sent-attachments" aria-label="Receitas enviadas">
+                  @for (attachment of message.attachments; track attachment.prescriptionId) {
+                    <li><pm-icon name="Paperclip" />{{ attachment.name }}</li>
+                  }
+                </ul>
+              }
+              <span class="msg-meta">Agora</span>
+            } @else {
+              <span class="agent-avatar" aria-hidden="true"><pm-icon name="Cross" /></span>
+              <div class="assistant-body">
+                <div class="assistant-meta"><strong>Pague Menos</strong><span>Agora</span></div>
+                <div class="assistant-content">
+                  @if (message.tools.length) {
+                    <ul class="tool-list" aria-label="Atividades do atendimento">
+                      @for (tool of message.tools; track tool.id) {
+                        <li [class.tool-failed]="tool.status === 'failed'">
+                          <pm-icon
+                            [name]="
+                              tool.status === 'running'
+                                ? 'LoaderCircle'
+                                : tool.status === 'failed'
+                                  ? 'X'
+                                  : 'Check'
+                            "
+                            [class.spinning]="tool.status === 'running'"
+                          /><span
+                            >{{ tool.label
+                            }}{{ tool.status === 'failed' ? ' · não concluído' : '' }}</span
+                          >
+                        </li>
+                      }
+                    </ul>
+                  }
+                  @if (message.content) {
+                    <pm-chat-markdown class="prose assistant-text" [text]="message.content" />
+                  }
+                  @if (message.status === 'streaming' && !message.content) {
+                    <div class="thinking" role="status">
+                      <span></span><span></span><span></span
+                      ><span class="sr-only">Preparando resposta</span>
+                    </div>
+                  }
+                  @if (message.products.length) {
+                    <div class="product-rail">
+                      @for (item of message.products; track item.id) {
+                        <pm-product-card
+                          [product]="item"
+                          (add)="add($event)"
+                          (details)="showProduct($event)"
+                        />
+                      }
+                    </div>
+                  }
+                  @for (component of message.components ?? []; track $index) {
+                    <pm-chat-blocks
+                      [component]="component"
+                      (add)="add($event)"
+                      (details)="showProduct($event)"
+                      (addKit)="store.addKit($event)"
+                      (review)="open('kit')"
+                      (prescription)="attachPrescription()"
+                      (openCheckout)="handleOpenCheckout($event)"
+                      (confirmCheckout)="handleConfirmCheckout($event)"
+                    />
+                  }
+                  @if (message.status === 'interrupted') {
+                    <p class="interrupted">Resposta interrompida por você.</p>
+                  }
+                  @if (message.status !== 'streaming' && message.content) {
+                    <div class="message-actions">
+                      @if (voice.ttsAvailable) {
+                        <button
+                          class="icon-button"
+                          type="button"
+                          (click)="speakMessage(message.content)"
+                          [attr.aria-label]="voice.speaking() ? 'Parar leitura em voz alta' : 'Ouvir resposta em voz alta'"
+                          [title]="voice.speaking() ? 'Parar leitura em voz alta' : 'Ouvir resposta em voz alta'"
+                        >
+                          <pm-icon [name]="voice.speaking() ? 'Square' : 'Volume2'" />
+                        </button>
+                      }
+                      <button
+                        class="icon-button"
+                        type="button"
+                        (click)="copy(message.content)"
+                        aria-label="Copiar resposta"
+                        title="Copiar resposta"
+                      >
+                        <pm-icon name="Copy" />
+                      </button>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </article>
+        }
+      </div>
+    </main>
+
+    <div class="composer-area">
+      @if (store.lastOrder(); as order) {
+        <div class="order-actions" aria-label="Pós-venda">
+          <span>{{ order.id }} · {{ order.status }}</span
+          ><button
+            type="button"
+            class="button button-secondary button-sm"
+            (click)="trackOrder()"
+            [disabled]="store.busy()"
+          >
+            Acompanhar pedido <pm-icon name="ChevronRight" />
+          </button>
+          @if (config.mvpCheckout && order.status !== 'ENTREGUE') {
+            <button
+              type="button"
+              class="button button-quiet button-sm"
+              (click)="advanceOrder()"
+              [disabled]="checkoutBusy() || store.busy()"
+            >
+              Avançar simulação
+            </button>
+          }
+        </div>
+      }
+      @if (!atBottom() && store.messages().length) {
+        <button class="latest" type="button" (click)="goToLatest()">
+          <pm-icon name="ArrowDown" />Últimas mensagens
+        </button>
+      }
+      @if (store.error()) {
+        <div class="error" role="alert">
+          <span>{{ store.error() }}</span
+          ><button type="button" (click)="store.retry()" [disabled]="store.busy()">
+            <pm-icon name="RotateCcw" />Tentar novamente
+          </button>
+        </div>
+      }
+      @if (!store.busy() && store.messages().at(-1)?.status === 'interrupted') {
+        <button class="resume" type="button" (click)="store.retry()">
+          <pm-icon name="RotateCcw" />Tentar novamente
+        </button>
+      }
+      @if (store.count()) {
+        <button class="mobile-kit-bar" type="button" (click)="open('kit')">
+          <span class="mobile-kit-icon"><pm-icon name="ShoppingBag" /></span
+          ><span class="mobile-kit-copy"
+            ><small>Seu kit</small
+            ><strong>{{ store.count() }} {{ store.count() === 1 ? 'item' : 'itens' }}</strong></span
+          ><strong class="mobile-kit-total">{{
+            store.subtotal() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+          }}</strong
+          ><pm-icon name="ChevronRight" />
+        </button>
+      }
+      @if (voice.handsFree()) {
+        <div class="hands-free-bar" role="status">
+          <pm-icon name="AudioLines" [class.pm-spinner]="voice.speaking()" />
+          <span class="hands-free-label">
+            <strong>Mãos Livres Ativo:</strong>
+            {{ voice.speaking() ? 'Precinho falando… (fale para interromper)' : voice.active() ? 'Ouvindo você falar…' : 'Aguardando sua voz…' }}
+          </span>
+          @if (voice.speaking()) {
+            <button type="button" class="hands-free-exit" (click)="voice.stopSpeaking()">Silenciar</button>
+          }
+          <button type="button" class="hands-free-exit" (click)="toggleHandsFree()">Desativar</button>
+        </div>
+      }
+      <form class="composer" (ngSubmit)="send()">
+        <input
+          #fileInput
+          class="sr-only"
+          type="file"
+          [accept]="prescriptions.accept"
+          multiple
+          (change)="selectFiles($event)"
+          tabindex="-1"
+          aria-label="Selecionar receitas"
+        />
+        <button
+          class="composer-icon"
+          data-action="attach"
+          type="button"
+          (click)="fileInput.click()"
+          [disabled]="store.busy() || prescriptions.busy()"
+          title="Anexar um arquivo"
+          aria-label="Anexar um arquivo"
+        >
+          <pm-icon name="Paperclip" />
+        </button>
+        <label class="sr-only" for="chat-prompt">Escreva sua mensagem</label
+        ><textarea
+          #prompt
+          id="chat-prompt"
+          name="message"
+          [(ngModel)]="draft"
+          [readOnly]="voice.active() || prescriptions.busy()"
+          (keydown)="keydown($event)"
+          rows="1"
+          maxlength="4000"
+          [placeholder]="dynamicPlaceholder()"
+          enterkeyhint="send"
+          [attr.aria-describedby]="draft.length >= 3800 ? 'prompt-counter' : 'care-disclaimer'"
+        ></textarea>
+        <button
+          class="composer-icon"
+          type="button"
+          (click)="toggleVoice()"
+          [class.is-listening]="voice.active()"
+          [disabled]="store.busy() || prescriptions.busy() || voice.state() === 'stopping'"
+          [attr.aria-pressed]="voice.active()"
+          [title]="voice.active() ? 'Parar ditado' : 'Falar em vez de escrever'"
+          [attr.aria-label]="voice.active() ? 'Parar ditado' : 'Falar em vez de escrever'"
+        >
+          <pm-icon name="Mic" />
+        </button>
+        <button
+          class="composer-icon hands-free-btn"
+          type="button"
+          (click)="toggleHandsFree()"
+          [class.is-hands-free]="voice.handsFree()"
+          [class.is-speaking]="voice.speaking()"
+          [disabled]="prescriptions.busy()"
+          [title]="voice.handsFree() ? 'Desativar modo mãos livres' : 'Ativar modo mãos livres (conversa contínua por voz)'"
+          [attr.aria-label]="voice.handsFree() ? 'Desativar modo mãos livres' : 'Ativar modo mãos livres'"
+        >
+          <pm-icon name="AudioLines" />
+        </button>
+        @if (store.busy()) {
+          <button
+            class="send-button stop"
+            type="button"
+            (click)="store.stop()"
+            aria-label="Interromper resposta"
+            title="Interromper resposta"
+          >
+            <pm-icon name="Square" />
+          </button>
+        } @else {
+          <button
+            class="send-button"
+            type="submit"
+            [disabled]="
+              (!draft.trim() && !prescriptions.hasFiles()) ||
+              prescriptions.busy() ||
+              (prescriptions.hasFiles() && !prescriptions.consent())
+            "
+            aria-label="Enviar mensagem"
+            title="Enviar mensagem"
+          >
+            <pm-icon name="ArrowUp" />
+          </button>
+        }
+      </form>
+      @if (voice.active()) {
+        <p class="voice-status" role="status">
+          {{
+            voice.state() === 'starting'
+              ? 'Abrindo microfone…'
+              : voice.state() === 'stopping'
+                ? 'Concluindo ditado…'
+                : 'Ouvindo… confira o texto antes de enviar.'
+          }}
+        </p>
+      }
+      @if (voice.error()) {
+        <p class="input-error" role="alert">{{ voice.error() }}</p>
+      }
+      @if (prescriptions.hasFiles()) {
+        <section class="attachment-panel" aria-label="Receitas anexadas">
+          <ul>
+            @for (item of prescriptions.files(); track item.id) {
+              <li>
+                <pm-icon name="Paperclip" /><span class="attachment-name"
+                  >{{ item.file.name
+                  }}<small
+                    >{{ (item.file.size / 1024).toFixed(0) }} KB ·
+                    {{
+                      item.state === 'uploading'
+                        ? 'Enviando…'
+                        : item.state === 'uploaded'
+                          ? 'Recebido'
+                          : item.state === 'error'
+                            ? 'Falha no envio'
+                            : 'Pronto para enviar'
+                    }}</small
+                  ></span
+                ><button
+                  class="icon-btn"
+                  type="button"
+                  [disabled]="prescriptions.busy()"
+                  [attr.aria-label]="'Remover ' + item.file.name"
+                  (click)="prescriptions.remove(item.id)"
+                >
+                  <pm-icon name="X" />
+                </button>
+              </li>
+            }
+          </ul>
+          <label class="attachment-consent"
+            ><input
+              type="checkbox"
+              [checked]="prescriptions.consent()"
+              [disabled]="prescriptions.busy()"
+              (change)="prescriptions.consent.set($any($event.target).checked)"
+            /><span
+              >Autorizo o envio destes documentos de saúde para este atendimento. Não inclua dados
+              de terceiros sem autorização.</span
+            ></label
+          >
+          <p>Imagem (aprovação simulada imediata no MVP) ou PDF (revisão pendente) · até 20 MB · até 3 arquivos</p>
+        </section>
+      }
+      @if (prescriptions.error()) {
+        <p class="input-error" role="alert">{{ prescriptions.error() }}</p>
+      }
+      @if (draft.length >= 3800) {
+        <p class="counter" id="prompt-counter">{{ draft.length }}/4000</p>
+      }
+      <p class="composer-note" id="care-disclaimer">
+        <pm-icon name="ShieldCheck" />{{
+          config.mode === 'demo' ? 'Precinho · demonstração. ' : 'Precinho · atendimento virtual. '
+        }}Não substitui avaliação médica ou farmacêutica.
+      </p>
+      <span class="sr-only" role="status" aria-live="polite">{{
+        store.busy()
+          ? 'Preparando resposta.'
+          : store.error()
+            ? 'Falha na resposta.'
+            : store.messages().at(-1)?.status === 'interrupted'
+              ? 'Resposta interrompida.'
+              : store.messages().length
+                ? 'Resposta concluída. Consulte o histórico da conversa.'
+                : ''
+      }}</span>
+    </div>
+  </section>
+
+  <aside class="context" aria-label="Seu kit">
+    <div class="context-scroll">
+      <pm-kit-panel
+        [lines]="store.cart()"
+        [serverSubtotal]="store.subtotal()"
+        [blockers]="store.cartBlockers()"
+        [checkoutAllowed]="store.checkoutAllowed()"
+        (changeQuantity)="store.quantity($event.id, $event.delta)"
+        (review)="open('checkout')"
+        (continueChat)="focusComposer()"
+        (attachPrescription)="attachPrescription()"
+      />
+      <section class="panel-card" aria-label="Perfil de cuidado">
+        <div class="panel-head">
+          <h2>Perfil de cuidado</h2>
+          <button class="panel-edit" type="button" (click)="open('profile')">
+            <pm-icon name="UserRound" />Editar
+          </button>
+        </div>
+        <div class="care-chips">
+          <span class="care-chip"><pm-icon name="UserRound" />Para mim</span
+          ><span class="care-chip"
+            ><pm-icon name="Check" />{{
+              store.allergies() ||
+                (config.mode === 'demo' ? 'Sem alergias' : 'Alergias não informadas')
+            }}</span
+          ><span class="care-chip"
+            ><pm-icon name="Cross" />{{
+              config.mode === 'demo' ? 'Sem medicação contínua' : 'Medicação não informada'
+            }}</span
+          >
+        </div>
+        <p class="care-note">
+          O Precinho usa esses dados para filtrar sugestões e sinalizar riscos. Você pode ajustar a
+          qualquer momento.
+        </p>
+      </section>
+      <section class="pharm-card" aria-label="Atendimento farmacêutico">
+        <div class="pharm-card-top">
+          <span class="pharm-avatar"><pm-icon name="Cross" /></span>
+          <div>
+            <strong>Atendimento farmacêutico</strong
+            ><small>{{
+              config.mode === 'demo'
+                ? 'Canal simulado nesta demonstração'
+                : 'Orientação profissional'
+            }}</small>
+          </div>
+        </div>
+        <p>
+          Dúvidas sobre uso, interações ou sintomas? Um farmacêutico pode orientar o próximo passo.
+        </p>
+        <button class="button button-secondary" type="button" (click)="open('help')">
+          Falar com farmacêutico
+        </button>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<dialog
+  #dialog
+  (close)="dialogClosed()"
+  (keydown.escape)="close(); $event.stopPropagation()"
+  aria-labelledby="modal-title"
+  class="dialog"
+  [class.drawer-dialog]="modal() === 'menu'"
+  [class.sheet-dialog]="modal() === 'kit'"
+>
+  <div [class.drawer-shell]="modal() === 'menu'" [class.dialog-shell]="modal() !== 'menu'">
+    <header [class.dialog-header]="modal() !== 'menu'" [class.drawer-head]="modal() === 'menu'">
+      @if (modal() === 'menu') {
+        <img src="assets/brand/logo-pague-menos.svg" alt="Pague Menos" width="132" height="43" />
+        <h2 class="sr-only" id="modal-title">Navegação do atendimento</h2>
+      } @else {
+        <div>
+          <p>Pague Menos</p>
+          <h2 id="modal-title">
+            @switch (modal()) {
+              @case ('menu') {
+                Seu atendimento
+              }
+              @case ('kit') {
+                Seu kit
+              }
+              @case ('profile') {
+                Meu cuidado
+              }
+              @case ('help') {
+                Orientação farmacêutica
+              }
+              @case ('checkout') {
+                Vamos conferir?
+              }
+              @case ('new') {
+                Começar de novo?
+              }
+              @case ('product') {
+                Detalhes do produto
+              }
+              @case ('voice') {
+                Ditado por voz
+              }
+              @case ('confirm-medication') {
+                Confirmar medicamento
+              }
+            }
+          </h2>
+        </div>
+      }
+      <button
+        class="icon-button"
+        type="button"
+        (click)="close()"
+        aria-label="Fechar"
+        title="Fechar"
+      >
+        <pm-icon name="X" />
+      </button>
+    </header>
+    <div class="dialog-body">
+      @switch (modal()) {
+        @case ('confirm-medication') {
+          @if (product(); as medicine) {
+            <div class="help-content">
+              <h3>{{ medicine.name }}</h3>
+              <p>
+                Dosagem: <strong>{{ medicine.dosage }}</strong>
+              </p>
+              <p>
+                Não identifique um medicamento apenas por cor ou aparência. Em caso de dúvida,
+                procure um farmacêutico.
+              </p>
+              <label class="attachment-consent"
+                ><input
+                  type="checkbox"
+                  [checked]="medicationConfirmed()"
+                  (change)="medicationConfirmed.set($any($event.target).checked)"
+                /><span
+                  >Confirmei que este é o nome e a dosagem do produto que desejo, conforme a
+                  prescrição ou orientação profissional.</span
+                ></label
+              ><button
+                class="primary"
+                type="button"
+                [disabled]="!medicationConfirmed()"
+                (click)="confirmMedication()"
+              >
+                Confirmar e adicionar <pm-icon name="Check" />
+              </button>
+            </div>
+          }
+        }
+        @case ('voice') {
+          <div class="help-content">
+            <p>
+              Seu navegador pode enviar o áudio ao serviço de reconhecimento do Chrome ou Safari. A
+              disponibilidade depende do navegador, das permissões e da conexão.
+            </p>
+            <p>
+              O texto será colocado na mensagem para você revisar. Nada será enviado automaticamente
+              ao atendimento.
+            </p>
+            <button
+              class="primary"
+              type="button"
+              (click)="startVoice()"
+              [disabled]="!voice.available"
+            >
+              Iniciar ditado <pm-icon name="Mic" />
+            </button>
+            <button
+              class="secondary"
+              type="button"
+              (click)="toggleHandsFree()"
+              [disabled]="!voice.available"
+            >
+              Ativar conversa por voz (Mãos Livres) <pm-icon name="AudioLines" />
+            </button>
+            @if (!voice.available) {
+              <p role="status">
+                Este navegador não oferece reconhecimento de voz. Continue escrevendo a mensagem.
+              </p>
+            }
+            <button class="secondary" type="button" (click)="close()">Cancelar</button>
+          </div>
+        }
+        @case ('menu') {
+          <nav aria-label="Navegação do atendimento">
+            <button class="drawer-new" type="button" (click)="open('new')">
+              <pm-icon name="Plus" />Novo atendimento
+            </button>
+            <div class="drawer-nav">
+              <button type="button" (click)="open('profile')">
+                <pm-icon name="UserRound" />Perfil de cuidado</button
+              ><button type="button" (click)="open('help')">
+                <pm-icon name="Cross" />Falar com farmacêutico</button
+              ><button type="button" (click)="open('profile')">
+                <pm-icon name="MapPin" />Localização e retirada
+              </button>
+            </div>
+            <p class="drawer-note">
+              {{
+                config.mode === 'demo'
+                  ? 'Precinho · modo de demonstração. Nenhum pedido real será criado.'
+                  : 'Precinho · Cuidado assistido'
+              }}
+            </p>
+          </nav>
+        }
+        @case ('kit') {
+          <pm-kit-panel
+            [lines]="store.cart()"
+            [serverSubtotal]="store.subtotal()"
+            [blockers]="store.cartBlockers()"
+            [checkoutAllowed]="store.checkoutAllowed()"
+            [appliedCoupon]="store.appliedCoupon()"
+            [couponDiscount]="store.couponDiscount()"
+            [couponError]="store.couponError()"
+            (changeQuantity)="store.quantity($event.id, $event.delta)"
+            (applyCoupon)="store.applyCoupon($event)"
+            (removeCoupon)="store.removeCoupon()"
+            (review)="open('checkout')"
+            (continueChat)="focusComposer()"
+            (attachPrescription)="attachPrescription()"
+          />
+        }
+        @case ('profile') {
+          <form #profileForm="ngForm" (ngSubmit)="saveProfile()" class="profile-form">
+            <label for="postal-code">CEP <small>Opcional</small></label
+            ><input
+              id="postal-code"
+              name="postalCode"
+              [(ngModel)]="profilePostalCode"
+              (input)="onProfilePostalCodeChange()"
+              pattern="[0-9]{5}-?[0-9]{3}"
+              maxlength="9"
+              placeholder="00000-000"
+              inputmode="numeric"
+              autocomplete="postal-code"
+              #cep="ngModel"
+            />
+            @if (profileCepLoading()) {
+              <p class="safety-inline"><pm-icon name="LoaderCircle" class="pm-spinner" /> Buscando endereço pelo CEP...</p>
+            }
+            @if (cep.invalid && cep.dirty) {
+              <p class="field-error">Informe um CEP com 8 números.</p>
+            }
+            <label for="allergies">Alergias e restrições <small>Opcional</small></label
+            ><textarea
+              id="allergies"
+              name="allergies"
+              [(ngModel)]="profileAllergies"
+              maxlength="500"
+              rows="3"
+              placeholder="O que devemos considerar no seu cuidado?"
+            ></textarea>
+            <p class="privacy-note">
+              Essas informações serão enviadas ao atendimento ao mandar sua próxima mensagem. Não
+              ficam salvas neste navegador. Não informe documentos ou dados de pagamento.
+            </p>
+            <button class="primary" type="submit" [disabled]="profileForm.invalid">
+              Salvar preferências <pm-icon name="Check" />
+            </button>
+          </form>
+        }
+        @case ('help') {
+          <div class="help-content">
+            <pm-icon name="Stethoscope" />
+            <h3>Cuidado também é conversar.</h3>
+            <p>
+              Para localizar um medicamento, informe o nome ou envie a receita. Para dúvidas sobre
+              sintomas, doses, interações ou uso, procure um farmacêutico em uma unidade Pague Menos.
+            </p>
+            <p>
+              Em caso de falta de ar, dificuldade para engolir ou sintomas intensos, procure
+              atendimento de saúde. Em emergências, ligue <a href="tel:192">192 (SAMU)</a>.
+            </p>
+            @if (config.pharmacistUrl) {
+              <a
+                class="primary"
+                [href]="config.pharmacistUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Falar com um farmacêutico <pm-icon name="ExternalLink"
+              /></a>
+            }
+            <button class="secondary" type="button" (click)="close()">Voltar ao atendimento</button>
+          </div>
+        }
+        @case ('checkout') {
+          @if (store.cartBlockers().length) {
+            <div class="input-error" role="alert">{{ store.cartBlockers().join(' ') }}</div>
+          }
+          <p class="review-intro">Confira os itens que você escolheu.</p>
+          <ul class="review-lines">
+            @for (line of store.cart(); track line.id ?? line.product.id) {
+              <li>
+                <span>{{ line.quantity }} × {{ line.product.name }}</span
+                ><strong>{{
+                  (line.product.price * line.quantity) / 100
+                    | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+                }}</strong>
+              </li>
+            }
+          </ul>
+          <div class="review-total">
+            <span>Subtotal</span
+            ><strong>{{
+              store.subtotal() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+            }}</strong>
+          </div>
+          @if (config.checkout) {
+            <p class="privacy-note">Preço, estoque e frete serão confirmados na próxima etapa.</p>
+            <button
+              type="button"
+              class="primary"
+              [disabled]="checkoutBusy() || !store.count() || !store.checkoutAllowed()"
+              (click)="checkout()"
+            >
+              {{ checkoutBusy() ? 'Abrindo compra...' : 'Continuar para compra'
+              }}<pm-icon name="ArrowRight" />
+            </button>
+          } @else if (config.mvpCheckout) {
+            <div class="checkout-widget">
+              <div class="widget-head">
+                <div class="checkout-top">
+                  <div><span class="widget-kicker"><pm-icon name="ShieldCheck" /> Compra Segura</span><h3>Fechar pedido</h3></div>
+                  <span class="secure-tag"><pm-icon name="ShieldCheck" /> Simulado</span>
+                </div>
+                <div class="checkout-steps" aria-label="Etapas do checkout">
+                  @for (step of [1, 2, 3, 4]; track step) {
+                    <div class="checkout-step" [class.is-active]="checkoutStep() === step" [class.is-done]="checkoutStep() > step" [attr.aria-current]="checkoutStep() === step ? 'step' : null">
+                      <i>{{ checkoutStep() > step ? '✓' : step }}</i><span>{{ step === 1 ? 'Entrega' : step === 2 ? 'Ofertas' : step === 3 ? 'Pagamento' : 'Revisão' }}</span>
+                    </div>
+                    @if (step < 4) { <span class="checkout-step-line" aria-hidden="true"></span> }
+                  }
+                </div>
+              </div>
+              <div class="checkout-body">
+            @if (checkoutStep() === 1) {
+              <div class="checkout-section-title"><h4>Como você quer receber?</h4><span>{{ store.count() }} {{ store.count() === 1 ? 'item' : 'itens' }}</span></div>
+              <div class="option-stack">
+                <label class="option-card"><input type="radio" name="delivery" value="pickup" [(ngModel)]="delivery" /><span class="option-radio"></span><span class="option-copy"><strong>Retirada na unidade</strong><small>Pague Menos · São Paulo, SP</small></span><span class="option-price is-free">Grátis</span></label>
+                <label class="option-card"><input type="radio" name="delivery" value="delivery" [(ngModel)]="delivery" /><span class="option-radio"></span><span class="option-copy"><strong>Entrega expressa</strong><small>Receba hoje · taxa demonstrativa</small></span><span class="option-price">R$ 6,90</span></label>
+              </div>
+              @if (delivery === 'pickup') {
+                <div class="review-box">
+                  <div class="review-row"><span>Unidade</span><strong>Pague Menos · São Paulo, SP</strong></div>
+                  <div class="review-row"><span>Quando</span><strong>Assim que estiver pronto</strong></div>
+                </div>
+                <p class="safety-inline"><pm-icon name="ShoppingBag" /> Assim que estiver pronto, você recebe um código de retirada.</p>
+              } @else {
+                <div class="checkout-field-grid">
+                  <label class="checkout-field">CEP
+                    <input
+                      [(ngModel)]="deliveryCep"
+                      (input)="onDeliveryCepChange()"
+                      name="deliveryCep"
+                      placeholder="00000-000"
+                      maxlength="9"
+                      inputmode="numeric"
+                    />
+                  </label>
+                  <label class="checkout-field">Bairro
+                    <input [(ngModel)]="deliveryNeighborhood" name="deliveryNeighborhood" placeholder="Bairro" />
+                  </label>
+                  <label class="checkout-field full">Logradouro / Rua e número
+                    <input [(ngModel)]="deliveryAddress" name="deliveryAddress" placeholder="Ex: Av. Paulista, 1000, Apto 12" />
+                  </label>
+                  <label class="checkout-field">Cidade
+                    <input [(ngModel)]="deliveryCity" name="deliveryCity" placeholder="Cidade" />
+                  </label>
+                  <label class="checkout-field">Estado
+                    <input [(ngModel)]="deliveryState" name="deliveryState" placeholder="UF" maxlength="2" />
+                  </label>
+                </div>
+                @if (deliveryCepLoading()) {
+                  <p class="safety-inline"><pm-icon name="LoaderCircle" class="pm-spinner" /> Consultando CEP no ViaCEP...</p>
+                }
+                @if (cepLookupError()) {
+                  <p class="field-error">{{ cepLookupError() }}</p>
+                }
+                <p class="safety-inline"><pm-icon name="MapPin" /> Entrega no mesmo dia com taxa demonstrativa de R$ 6,90.</p>
+              }
+              <div class="checkout-actions"><button class="button button-primary" type="button" (click)="nextCheckoutStep()">Continuar <pm-icon name="ArrowRight" /></button></div>
+              <p class="checkout-note"><pm-icon name="ShieldCheck" /> Ambiente de demonstração. Nenhuma cobrança será feita.</p>
+            } @else if (checkoutStep() === 2) {
+              <div class="checkout-section-title">
+                <h4>Aproveite estas ofertas para o seu cuidado</h4>
+                <span>Ofertas exclusivas</span>
+              </div>
+              <p class="upsell-intro">Itens selecionados com desconto para complementar seu pedido com 1 clique:</p>
+              <div class="upsell-grid">
+                @for (item of upsellItems; track item.id) {
+                  <div class="upsell-card" [class.is-added]="isItemInCart(item.id)">
+                    <div class="upsell-media">
+                      <img [src]="productImageUrl(item.image)" (error)="onImageError($event)" [alt]="item.name" width="56" height="56" />
+                    </div>
+                    <div class="upsell-info">
+                      <span class="upsell-brand">{{ item.brand }}</span>
+                      <strong class="upsell-name">{{ item.name }}</strong>
+                      <span class="upsell-price">{{ item.price / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</span>
+                    </div>
+                    <div class="upsell-action">
+                      @if (isItemInCart(item.id)) {
+                        <span class="upsell-added-badge"><pm-icon name="Check" /> Adicionado</span>
+                      } @else {
+                        <button class="button button-secondary button-sm upsell-btn" type="button" (click)="addUpsellItem(item)">
+                          <pm-icon name="Plus" /> Levar
+                        </button>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+              <div class="checkout-actions">
+                <button class="button button-secondary" type="button" (click)="previousCheckoutStep()">Voltar</button>
+                <button class="button button-primary" type="button" (click)="nextCheckoutStep()">Continuar para pagamento <pm-icon name="ArrowRight" /></button>
+              </div>
+              <p class="checkout-note"><pm-icon name="ShieldCheck" /> Você pode adicionar ou pular esta etapa quando quiser.</p>
+            } @else if (checkoutStep() === 3) {
+              <div class="checkout-section-title"><h4>Como você quer pagar?</h4><span>Simulado</span></div>
+              <div class="option-stack">
+                <label class="option-card">
+                  <input type="radio" name="payment" value="pix" [(ngModel)]="payment" />
+                  <span class="option-radio"></span>
+                  <span class="option-copy"><strong>Pix</strong><small>Aprovação imediata nesta demonstração</small></span>
+                  <span class="option-icon">Pix</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="payment" value="card" [(ngModel)]="payment" />
+                  <span class="option-radio"></span>
+                  <span class="option-copy"><strong>Cartão de crédito</strong><small>Visa final 4242 · ambiente simulado</small></span>
+                  <span class="option-icon">•••</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="payment" value="google_pay" [(ngModel)]="payment" />
+                  <span class="option-radio"></span>
+                  <span class="option-copy"><strong>Google Pay</strong><small>Pagamento rápido e seguro em 1 toque</small></span>
+                  <span class="option-wallet-pill google-pay">GPay</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="payment" value="apple_pay" [(ngModel)]="payment" />
+                  <span class="option-radio"></span>
+                  <span class="option-copy"><strong>Apple Pay</strong><small>Touch ID / Face ID no dispositivo</small></span>
+                  <span class="option-wallet-pill apple-pay">Apple Pay</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="payment" value="wallet" [(ngModel)]="payment" />
+                  <span class="option-radio"></span>
+                  <span class="option-copy"><strong>Carteira Digital</strong><small>Mercado Pago ou PicPay</small></span>
+                  <span class="option-wallet-pill wallet"><pm-icon name="Wallet" /> Carteiras</span>
+                </label>
+                @if (delivery === 'pickup') {
+                  <label class="option-card">
+                    <input type="radio" name="payment" value="pickup" [(ngModel)]="payment" />
+                    <span class="option-radio"></span>
+                    <span class="option-copy"><strong>Pagar na retirada</strong><small>Sem cobrança agora</small></span>
+                    <span class="option-icon"><pm-icon name="ShoppingBag" /></span>
+                  </label>
+                }
+              </div>
+              @if (payment === 'pix') {
+                <div class="pix-box"><strong>Pix</strong><code>Pagamento ilustrativo · nenhum valor será cobrado</code></div>
+              } @else if (payment === 'card') {
+                <div class="review-box"><div class="review-row"><span>Cartão</span><strong>Visa final 4242</strong></div><div class="review-row"><span>Ambiente</span><strong>Simulado</strong></div></div>
+              } @else if (payment === 'google_pay') {
+                <div class="review-box"><div class="review-row"><span>Método</span><strong>Google Pay</strong></div><div class="review-row"><span>Carteira</span><strong>Google Wallet (simulado)</strong></div></div>
+              } @else if (payment === 'apple_pay') {
+                <div class="review-box"><div class="review-row"><span>Método</span><strong>Apple Pay</strong></div><div class="review-row"><span>Dispositivo</span><strong>Apple Wallet (simulado)</strong></div></div>
+              } @else if (payment === 'wallet') {
+                <div class="review-box"><div class="review-row"><span>Método</span><strong>Mercado Pago / PicPay</strong></div><div class="review-row"><span>Carteira</span><strong>Saldo ou cartão vinculado</strong></div></div>
+              } @else {
+                <p class="checkout-note">Você paga diretamente na unidade ao retirar o pedido.</p>
+              }
+              <div class="checkout-actions">
+                <button class="button button-secondary" type="button" (click)="previousCheckoutStep()">Voltar</button>
+                <button class="button button-primary" type="button" (click)="nextCheckoutStep()">Revisar pedido <pm-icon name="ArrowRight" /></button>
+              </div>
+              <p class="checkout-note"><pm-icon name="ShieldCheck" /> Pagamento simulado. Nenhum valor será cobrado.</p>
+            } @else {
+              <div class="checkout-section-title"><h4>Revise seu pedido</h4><span>{{ store.count() }} {{ store.count() === 1 ? 'item' : 'itens' }}</span></div>
+              <div class="checkout-items">
+                @for (line of store.cart(); track line.id ?? line.product.id) {
+                  <div class="checkout-item">
+                    <div class="checkout-item-media"><img [src]="productImageUrl(line.product.image)" (error)="onImageError($event)" alt="" width="42" height="42" /></div>
+                    <div class="checkout-item-copy"><strong>{{ line.product.name }}</strong><small>Qtd. {{ line.quantity }}</small></div>
+                    <span class="checkout-item-price">{{ line.product.price * line.quantity / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</span>
+                  </div>
+                }
+              </div>
+
+              <!-- Campo de Cupom no Checkout -->
+              <div class="checkout-coupon-area">
+                @if (!store.appliedCoupon()) {
+                  <div class="checkout-coupon-input-group">
+                    <span class="coupon-field-icon"><pm-icon name="Tag" /></span>
+                    <input
+                      type="text"
+                      [(ngModel)]="checkoutCouponCode"
+                      placeholder="Cupom de desconto (ex: CUIDADO10)"
+                      (keydown.enter)="applyCheckoutCoupon()"
+                    />
+                    <button class="button button-secondary button-sm" type="button" (click)="applyCheckoutCoupon()" [disabled]="!checkoutCouponCode.trim()">
+                      Aplicar
+                    </button>
+                  </div>
+                  @if (store.couponError()) {
+                    <span class="coupon-error-msg">{{ store.couponError() }}</span>
+                  }
+                } @else {
+                  <div class="checkout-coupon-applied">
+                    <div class="applied-info">
+                      <pm-icon name="Tag" />
+                      <strong>{{ store.appliedCoupon()?.code }}</strong>
+                      <small>({{ store.appliedCoupon()?.description }})</small>
+                    </div>
+                    <button type="button" class="coupon-remove-btn" (click)="store.removeCoupon()" title="Remover cupom">
+                      <pm-icon name="X" />
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <div class="review-box">
+                <div class="review-row"><span>Subtotal</span><strong>{{ store.subtotal() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong></div>
+                @if (store.couponDiscount()) {
+                  <div class="review-row kit-discount">
+                    <span>Cupom de desconto</span>
+                    <strong>− {{ store.couponDiscount() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
+                  </div>
+                }
+                <div class="review-row">
+                  <span>{{ delivery === 'pickup' ? 'Retirada' : 'Entrega' }}</span>
+                  <strong>{{ delivery === 'pickup' || store.appliedCoupon()?.type === 'shipping' ? 'Grátis' : 'R$ 6,90' }}</strong>
+                </div>
+                <div class="review-row"><span>Pagamento</span><strong>{{ paymentMethodLabel(payment) }}</strong></div>
+                <div class="review-row total">
+                  <span>Total</span>
+                  <strong>{{ checkoutTotal() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
+                </div>
+              </div>
+              <p class="safety-inline"><pm-icon [name]="delivery === 'pickup' ? 'ShoppingBag' : 'MapPin'" /> {{ delivery === 'pickup' ? 'Retirada em uma unidade Pague Menos.' : 'Entrega em ' + deliveryAddress + '.' }}</p>
+              <div class="checkout-actions">
+                <button class="button button-secondary" type="button" (click)="previousCheckoutStep()">Voltar</button>
+                <button class="button button-primary" type="button" (click)="checkout()" [disabled]="checkoutBusy() || !store.checkoutAllowed()">
+                  {{ checkoutBusy() ? 'Confirmando...' : 'Confirmar pedido' }} <pm-icon name="Check" />
+                </button>
+              </div>
+              <p class="checkout-note"><pm-icon name="ShieldCheck" /> Pedido de demonstração. Nenhuma cobrança será feita.</p>
+            }
+              </div>
+            </div>
+          } @else {
+            <p class="privacy-note">
+              {{
+                config.mode === 'demo'
+                  ? 'Nenhuma compra será realizada nesta demonstração.'
+                  : 'A compra está indisponível neste atendimento.'
+              }}
+            </p>
+            <button class="primary" type="button" (click)="close()">
+              Continuar escolhendo <pm-icon name="ArrowRight" />
+            </button>
+          }
+        }
+        @case ('new') {
+          <p>
+            A conversa e os itens deste kit serão removidos. Suas preferências de cuidado serão
+            mantidas durante esta visita.
+          </p>
+          <div class="dialog-actions">
+            <button class="secondary" type="button" (click)="close()">Manter conversa</button
+            ><button class="primary" type="button" (click)="newConversation()">
+              Novo atendimento <pm-icon name="Plus" />
+            </button>
+          </div>
+        }
+        @case ('product') {
+          @if (product(); as item) {
+            <div class="detail-product">
+              <div class="detail-media">
+                <img [src]="productImageUrl(item.image)" (error)="onImageError($event)" [alt]="item.name" width="180" height="180" />
+              </div>
+              <div>
+                <p class="detail-brand">{{ item.brand }} · {{ item.category }}</p>
+                <h3 class="detail-name">{{ item.name }}</h3>
+                <p class="detail-price">
+                  {{ item.price / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+                </p>
+                <p class="detail-desc">{{ item.description }}</p>
+                <div class="detail-actions">
+                  <button
+                    class="button button-primary"
+                    type="button"
+                    (click)="addFromDetails(item)"
+                  >
+                    <pm-icon name="Plus" />Adicionar ao kit
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      }
+    </div>
+  </div>
+</dialog>
+<div class="toast" [class.visible]="notice()" role="status" aria-live="polite">{{ notice() }}</div>

@@ -1,0 +1,22 @@
+{
+  "/api/**": {
+    "target": "https://147.182.163.228.sslip.io",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/ucp/**": {
+    "target": "https://147.182.163.228.sslip.io",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/acp/**": {
+    "target": "https://147.182.163.228.sslip.io",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/.well-known/**": {
+    "target": "https://147.182.163.228.sslip.io",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

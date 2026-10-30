@@ -1,0 +1,192 @@
+<section class="panel-card" aria-label="Resumo do kit">
+  <header class="panel-head">
+    <h2>Seu kit</h2>
+    <span class="panel-count">{{ count() }}</span>
+  </header>
+  @if (!lines().length) {
+    <div class="kit-empty">
+      <span class="kit-empty-icon"><pm-icon name="ShoppingBag" /></span>
+      <strong>Seu kit aparece aqui</strong>
+      <p>A conversa e o carrinho andam juntos. Adicione um item ou peça uma sugestão.</p>
+      <button class="button button-secondary button-sm" type="button" (click)="continueChat.emit()">
+        Continuar conversando
+      </button>
+    </div>
+  } @else {
+    <ul class="kit-lines">
+      @for (line of lines(); track line.id ?? line.product.id) {
+        <li class="kit-line">
+          <div class="kit-line-media">
+            <img [src]="productImageUrl(line.product.image)" (error)="onImageError($event)" [alt]="line.product.name" width="46" height="46" />
+          </div>
+          <div class="kit-line-copy">
+            <div class="kit-line-top">
+              <span class="kit-line-name">{{ line.product.name }}</span
+              ><button
+                class="kit-line-remove"
+                type="button"
+                [attr.aria-label]="'Remover ' + line.product.name"
+                title="Remover do kit"
+                (click)="
+                  changeQuantity.emit({ id: line.id ?? line.product.id, delta: -line.quantity })
+                "
+              >
+                <pm-icon name="X" />
+              </button>
+            </div>
+            @if (line.kitId) {
+              <small class="kit-origin">Item de kit</small>
+            }
+            @if (line.prescriptionStatus) {
+              <span
+                class="badge"
+                [class.badge-success]="line.prescriptionStatus === 'APROVADA'"
+                [class.badge-warning]="line.prescriptionStatus !== 'APROVADA'"
+              >
+                Receita: {{ line.prescriptionStatus }}
+              </span>
+            }
+            <div class="kit-line-bottom">
+              <strong class="kit-line-price">{{
+                (line.product.price * line.quantity) / 100
+                  | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+              }}</strong>
+              <div class="qty">
+                <button
+                  type="button"
+                  [attr.aria-label]="'Diminuir quantidade de ' + line.product.name"
+                  title="Diminuir quantidade"
+                  (click)="changeQuantity.emit({ id: line.id ?? line.product.id, delta: -1 })"
+                >
+                  <pm-icon name="Minus" /></button
+                ><output [attr.aria-label]="'Quantidade de ' + line.product.name">{{
+                  line.quantity
+                }}</output
+                ><button
+                  type="button"
+                  [attr.aria-label]="'Aumentar quantidade de ' + line.product.name"
+                  title="Aumentar quantidade"
+                  [disabled]="line.quantity >= 99"
+                  (click)="changeQuantity.emit({ id: line.id ?? line.product.id, delta: 1 })"
+                >
+                  <pm-icon name="Plus" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      }
+    </ul>
+    <div class="kit-coupon-box">
+      @if (!appliedCoupon()) {
+        <div class="kit-coupon-input-group">
+          <pm-icon name="Tag" />
+          <input
+            type="text"
+            placeholder="Possui cupom?"
+            [(ngModel)]="couponCode"
+            (keydown.enter)="onApplyCoupon()"
+            maxlength="20"
+            aria-label="Código do cupom de desconto"
+          />
+          <button
+            type="button"
+            class="button button-sm button-secondary"
+            (click)="onApplyCoupon()"
+            [disabled]="!couponCode.trim()"
+          >
+            Aplicar
+          </button>
+        </div>
+        @if (couponError()) {
+          <span class="coupon-error-msg">{{ couponError() }}</span>
+        }
+      } @else {
+        <div class="kit-coupon-tag">
+          <div class="coupon-tag-info">
+            <pm-icon name="Tag" />
+            <strong>{{ appliedCoupon()?.code }}</strong>
+            <small>({{ appliedCoupon()?.description }})</small>
+          </div>
+          <button
+            type="button"
+            class="coupon-remove-btn"
+            (click)="removeCoupon.emit()"
+            title="Remover cupom"
+            aria-label="Remover cupom"
+          >
+            <pm-icon name="X" />
+          </button>
+        </div>
+      }
+    </div>
+    <div class="kit-summary">
+      @if (discount()) {
+        <div class="summary-row">
+          <span>Preço avulso</span
+          ><strong>{{
+            catalogTotal() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+          }}</strong>
+        </div>
+        <div class="summary-row kit-discount">
+          <span>Desconto do kit</span
+          ><strong
+            >− {{ discount() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong
+          >
+        </div>
+      }
+      <div class="summary-row">
+        <span>Subtotal</span
+        ><strong>{{ total() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
+      </div>
+      @if (couponDiscount()) {
+        <div class="summary-row kit-discount kit-coupon-row">
+          <span>Cupom ({{ appliedCoupon()?.code }})</span
+          ><strong
+            >− {{ couponDiscount() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong
+          >
+        </div>
+      } @else if (appliedCoupon()?.type === 'shipping') {
+        <div class="summary-row kit-discount kit-coupon-row">
+          <span>Cupom ({{ appliedCoupon()?.code }})</span>
+          <strong>Frete Grátis</strong>
+        </div>
+      }
+      <div class="summary-row total">
+        <span>Total dos itens</span
+        ><strong>{{ finalTotal() / 100 | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</strong>
+      </div>
+    </div>
+    @if (blockers().length) {
+      <div class="kit-blockers-alert" role="alert">
+        <div class="blocker-header">
+          <pm-icon name="AlertCircle" />
+          <strong>Atenção para finalizar:</strong>
+        </div>
+        <ul>
+          @for (blocker of blockers(); track blocker) {
+            <li>{{ blocker }}</li>
+          }
+        </ul>
+        @if (hasPrescriptionBlocker()) {
+          <button
+            class="button button-secondary button-sm blocker-action"
+            type="button"
+            (click)="attachPrescription.emit()"
+          >
+            <pm-icon name="Paperclip" /> Anexar receita
+          </button>
+        }
+      </div>
+    }
+    <button
+      type="button"
+      class="button button-primary panel-cta"
+      [disabled]="!checkoutAllowed()"
+      (click)="review.emit()"
+    >
+      Fechar pedido <pm-icon name="ArrowRight" />
+    </button>
+    <p class="panel-note">Frete e disponibilidade confirmados na compra.</p>
+  }
+</section>

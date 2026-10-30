@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <title>Pague Menos</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    (function() {
+      if (typeof window !== 'undefined') {
+        if (!window.crypto) {
+          window.crypto = {};
+        }
+        if (!window.crypto.randomUUID) {
+          window.crypto.randomUUID = function() {
+            if (window.crypto.getRandomValues) {
+              return ('10000000-1000-4000-8000-100000000000').replace(/[018]/g, function(c) {
+                return (+c ^ (window.crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16);
+              });
+            }
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+              var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            });
+          };
+        }
+      }
+    })();
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+
+  <!-- Widget VLibras: Acessibilidade Digital em Língua Brasileira de Sinais (LIBRAS) -->
+  <div vw class="enabled" aria-label="Acessibilidade em Língua Brasileira de Sinais (VLibras)">
+    <div vw-access-button class="active" aria-label="Abrir tradutor para Libras"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js" defer></script>
+  <script>
+    function initVLibras() {
+      if (window.VLibras && window.VLibras.Widget) {
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+      } else {
+        setTimeout(initVLibras, 250);
+      }
+    }
+    if (document.readyState === 'complete') {
+      initVLibras();
+    } else {
+      window.addEventListener('load', initVLibras);
+    }
+  </script>
+</body>
+</html>

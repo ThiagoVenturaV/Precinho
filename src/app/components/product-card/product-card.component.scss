@@ -1,0 +1,136 @@
+:host {
+  --card-texto: var(--texto, #1a1d24);
+  --card-secundario: var(--secundario, #4f5664);
+  --card-destaque: var(--destaque, #b3001b);
+  --card-acao: var(--acao, #1f2f8a);
+  --card-divisor: var(--divisor, #e3e5ea);
+  --card-sobre-acao: var(--inverso, #ffffff);
+  display: block;
+  min-width: 0;
+  color: var(--card-texto);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  box-shadow:
+    0 0.25rem 0.75rem rgba(0, 0, 0, 0.16),
+    0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.2s ease;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.card:hover {
+  box-shadow:
+    0 0.75rem 1.75rem rgba(0, 0, 0, 0.24),
+    0 0.125rem 0.375rem rgba(0, 0, 0, 0.14);
+}
+
+.card img {
+  width: 100%;
+  height: 11.25rem;
+  object-fit: contain;
+  font-size: 0.875rem;
+  color: var(--card-secundario);
+}
+
+.card-link-imagem {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.card-link-imagem:hover {
+  transform: translateY(-2px);
+}
+
+.card h3 {
+  margin: 0;
+  color: var(--card-texto);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.card-titulo-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-titulo-link:hover {
+  text-decoration: underline;
+  color: var(--card-acao);
+}
+
+.marca {
+  margin: 0;
+  color: var(--card-secundario);
+  font-size: 0.875rem;
+}
+
+.preco {
+  margin: 0.25rem 0;
+  color: var(--card-acao);
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+
+.badge-proprio,
+.badge-receita,
+.categoria {
+  align-self: flex-start;
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--card-secundario);
+}
+
+.badge-proprio {
+  font-weight: 700;
+}
+
+.badge-receita {
+  border-left: 0.1875rem solid var(--card-destaque);
+  padding-left: 0.5rem;
+  color: var(--card-texto);
+}
+
+.btn-comprar {
+  margin-top: auto;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.25rem;
+  background: var(--card-acao);
+  color: var(--card-sobre-acao);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-comprar:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 0.125rem solid var(--card-destaque);
+  outline-offset: 0.125rem;
+}

@@ -1,0 +1,249 @@
+<main id="inicio" tabindex="-1">
+  <section class="ia-principal" aria-labelledby="ia-titulo">
+    <div class="conteudo ia-principal__layout">
+      <div>
+        <p class="eyebrow">Conheça o Precinho</p>
+        <h1 id="ia-titulo">Monte seu kit com o Precinho</h1>
+        <p>O Precinho ajuda você a encontrar as melhores combinações de produtos e economizar.</p>
+      </div>
+      <button
+        class="botao botao--principal"
+        type="button"
+        aria-controls="kits"
+        [attr.aria-expanded]="assistenteAberto()"
+        (click)="abrirAssistente(kitsTitulo)"
+      >
+        Falar com o Precinho <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </section>
+  <div class="beneficios conteudo" aria-label="Benefícios Pague Menos">
+    <span><strong>Frete grátis</strong><small>Consulte as condições</small></span>
+    <span><strong>Clique e retire</strong><small>Mais praticidade para você</small></span>
+    <span><strong>Ofertas especiais</strong><small>Todos os dias na sua farmácia</small></span>
+  </div>
+  <section class="campanha conteudo" aria-label="Campanhas Pague Menos">
+    <a class="campanha__mobile" href="https://www.paguemenos.com.br/esquenta-black-friday"
+      ><img
+        [src]="campanha"
+        alt="Esquenta Black Pague Menos: ofertas até 70% de desconto."
+        width="639"
+        height="280"
+        fetchpriority="high"
+    /></a>
+    <a
+      class="campanha__desktop"
+      href="https://www.paguemenos.com.br/os-melhores-kits-para-a-sua-rotina"
+      ><picture
+        ><source media="(min-width: 1024px)" [srcset]="campanhaDesktop" />
+        <img
+          [src]="campanha"
+          alt="Melhores kits para a sua rotina. Confira as ofertas Pague Menos."
+          width="1240"
+          height="270"
+          loading="lazy" /></picture
+    ></a>
+  </section>
+  <section class="secao conteudo" id="ofertas" aria-labelledby="ofertas-titulo">
+    <div class="secao__cabecalho">
+      <div>
+        <p class="eyebrow">Aproveite</p>
+        <h2 id="ofertas-titulo">Melhores ofertas para você!</h2>
+      </div>
+      <a href="https://www.paguemenos.com.br/ofertas">Ver todas<span class="sr-only"> as ofertas</span></a>
+    </div>
+    <div class="produtos trilho" role="region" tabindex="0" aria-label="Produtos em destaque">
+      @for (produto of destaques; track produto.url) {
+        <article class="produto">
+          <a [routerLink]="['/produto', extrairIdentificador(produto)]">
+            <span class="produto__etiqueta">Destaque</span
+            ><img [src]="produto.imagem" alt="" width="240" height="240" loading="lazy" (error)="onImgError($event)" />
+            <h3>{{ produto.nome }}</h3>
+            <p class="produto__marca">{{ produto.marca }}</p>
+            <p class="produto__preco"><small>R$</small> {{ produto.preco }}</p>
+            <span class="produto__link">Ver produto →</span>
+          </a>
+          <button
+            type="button"
+            class="btn-adicionar-vitrine"
+            (click)="adicionarAoCarrinhoVitrine(produto, $event)"
+            [class.btn-adicionar-vitrine--sucesso]="foiAdicionado(produto)"
+            [attr.aria-label]="'Adicionar ' + produto.nome + ' ao carrinho'"
+          >
+            {{ foiAdicionado(produto) ? '✓ No carrinho' : 'Adicionar ao carrinho' }}
+          </button>
+        </article>
+      }
+    </div>
+    <p class="nota">
+      Preços de referência. Consulte valor atualizado, disponibilidade e condições na loja.
+    </p>
+  </section>
+  <section class="secao conteudo" aria-labelledby="catalogo-titulo">
+    <p class="eyebrow">Catálogo</p>
+    <h2 id="catalogo-titulo">Produtos do catálogo</h2>
+    <div class="produtos trilho">
+      @for (produto of catalogoDestaques(); track produto.id) {
+        <app-product-card [produto]="produto" />
+      }
+    </div>
+  </section>
+  <section class="secao conteudo" aria-labelledby="categorias-titulo">
+    <p class="eyebrow">Navegue</p>
+    <h2 id="categorias-titulo">Por categoria</h2>
+    <div class="categorias">
+      @for (categoria of categorias; track categoria.nome) {
+        <a
+          [href]="'https://www.paguemenos.com.br/' + categoria.url"
+          [class.categorias__destaque]="categoria.destaque"
+          ><strong>{{ categoria.nome }}</strong
+          ><img [src]="categoria.imagem" alt="" width="190" height="124" loading="lazy" /></a
+        >
+      }
+    </div>
+  </section>
+  <section class="secao conteudo" id="servicos" aria-labelledby="servicos-titulo">
+    <p class="eyebrow">Conheça os</p>
+    <h2 id="servicos-titulo">Serviços Pague Menos</h2>
+    <div class="servicos trilho" role="region" tabindex="0" aria-label="Serviços disponíveis">
+      @for (servico of servicos; track servico.nome) {
+        <a class="servico" [href]="'https://www.paguemenos.com.br/' + servico.url"
+          ><span class="servico__foto"
+            ><img
+              [src]="servico.imagem"
+              [alt]="servico.nome"
+              [style.--img-zoom]="servico.zoom"
+              [style.--img-pos]="servico.posicao"
+              width="320"
+              height="260"
+              loading="lazy" /></span
+          ><span class="servico__rodape"
+            ><strong>{{ servico.nome }}</strong
+            ><small>{{ servico.texto }}</small
+            ></span
+          ></a
+        >
+      }
+      <button
+        class="servico servico--ia"
+        type="button"
+        aria-controls="kits"
+        [attr.aria-expanded]="assistenteAberto()"
+        (click)="abrirAssistente(kitsTitulo)"
+      >
+        <span class="servico__ilustracao"
+          ><img src="logo-claro.png" alt="" width="160" height="64" loading="lazy" /><span
+            >Leve mais de um<br />e economize.</span
+          ></span
+        ><span class="servico__rodape"
+          ><strong>Precinho & Kits</strong><small>Encontre seu kit com o Precinho</small
+          ><span aria-hidden="true">→</span></span
+        >
+      </button>
+    </div>
+  </section>
+  <section class="secao conteudo kits" id="kits" aria-labelledby="kits-titulo">
+    <p class="eyebrow">Leve mais, pague menos</p>
+    <h2 #kitsTitulo id="kits-titulo" tabindex="-1">
+      {{
+        temKitsGerados()
+          ? 'Seus kits personalizados do Precinho'
+          : 'Compre mais de um e economize!'
+      }}
+    </h2>
+    <div role="status" aria-live="polite" aria-atomic="true">
+      @if (assistenteAberto()) {
+        <p class="kits__estado">
+          {{
+            temKitsGerados()
+              ? 'As sugestões do Precinho estão disponíveis abaixo.'
+              : 'O Precinho está indisponível no momento. Confira os kits do catálogo.'
+          }}
+        </p>
+      }
+    </div>
+    <div
+      class="produtos produtos--kits trilho"
+      role="region"
+      tabindex="0"
+      aria-label="Ofertas para levar mais de um"
+    >
+      @for (produto of kitsExibidos(); track produto.url) {
+        <article class="produto">
+          <a [routerLink]="['/produto', extrairIdentificador(produto)]"
+            ><span class="produto__etiqueta">{{
+              temKitsGerados() ? 'Sugestão do Precinho' : 'Leve mais'
+            }}</span
+            ><img [src]="produto.imagem" alt="" width="240" height="240" loading="lazy" (error)="onImgError($event)" />
+            <h3>{{ produto.nome }}</h3>
+            <p class="produto__marca">{{ produto.marca }}</p>
+            <p class="produto__preco"><small>R$</small> {{ produto.preco }}</p>
+            <span class="produto__link">Ver produto →</span></a
+          >
+          <button
+            type="button"
+            class="btn-adicionar-vitrine"
+            (click)="adicionarAoCarrinhoVitrine(produto, $event)"
+            [class.btn-adicionar-vitrine--sucesso]="foiAdicionado(produto)"
+            [attr.aria-label]="'Adicionar ' + produto.nome + ' ao carrinho'"
+          >
+            {{ foiAdicionado(produto) ? '✓ No carrinho' : 'Adicionar ao carrinho' }}
+          </button>
+        </article>
+      }
+    </div>
+    <p class="kits-atalho">
+      Ainda não encontrou?
+      <button
+        class="link-contextual"
+        type="button"
+        aria-controls="kits"
+        [attr.aria-expanded]="assistenteAberto()"
+        (click)="abrirAssistente(kitsTitulo)"
+      >
+        Falar com o Precinho →
+      </button>
+    </p>
+  </section>
+  <div class="publicidade conteudo" aria-label="Marcas em destaque">
+    @for (banner of publicidade; track banner.nome) {
+      <a [href]="'https://www.paguemenos.com.br/' + banner.url"
+        ><img [src]="banner.imagem" [alt]="banner.nome" width="639" height="235" loading="lazy"
+      /></a>
+    }
+  </div>
+  <section class="ajuda conteudo" aria-labelledby="ajuda-titulo">
+    <div>
+      <h2 id="ajuda-titulo">Está com problemas?</h2>
+      <p>Conte com a gente.</p>
+    </div>
+    <div class="ajuda__acoes">
+      <a class="botao" href="https://www.paguemenos.com.br/atendimento">Acessar ajuda</a
+      ><button
+        class="link-contextual"
+        type="button"
+        aria-controls="kits"
+        [attr.aria-expanded]="assistenteAberto()"
+        (click)="abrirAssistente(kitsTitulo)"
+      >
+        Para montar um kit e economizar, fale com o Precinho →
+      </button>
+    </div>
+  </section>
+</main>
+<footer class="rodape">
+  <div class="conteudo">
+    <img src="logo-claro.png" alt="Pague Menos" width="140" height="56" loading="lazy" />
+    <div>
+      <a href="https://www.paguemenos.com.br/institucional/quem-somos">Sobre a Pague Menos</a
+      ><a href="https://www.paguemenos.com.br/atendimento">Atendimento</a
+      ><a href="https://www.paguemenos.com.br/institucional/politica-de-privacidade">Privacidade</a>
+    </div>
+    <a href="#inicio"
+      >Voltar ao topo
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
+  </div>
+</footer>

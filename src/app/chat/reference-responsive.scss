@@ -1,0 +1,487 @@
+@media (max-width: 1240px) {
+  pm-chat-page {
+    --context-w: 318px;
+    --rail-w: 252px;
+  }
+  pm-chat-page .thread,
+  pm-chat-page .welcome {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  pm-chat-page .composer-area {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 1100px) {
+  pm-chat-page {
+    --rail-w: 238px;
+  }
+  pm-chat-page .welcome h2 {
+    font-size: clamp(38px, 4.7vw, 54px);
+  }
+  pm-chat-page .intent-card {
+    padding: 16px;
+  }
+  pm-chat-page .intent-card h3 {
+    font-size: 16px;
+  }
+  pm-chat-page .header-actions {
+    gap: 6px;
+  }
+  pm-chat-page .safety-pill span:last-child {
+    display: none;
+  }
+  pm-chat-page .safety-pill {
+    padding: 0 11px;
+  }
+}
+
+@media (max-width: 1024px) {
+  pm-chat-page .app {
+    grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  }
+  pm-chat-page .context {
+    display: none;
+  }
+  pm-chat-page .mobile-kit-btn {
+    display: inline-flex;
+  }
+  pm-chat-page .mobile-kit-bar {
+    display: flex;
+  }
+  pm-chat-page .welcome {
+    padding-top: 48px;
+  }
+  pm-chat-page .builder-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  pm-chat-page .app {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  pm-chat-page .rail {
+    display: none;
+  }
+  pm-chat-page .mobile-menu {
+    display: inline-flex;
+  }
+  pm-chat-page .chat-header {
+    padding: 10px 14px;
+    min-height: 62px;
+    gap: 10px;
+  }
+  pm-chat-page .chat-heading h1 {
+    font-size: 13px;
+  }
+  pm-chat-page .chat-heading p {
+    font-size: 10.5px;
+  }
+  pm-chat-page .header-actions {
+    gap: 4px;
+  }
+  pm-chat-page .delivery-pill {
+    display: none;
+  }
+  pm-chat-page .avatar-button {
+    display: none;
+  }
+  pm-chat-page .safety-pill {
+    min-height: 36px;
+  }
+  pm-chat-page .welcome {
+    padding: 40px 22px 26px;
+  }
+  pm-chat-page .welcome::before {
+    width: 160px;
+    height: 160px;
+    opacity: 0.7;
+  }
+  pm-chat-page .welcome h2 {
+    font-size: clamp(36px, 8.8vw, 48px);
+    margin-top: 18px;
+  }
+  pm-chat-page .welcome-lede {
+    font-size: 15.5px;
+  }
+  pm-chat-page .intent-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+    margin-top: 24px;
+  }
+  pm-chat-page .intent-card {
+    min-height: 0;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) 30px;
+    grid-template-rows: auto auto auto;
+    column-gap: 12px;
+  }
+  pm-chat-page .intent-top {
+    display: contents;
+  }
+  pm-chat-page .intent-icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 42px;
+    height: 42px;
+    margin: 0;
+  }
+  pm-chat-page .intent-arrow {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    width: 30px;
+    height: 30px;
+    align-self: center;
+  }
+  pm-chat-page .intent-card h3 {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 15px;
+    margin: 0;
+  }
+  pm-chat-page .intent-card p {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 2px;
+  }
+  pm-chat-page .intent-thumbs {
+    grid-column: 2 / -1;
+    grid-row: 3;
+    padding-top: 10px;
+  }
+  pm-chat-page .intent-thumb,
+  pm-chat-page .intent-thumb-count {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+  pm-chat-page .trust-row {
+    gap: 7px 16px;
+    margin-top: 22px;
+    padding-top: 15px;
+  }
+  pm-chat-page .thread {
+    padding: 8px 16px 30px;
+    gap: 24px;
+  }
+  pm-chat-page .msg-user {
+    max-width: 88%;
+  }
+  pm-chat-page .msg-assistant {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 10px;
+  }
+  pm-chat-page .agent-avatar {
+    width: 30px;
+    height: 30px;
+  }
+  pm-chat-page .composer-area {
+    padding: 6px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  pm-chat-page .composer-note {
+    font-size: 9px;
+  }
+  pm-chat-page .quick-row {
+    padding-bottom: 7px;
+  }
+  pm-chat-page .quick-chip {
+    min-height: 38px;
+  }
+  pm-chat-page .widget-head {
+    padding: 16px 16px 0;
+  }
+  pm-chat-page .widget-body {
+    padding: 15px 16px 17px;
+  }
+  pm-chat-page .product-rail {
+    padding: 13px 16px 17px;
+  }
+  pm-chat-page .product-card {
+    width: 182px;
+  }
+  pm-chat-page .kit-foot {
+    padding: 14px 16px 16px;
+  }
+  pm-chat-page .why-box summary {
+    padding: 12px 16px;
+  }
+  pm-chat-page .why-list {
+    padding: 0 16px 15px;
+  }
+  pm-chat-page .builder-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  pm-chat-page .builder-slot {
+    min-height: 130px;
+  }
+  pm-chat-page .detail-product {
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 14px;
+  }
+  pm-chat-page .detail-name {
+    font-size: 17px;
+  }
+  pm-chat-page .dialog {
+    width: calc(100vw - 20px);
+    max-height: 90dvh;
+    border-radius: 18px;
+  }
+  pm-chat-page .dialog-shell {
+    max-height: 90dvh;
+  }
+  pm-chat-page .dialog-head {
+    padding: 18px 16px 12px;
+  }
+  pm-chat-page .dialog-body {
+    padding: 16px;
+  }
+  pm-chat-page .sheet-dialog {
+    width: 100%;
+    max-width: none;
+    margin: auto auto 0;
+    border-radius: 18px 18px 0 0;
+  }
+  pm-chat-page .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+  pm-chat-page .toast {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 560px) {
+  pm-chat-page .welcome {
+    padding-top: 32px;
+  }
+  pm-chat-page .welcome h2 {
+    font-size: 36px;
+  }
+  pm-chat-page .welcome-lede {
+    font-size: 14.5px;
+  }
+  pm-chat-page .trust-item {
+    font-size: 10.5px;
+  }
+  pm-chat-page .trust-row {
+    display: grid;
+    gap: 7px;
+  }
+  pm-chat-page .kit-head-top {
+    flex-direction: column;
+    gap: 8px;
+  }
+  pm-chat-page .kit-tabs {
+    width: 100%;
+  }
+  pm-chat-page .kit-tab {
+    flex: 1;
+  }
+  pm-chat-page .kit-actions .button {
+    width: 100%;
+  }
+  pm-chat-page .kit-actions .button-primary {
+    flex: none;
+  }
+  pm-chat-page .product-card {
+    width: 168px;
+  }
+  pm-chat-page .product-name {
+    font-size: 12.5px;
+  }
+  pm-chat-page .checkout-body {
+    padding: 16px;
+  }
+  pm-chat-page .checkout-widget .widget-head { padding-left: 16px; padding-right: 16px; }
+  pm-chat-page .checkout-body { padding: 16px; }
+  pm-chat-page .checkout-field-grid { grid-template-columns: 1fr; }
+  pm-chat-page .checkout-field.full { grid-column: auto; }
+  pm-chat-page .checkout-step span { font-size: 10px; }
+  pm-chat-page .checkout-actions .button { flex: 1 1 auto; }
+  pm-chat-page .checkout-field-grid {
+    grid-template-columns: 1fr;
+  }
+  pm-chat-page .checkout-field.full {
+    grid-column: auto;
+  }
+  pm-chat-page .checkout-steps {
+    gap: 4px;
+  }
+  pm-chat-page .checkout-step span {
+    display: none;
+  }
+  pm-chat-page .checkout-step-line {
+    max-width: none;
+  }
+  pm-chat-page .builder-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  pm-chat-page .builder-slot {
+    min-height: 138px;
+  }
+  pm-chat-page .mini-product {
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+  }
+  pm-chat-page .mini-product-media {
+    width: 54px;
+    height: 54px;
+  }
+  pm-chat-page .msg-assistant {
+    gap: 8px;
+  }
+  pm-chat-page .assistant-text {
+    font-size: 14.5px;
+  }
+  pm-chat-page .user-bubble {
+    font-size: 14.5px;
+  }
+  pm-chat-page .composer-icon[data-action='attach'] {
+    display: inline-flex;
+  }
+  pm-chat-page .composer {
+    border-radius: 18px;
+    padding-left: 12px;
+  }
+  pm-chat-page .composer textarea {
+    font-size: 15px;
+  }
+  pm-chat-page .mobile-kit-copy small {
+    display: none;
+  }
+  pm-chat-page .mobile-kit-bar {
+    padding: 8px 10px;
+  }
+  pm-chat-page .detail-product {
+    grid-template-columns: 1fr;
+  }
+  pm-chat-page .detail-media {
+    max-width: 180px;
+  }
+  pm-chat-page .order-code {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  pm-chat-page .success-head,
+  pm-chat-page .success-body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (max-width: 390px) {
+  pm-chat-page .welcome h2 {
+    font-size: 33px;
+  }
+  pm-chat-page .send-button {
+    width: 38px;
+    height: 38px;
+  }
+  pm-chat-page .composer-icon {
+    width: 34px;
+    height: 34px;
+  }
+  pm-chat-page .quick-chip {
+    font-size: 11px;
+  }
+  pm-chat-page .product-card {
+    width: 158px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  pm-chat-page *,
+  pm-chat-page *::before,
+  pm-chat-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+pm-chat-page [hidden] {
+  display: none !important;
+}
+
+pm-chat-page .assistant-content {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  min-width: 0;
+}
+
+pm-chat-page .product-add:disabled,
+pm-chat-page .mini-add:disabled,
+pm-chat-page .catalog-item .mini-add:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+pm-chat-page .order-panel {
+  border-color: #bfe8da;
+  background: #fbfffd;
+}
+pm-chat-page .order-mini {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px;
+  border-radius: 10px;
+  background: var(--green-soft);
+}
+pm-chat-page .order-mini-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  flex: none;
+}
+pm-chat-page .order-mini-copy {
+  min-width: 0;
+}
+pm-chat-page .order-mini-copy strong {
+  display: block;
+  font-size: 12px;
+}
+pm-chat-page .order-mini-copy small {
+  display: block;
+  margin-top: 1px;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+pm-chat-page .order-panel .panel-cta {
+  margin-top: 8px;
+}
+pm-chat-page .order-panel .button-secondary {
+  margin-top: 7px;
+  width: 100%;
+}
+
+pm-chat-page .catalog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+pm-chat-page .catalog-count {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+pm-chat-page .sheet-kit-body {
+  min-height: 80px;
+}
+
+pm-chat-page .avatar-button {
+  font-family: var(--font);
+}

@@ -1,0 +1,167 @@
+<app-header></app-header>
+
+<nav class="migalhas conteudo" aria-label="Navegação estrutural">
+  <a routerLink="/">Início</a>
+  <span aria-hidden="true">›</span>
+  <span>{{ produto()?.categoria ?? 'Catálogo' }}</span>
+  <span aria-hidden="true">›</span>
+  <span class="migalhas__atual" aria-current="page">{{ produto()?.nome ?? 'Detalhes do produto' }}</span>
+</nav>
+
+<main class="produto-detalhe conteudo" id="principal">
+  @if (carregando()) {
+    <div class="produto-detalhe__estado" role="status">
+      <p>Carregando informações do produto...</p>
+    </div>
+  } @else if (!produto()) {
+    <div class="produto-detalhe__estado produto-detalhe__estado--erro">
+      <h2>Produto não encontrado</h2>
+      <p>Não encontramos o produto solicitado em nosso catálogo.</p>
+      <a routerLink="/" class="botao botao--voltar">Voltar para a vitrine</a>
+    </div>
+  } @else {
+    <div class="produto-detalhe__grid">
+      <!-- Coluna da Imagem -->
+      <div class="produto-detalhe__galeria">
+        <div class="produto-detalhe__imagem-wrapper">
+          @if (produto()!.produtoProprio) {
+            <span class="badge-proprio">Marca Própria Pague Menos</span>
+          }
+          @if (produto()!.classificacaoVenda !== 'LIVRE') {
+            <span class="badge-receita">Exige receita médica</span>
+          }
+          <img
+            [src]="produto()!.imagemUrl"
+            [alt]="produto()!.nome"
+            (error)="onImgError($event)"
+            class="produto-detalhe__foto"
+          />
+        </div>
+      </div>
+
+      <!-- Coluna de Compra e Detalhes -->
+      <div class="produto-detalhe__info">
+        <p class="produto-detalhe__marca">{{ produto()!.marca }}</p>
+        <h1 class="produto-detalhe__titulo">{{ produto()!.nome }}</h1>
+
+        <div class="produto-detalhe__avaliacao">
+          <span class="estrelas" aria-label="Avaliação 4.9 de 5">★★★★★</span>
+          <span class="avaliacao-texto">4.9 (42 avaliações)</span>
+          <span class="divisor">•</span>
+          <span class="estoque-status">Em estoque</span>
+        </div>
+
+        <div class="produto-detalhe__preco-bloco">
+          <span class="produto-detalhe__preco-valor"><small>R$</small> {{ produto()!.preco | number:'1.2-2' }}</span>
+          <p class="produto-detalhe__parcelas">em até <strong>2x sem juros</strong> no cartão ou desconto no Pix</p>
+        </div>
+
+        <!-- Seletor de Quantidade e Botão Comprar -->
+        <div class="produto-detalhe__compra-area">
+          <div class="seletor-quantidade">
+            <button
+              type="button"
+              (click)="diminuirQtd()"
+              [disabled]="quantidade() <= 1"
+              aria-label="Diminuir quantidade"
+            >−</button>
+            <input id="qtd" type="number" [value]="quantidade()" readonly aria-label="Quantidade" />
+            <button
+              type="button"
+              (click)="aumentarQtd()"
+              [disabled]="quantidade() >= 99"
+              aria-label="Aumentar quantidade"
+            >+</button>
+          </div>
+
+          <button
+            type="button"
+            class="botao botao--comprar"
+            (click)="adicionarAoCarrinho()"
+            [class.botao--sucesso]="adicionado()"
+          >
+            @if (adicionado()) {
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="icone-btn">
+                <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Adicionado ao carrinho!
+            } @else {
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="icone-btn">
+                <path d="M3 4h2l2.5 11h10L20 7H6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9" cy="19" r="1.5" fill="currentColor" />
+                <circle cx="17" cy="19" r="1.5" fill="currentColor" />
+              </svg>
+              Adicionar ao carrinho
+            }
+          </button>
+        </div>
+
+        @if (adicionado()) {
+          <div class="alerta-sucesso" role="status">
+            <span>Item adicionado ao carrinho com sucesso!</span>
+            <a routerLink="/chat" class="link-carrinho">Ver carrinho no Precinho →</a>
+          </div>
+        }
+
+        <!-- CARD DO ASSISTENTE PRECINHO -->
+        <div class="card-precinho" role="region" aria-label="Atendimento com o Precinho">
+          <div class="card-precinho__cabecalho">
+            <div class="card-precinho__avatar">
+              <img src="logo-claro.png" alt="Precinho" width="50" height="20" />
+            </div>
+            <div>
+              <strong>Dúvidas sobre este produto?</strong>
+              <p>Fale diretamente com o Precinho para orientações, kits promocionais e economia garantida sem sair do nosso site.</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="botao botao--precinho"
+            (click)="falarComPrecinho()"
+          >
+            Falar com o Precinho sobre este produto <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Descrição e Detalhes Técnicos -->
+    <section class="produto-detalhe__descricao-secao" aria-labelledby="desc-titulo">
+      <h2 id="desc-titulo">Descrição do produto</h2>
+      <div class="produto-detalhe__texto">
+        <p>{{ produto()!.descricao }}</p>
+      </div>
+
+      @if (produto()!.classificacaoVenda !== 'LIVRE') {
+        <div class="alerta-prescricao" role="alert">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="icone-alerta">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <div>
+            <strong>Atenção: Medicamento sob prescrição médica</strong>
+            <p>A receita médica válida original deve ser apresentada ao entregador no ato da entrega ou no balcão da farmácia na retirada.</p>
+          </div>
+        </div>
+      }
+    </section>
+  }
+</main>
+
+<footer class="rodape">
+  <div class="conteudo">
+    <img src="logo-claro.png" alt="Pague Menos" width="140" height="56" loading="lazy" />
+    <div>
+      <a routerLink="/">Página inicial</a>
+      <a routerLink="/chat">Precinho & Kits</a>
+      <a href="https://www.paguemenos.com.br/atendimento">Atendimento</a>
+    </div>
+    <a href="#principal">
+      Voltar ao topo
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
+  </div>
+</footer>

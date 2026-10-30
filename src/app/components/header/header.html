@@ -1,0 +1,77 @@
+<a href="#inicio" class="pular">Pular para o conteúdo principal</a>
+
+<header class="topo">
+
+  <div class="topo__linha">
+    <button #botaoMenu type="button" class="topo__icone" (click)="menuAberto.set(!menuAberto())"
+      [attr.aria-expanded]="menuAberto()" aria-controls="menu-principal">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span>Menu</span>
+    </button>
+
+    <a routerLink="/" class="topo__logo" aria-label="Pague Menos, página inicial">
+      <img src="logo-escuro.png" alt="" />
+    </a>
+
+    <div class="topo__acoes">
+      <a routerLink="/chat" class="topo__icone" aria-label="Falar com o Precinho">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Precinho</span>
+      </a>
+      <a routerLink="/chat" class="topo__icone topo__carrinho" aria-label="Carrinho de compras">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 4h2l2.5 11h10L20 7H6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="9" cy="19" r="1.5" fill="currentColor" />
+          <circle cx="17" cy="19" r="1.5" fill="currentColor" />
+        </svg>
+        <span>Carrinho</span>
+        @if ((store?.count() ?? 0) > 0) {
+          <span class="carrinho-badge" [attr.aria-label]="(store?.count() ?? 0) + ' itens no carrinho'">{{ store?.count() }}</span>
+        }
+      </a>
+    </div>
+  </div>
+
+  <div class="topo__bloco">
+    <form class="topo__busca" role="search">
+      <label for="busca" class="topo__rotulo">Buscar produtos</label>
+      <div class="topo__campo">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <input id="busca" type="search" placeholder="Ex.: dipirona, vitamina C" autocomplete="off" />
+      </div>
+    </form>
+
+    <button type="button" class="topo__cep">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" />
+        <circle cx="12" cy="10" r="2.5" fill="currentColor" />
+      </svg>
+      <span>Entregar em: <strong>Insira seu CEP</strong></span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+  </div>
+
+</header>
+
+<dialog #painelMenu id="menu-principal" class="menu" role="dialog" aria-modal="true" aria-label="Menu principal"
+  (cancel)="$event.preventDefault(); menuAberto.set(false)" (close)="menuAberto.set(false)"
+  (click)="fecharPeloFundo($event)">
+  <div class="menu__conteudo">
+    <button #botaoFechar type="button" class="menu__fechar" (click)="menuAberto.set(false)">Fechar menu</button>
+    <nav aria-label="Menu principal">
+      <a routerLink="/" (click)="menuAberto.set(false)">Página inicial</a>
+      <a routerLink="/chat" (click)="menuAberto.set(false)">Precinho & Kits <small>Novo</small></a>
+      <a href="/#ofertas" (click)="menuAberto.set(false)">Ofertas</a>
+      <a href="/#servicos" (click)="menuAberto.set(false)">Serviços Pague Menos</a>
+    </nav>
+  </div>
+</dialog>
