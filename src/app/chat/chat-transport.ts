@@ -18,13 +18,28 @@ export class ChatTransport {
     }
     const headers = await this.config.headers?.();
     signal.throwIfAborted();
-    const response = await fetch(this.config.endpoint, {
+    let response = await fetch(this.config.endpoint, {
       method: 'POST',
       headers: { ...headers, Accept: 'text/event-stream', 'Content-Type': 'application/json' },
       credentials: this.config.credentials ?? 'same-origin',
       body: JSON.stringify(request),
       signal: AbortSignal.any([signal, AbortSignal.timeout(120_000)]),
     });
+    if (response.status === 404 && request.conversationId) {
+      if (typeof localStorage !== 'undefined') {
+        try {
+          localStorage.removeItem('pm_care_conversation_id');
+        } catch {}
+      }
+      const freshRequest = { ...request, conversationId: null };
+      response = await fetch(this.config.endpoint, {
+        method: 'POST',
+        headers: { ...headers, Accept: 'text/event-stream', 'Content-Type': 'application/json' },
+        credentials: this.config.credentials ?? 'same-origin',
+        body: JSON.stringify(freshRequest),
+        signal: AbortSignal.any([signal, AbortSignal.timeout(120_000)]),
+      });
+    }
     if (!response.ok) {
       if (response.status === 401 || response.status === 403)
         throw new Error('Sua sessão expirou. Entre novamente para continuar.');
