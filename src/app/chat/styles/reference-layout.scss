@@ -919,7 +919,8 @@ pm-chat-page .agent-avatar {
   border-radius: 50%;
   background: var(--blue);
   color: #fff;
-  box-shadow: 0 0 0 4px var(--blue-soft);
+  padding: 0;
+  box-shadow: 0 0 0 2px var(--blue-soft);
 }
 pm-chat-page .assistant-body {
   min-width: 0;
