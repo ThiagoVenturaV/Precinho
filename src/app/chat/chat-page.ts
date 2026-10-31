@@ -27,6 +27,7 @@ import { PrescriptionFiles } from './prescription-files';
 import { ChatBlocks } from './chat-blocks';
 import { purchaseSchema } from './chat-event';
 import { fetchAddressByCep } from './cep.service';
+import { PwaService } from '../pwa.service';
 
 @Component({
   selector: 'pm-chat-page',
@@ -56,6 +57,7 @@ export class ChatPage {
   protected readonly config = inject(CHAT_CONFIG);
   protected readonly voice = inject(SpeechDictation);
   protected readonly prescriptions = inject(PrescriptionFiles);
+  protected readonly pwa = inject(PwaService);
   protected readonly modal = signal<
     | 'menu'
     | 'kit'

@@ -73,6 +73,17 @@
         </div>
       </div>
       <div class="header-actions">
+        @if (pwa.canInstall()) {
+          <button
+            class="install-pwa-pill"
+            type="button"
+            (click)="pwa.install()"
+            title="Instalar aplicativo Precinho"
+            aria-label="Instalar aplicativo Precinho"
+          >
+            <pm-icon name="Download" /><span>Instalar App</span>
+          </button>
+        }
         <button
           class="location delivery-pill"
           type="button"

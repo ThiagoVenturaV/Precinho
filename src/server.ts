@@ -25,6 +25,21 @@ const angularApp = new AngularNodeAppEngine();
  */
 
 /**
+ * Serve PWA Service Worker & Manifest with no-cache headers
+ */
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(join(browserDistFolder, 'sw.js'));
+});
+
+app.get(['/manifest.webmanifest', '/manifest.json'], (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Content-Type', 'application/manifest+json');
+  res.sendFile(join(browserDistFolder, 'manifest.webmanifest'));
+});
+
+/**
  * Serve static files from /browser
  */
 app.use(
