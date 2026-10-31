@@ -86,6 +86,15 @@ export class ChatPage {
   protected readonly profileCepLoading = signal(false);
   protected readonly cepLookupError = signal('');
   protected readonly checkoutStep = signal<1 | 2 | 3 | 4>(1);
+  protected readonly checkoutStepBusy = signal(false);
+  protected readonly authEmail = signal('cliente@paguemenos.com.br');
+  protected readonly authSenha = signal('Precinho@2026');
+  protected readonly authNome = signal('Cliente Pague Menos');
+  protected readonly authTelefone = signal('(11) 98765-4321');
+  protected readonly authCpf = signal('123.456.789-00');
+  protected readonly authMode = signal<'view' | 'login' | 'register'>('view');
+  protected readonly authBusy = signal(false);
+  protected readonly authError = signal('');
   protected checkoutCouponCode = '';
   protected readonly upsellItems: Product[] = [
     {
@@ -384,10 +393,7 @@ export class ChatPage {
       this.checkoutRequestId = crypto.randomUUID();
       this.checkoutStep.set(1);
       this.simulationConsent.set(true);
-      if (this.store.postalCode()) {
-        this.deliveryCep = this.store.postalCode();
-        void this.onDeliveryCepChange();
-      }
+      void this.initCheckoutSession();
     }
     this.profileAllergies = this.store.allergies();
     this.profilePostalCode = this.store.postalCode();
@@ -526,6 +532,100 @@ export class ChatPage {
     }
   }
 
+
+  protected async initCheckoutSession(): Promise<void> {
+    try {
+      const user = this.store.currentUser();
+      if (user) {
+        if (user.cep) this.deliveryCep = user.cep;
+        if (user.endereco) this.deliveryAddress = user.endereco;
+        if (user.bairro) this.deliveryNeighborhood = user.bairro;
+        if (user.cidade) this.deliveryCity = user.cidade;
+        if (user.estado) this.deliveryState = user.estado;
+        if (user.cep) this.delivery = 'delivery';
+      }
+      const session = await this.store.startCheckout();
+      if (session) {
+        if (session.deliveryType) this.delivery = session.deliveryType as 'pickup' | 'delivery';
+        if (session.cep) this.deliveryCep = session.cep;
+        if (session.address) this.deliveryAddress = session.address;
+        if (session.neighborhood) this.deliveryNeighborhood = session.neighborhood;
+        if (session.city) this.deliveryCity = session.city;
+        if (session.state) this.deliveryState = session.state;
+        if (
+          session.paymentMethod &&
+          ['pix', 'card', 'pickup', 'google_pay', 'apple_pay', 'wallet'].includes(session.paymentMethod)
+        ) {
+          this.payment = session.paymentMethod as any;
+        }
+      }
+    } catch {}
+  }
+
+  protected async doLogin(): Promise<void> {
+    if (this.authBusy()) return;
+    this.authBusy.set(true);
+    this.authError.set('');
+    try {
+      const user = await this.store.login(this.authEmail(), this.authSenha());
+      if (user) {
+        if (user.cep) {
+          this.deliveryCep = user.cep;
+          this.profilePostalCode = user.cep;
+        }
+        if (user.endereco) this.deliveryAddress = user.endereco;
+        if (user.bairro) this.deliveryNeighborhood = user.bairro;
+        if (user.cidade) this.deliveryCity = user.cidade;
+        if (user.estado) this.deliveryState = user.estado;
+        this.authMode.set('view');
+        this.announce(`Bem-vindo, ${user.nome}!`);
+      }
+    } catch (e) {
+      this.authError.set(e instanceof Error ? e.message : 'Falha ao autenticar.');
+    } finally {
+      this.authBusy.set(false);
+    }
+  }
+
+  protected async doRegister(): Promise<void> {
+    if (this.authBusy()) return;
+    this.authBusy.set(true);
+    this.authError.set('');
+    try {
+      const user = await this.store.registerUser({
+        nome: this.authNome(),
+        email: this.authEmail(),
+        senha: this.authSenha(),
+        telefone: this.authTelefone(),
+        cpf: this.authCpf(),
+        cep: this.deliveryCep,
+        endereco: this.deliveryAddress,
+        bairro: this.deliveryNeighborhood,
+        cidade: this.deliveryCity,
+        estado: this.deliveryState,
+      });
+      if (user) {
+        this.authMode.set('view');
+        this.announce(`Cadastro realizado com sucesso! Bem-vindo, ${user.nome}!`);
+      }
+    } catch (e) {
+      this.authError.set(e instanceof Error ? e.message : 'Falha ao cadastrar.');
+    } finally {
+      this.authBusy.set(false);
+    }
+  }
+
+  protected async doLogout(): Promise<void> {
+    await this.store.logout();
+    this.announce('Sessão encerrada.');
+  }
+
+  protected fillDefaultUser(): void {
+    this.authEmail.set('cliente@paguemenos.com.br');
+    this.authSenha.set('Precinho@2026');
+    this.authNome.set('Cliente Pague Menos');
+  }
+
   protected async checkout(): Promise<void> {
     if (
       (!this.config.checkout && !this.config.mvpCheckout) ||
@@ -651,9 +751,64 @@ export class ChatPage {
     }
   }
 
-  protected nextCheckoutStep(): void {
-    if (this.checkoutStep() < 4) {
-      this.checkoutStep.update((step) => (step + 1) as 1 | 2 | 3 | 4);
+  protected async nextCheckoutStep(): Promise<void> {
+    const step = this.checkoutStep();
+    if (step === 1) {
+      if (this.delivery === 'delivery') {
+        if (!this.deliveryCep?.trim() || !this.deliveryAddress?.trim()) {
+          this.announce('Informe o CEP e o endereço completo para entrega.');
+          return;
+        }
+      }
+      this.checkoutStepBusy.set(true);
+      try {
+        let session = this.store.checkoutSession();
+        if (!session) {
+          session = await this.store.startCheckout();
+        }
+        if (session) {
+          await this.store.updateCheckoutDelivery(
+            this.delivery,
+            this.deliveryCep,
+            this.deliveryAddress,
+            this.deliveryCity,
+            this.deliveryState,
+            this.deliveryNeighborhood,
+          );
+        }
+        if (this.store.currentUser()) {
+          void this.store.updateUserAddress({
+            cep: this.deliveryCep,
+            endereco: this.deliveryAddress,
+            bairro: this.deliveryNeighborhood,
+            cidade: this.deliveryCity,
+            estado: this.deliveryState,
+          });
+        }
+        this.checkoutStep.set(2);
+      } catch {
+        this.announce('Não foi possível salvar os dados de entrega.');
+      } finally {
+        this.checkoutStepBusy.set(false);
+      }
+    } else if (step === 2) {
+      this.checkoutStep.set(3);
+    } else if (step === 3) {
+      this.checkoutStepBusy.set(true);
+      try {
+        let session = this.store.checkoutSession();
+        if (!session) {
+          session = await this.store.startCheckout();
+        }
+        if (session) {
+          await this.store.updateCheckoutPayment(this.payment);
+        }
+        this.checkoutStep.set(4);
+      } catch {
+        this.announce('Não foi possível salvar a forma de pagamento.');
+      } finally {
+        this.checkoutStepBusy.set(false);
+      }
     }
   }
 

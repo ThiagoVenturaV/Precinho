@@ -148,6 +148,19 @@ export interface PrescriptionReceipt {
   simulated: boolean;
 }
 
+export interface UserProfile {
+  id: number;
+  nome: string;
+  email: string;
+  telefone?: string | null;
+  cpf?: string | null;
+  cep?: string | null;
+  endereco?: string | null;
+  bairro?: string | null;
+  cidade?: string | null;
+  estado?: string | null;
+}
+
 export interface Coupon {
   code: string;
   type: 'percentage' | 'fixed' | 'shipping';

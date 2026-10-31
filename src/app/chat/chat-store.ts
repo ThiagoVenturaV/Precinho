@@ -10,6 +10,7 @@ import {
   PrescriptionAttachment,
   Purchase,
   Coupon,
+  UserProfile,
 } from './chat.models';
 import { CHAT_CONFIG } from './chat.config';
 import { cartSchema } from './chat-event';
@@ -20,6 +21,7 @@ import { cartSchema } from './chat-event';
 export class ChatStore implements OnDestroy {
   constructor() {
     this.loadPersistedCart();
+    void this.loadCurrentUser();
   }
   private readonly transport = inject(ChatTransport);
   private readonly config = inject(CHAT_CONFIG);
@@ -36,6 +38,7 @@ export class ChatStore implements OnDestroy {
   readonly cartBlockers = signal<string[]>([]);
   readonly lastOrder = signal<Purchase | null>(null);
   readonly checkoutSession = signal<CheckoutSessionData | null>(null);
+  readonly currentUser = signal<UserProfile | null>(null);
   private cartVersion = -1;
   private confirmedProduct = new Map<string, string>();
   private readonly serverSubtotal = signal(0);
@@ -661,6 +664,124 @@ export class ChatStore implements OnDestroy {
     } catch {
       // Ignored
     }
+  }
+
+  async loadCurrentUser(): Promise<UserProfile | null> {
+    try {
+      const resp = await fetch('/api/auth/me', {
+        headers: {
+          ...(await this.config.headers?.()),
+          Accept: 'application/json',
+        },
+        credentials: this.config.credentials ?? 'same-origin',
+      });
+      if (resp.ok) {
+        const data = (await resp.json()) as { authenticated: boolean; user?: UserProfile };
+        if (data.authenticated && data.user) {
+          this.currentUser.set(data.user);
+          if (data.user.cep && !this.postalCode()) {
+            this.postalCode.set(data.user.cep);
+          }
+          return data.user;
+        }
+      }
+    } catch {}
+    this.currentUser.set(null);
+    return null;
+  }
+
+  async login(email: string, senha: string): Promise<UserProfile | null> {
+    try {
+      const resp = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          ...(await this.config.headers?.()),
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        credentials: this.config.credentials ?? 'same-origin',
+        body: JSON.stringify({ email, senha }),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.message || 'E-mail ou senha incorretos.');
+      }
+      const data = (await resp.json()) as { user: UserProfile };
+      this.currentUser.set(data.user);
+      if (data.user.cep) {
+        this.postalCode.set(data.user.cep);
+      }
+      return data.user;
+    } catch (e) {
+      this.error.set(e instanceof Error ? e.message : 'Falha no login.');
+      throw e;
+    }
+  }
+
+  async registerUser(user: Partial<UserProfile> & { senha: string }): Promise<UserProfile | null> {
+    try {
+      const resp = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          ...(await this.config.headers?.()),
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        credentials: this.config.credentials ?? 'same-origin',
+        body: JSON.stringify(user),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.message || 'Falha ao registrar usuário.');
+      }
+      const data = (await resp.json()) as { user: UserProfile };
+      this.currentUser.set(data.user);
+      if (data.user.cep) {
+        this.postalCode.set(data.user.cep);
+      }
+      return data.user;
+    } catch (e) {
+      this.error.set(e instanceof Error ? e.message : 'Falha no cadastro.');
+      throw e;
+    }
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: await this.config.headers?.(),
+        credentials: this.config.credentials ?? 'same-origin',
+      });
+    } catch {}
+    this.currentUser.set(null);
+  }
+
+  async updateUserAddress(address: {
+    cep?: string;
+    endereco?: string;
+    bairro?: string;
+    cidade?: string;
+    estado?: string;
+  }): Promise<UserProfile | null> {
+    try {
+      const resp = await fetch('/api/auth/me/address', {
+        method: 'PUT',
+        headers: {
+          ...(await this.config.headers?.()),
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        credentials: this.config.credentials ?? 'same-origin',
+        body: JSON.stringify(address),
+      });
+      if (resp.ok) {
+        const data = (await resp.json()) as { user: UserProfile };
+        this.currentUser.set(data.user);
+        return data.user;
+      }
+    } catch {}
+    return null;
   }
 
   ngOnDestroy(): void {
