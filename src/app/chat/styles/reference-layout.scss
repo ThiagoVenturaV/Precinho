@@ -910,6 +910,7 @@ pm-chat-page .msg-assistant {
   align-items: start;
 }
 pm-chat-page .agent-avatar {
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1005,4 +1006,52 @@ pm-chat-page .typing-dots i:nth-child(3) {
     opacity: 1;
     transform: translateY(-2px);
   }
+}
+
+pm-chat-page .header-avatar-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--blue-soft);
+  flex-shrink: 0;
+}
+
+pm-chat-page .header-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+pm-chat-page .header-avatar-badge .live-mark {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: none;
+}
+
+pm-chat-page .rail-help-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+pm-chat-page .agent-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
 }
