@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, expect, it, vi } from 'vitest';
-import { CartLine } from './chat.models';
+import { CartLine } from '../../models/chat.models';
 import { KitPanel } from './kit-panel';
 
 registerLocaleData(localePt);

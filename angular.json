@@ -1,4 +1,4 @@
-{
+﻿{
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
@@ -36,15 +36,7 @@
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
-              "allowedHosts": [
-                "localhost",
-                "127.0.0.1",
-                "0.0.0.0",
-                "147.182.163.228",
-                "147.182.163.228.sslip.io",
-                ".vercel.app",
-                "precinho.vercel.app"
-              ]
+              "allowedHosts": ["localhost", "127.0.0.1", "0.0.0.0", "165.245.193.94"]
             },
             "ssr": {
               "entry": "src/server.ts"
@@ -78,9 +70,7 @@
           "builder": "@angular/build:dev-server",
           "options": {
             "proxyConfig": "proxy.conf.json",
-            "allowedHosts": [
-              "bats-cartwheel-hazy.ngrok-free.dev"
-            ]
+            "allowedHosts": ["bats-cartwheel-hazy.ngrok-free.dev"]
           },
           "configurations": {
             "production": {

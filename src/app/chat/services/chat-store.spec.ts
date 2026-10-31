@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ChatStore } from './chat-store';
 import { ChatTransport } from './chat-transport';
-import { ChatEvent, ChatRequest, Product } from './chat.models';
-import { CHAT_CONFIG } from './chat.config';
+import { ChatEvent, ChatRequest, Product } from '../models/chat.models';
+import { CHAT_CONFIG } from '../models/chat.config';
 
 const product: Product = {
   id: 'one',

@@ -2,7 +2,7 @@ import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Produto } from '../../models/produto.model';
-import { ChatStore } from '../../chat/chat-store';
+import { ChatStore } from '../../chat/services/chat-store';
 import { CatalogoMockService } from '../../services/catalogo-mock.service';
 
 @Component({

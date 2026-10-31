@@ -1,4 +1,4 @@
-import { ChatEvent, ChatRequest, Product } from './chat.models';
+import { ChatEvent, ChatRequest, Product } from '../models/chat.models';
 
 const products: Product[] = [
   {

@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { afterRenderEffect, Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ChatStore } from '../../chat/chat-store';
+import { ChatStore } from '../../chat/services/chat-store';
 
 @Component({
   selector: 'app-header',

@@ -14,20 +14,20 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CHAT_CONFIG } from './chat.config';
-import { ChatStore } from './chat-store';
-import { ChatTransport } from './chat-transport';
-import { Product, CheckoutSessionData } from './chat.models';
-import { Icon } from './icon';
-import { KitPanel } from './kit-panel';
-import { ChatMarkdown } from './markdown';
-import { ProductCard } from './product-card';
-import { SpeechDictation } from './speech-dictation';
-import { PrescriptionFiles } from './prescription-files';
-import { ChatBlocks } from './chat-blocks';
-import { purchaseSchema } from './chat-event';
-import { fetchAddressByCep } from './cep.service';
-import { PwaService } from '../pwa.service';
+import { CHAT_CONFIG } from './models/chat.config';
+import { ChatStore } from './services/chat-store';
+import { ChatTransport } from './services/chat-transport';
+import { Product, CheckoutSessionData } from './models/chat.models';
+import { Icon } from './utils/icon';
+import { KitPanel } from './components/kit-panel/kit-panel';
+import { ChatMarkdown } from './utils/markdown';
+import { ProductCard } from './components/product-card/product-card';
+import { SpeechDictation } from './services/speech-dictation';
+import { PrescriptionFiles } from './utils/prescription-files';
+import { ChatBlocks } from './models/chat-blocks';
+import { purchaseSchema } from './models/chat-event';
+import { fetchAddressByCep } from '../services/cep.service';
+import { PwaService } from '../services/pwa.service';
 
 @Component({
   selector: 'pm-chat-page',
@@ -45,9 +45,9 @@ import { PwaService } from '../pwa.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './chat-page.html',
   styleUrls: [
-    './reference-layout.scss',
-    './reference-controls.scss',
-    './reference-responsive.scss',
+    './styles/reference-layout.scss',
+    './styles/reference-controls.scss',
+    './styles/reference-responsive.scss',
     './chat-adapter.scss',
   ],
   encapsulation: ViewEncapsulation.None,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ChatEvent } from './chat.models';
-import { SseFrame } from './sse';
+import { SseFrame } from '../utils/sse';
 
 export const productSchema = z.object({
   id: z.string().min(1).max(200),

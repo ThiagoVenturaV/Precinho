@@ -1,4 +1,4 @@
-import { ChatStore } from '../../chat/chat-store';
+import { ChatStore } from '../../chat/services/chat-store';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';

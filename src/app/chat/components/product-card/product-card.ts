@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Icon } from './icon';
-import { Product } from './chat.models';
+import { Icon } from '../../utils/icon';
+import { Product } from '../../models/chat.models';
 
 @Component({
   selector: 'pm-product-card',

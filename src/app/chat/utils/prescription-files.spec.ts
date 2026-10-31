@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { CHAT_CONFIG } from './chat.config';
+import { CHAT_CONFIG } from '../models/chat.config';
 import { PrescriptionFiles, prescriptionMime } from './prescription-files';
 
 afterEach(() => {

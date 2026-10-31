@@ -5,31 +5,15 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/api/$1"
+      "destination": "https://SEU-BACKEND-DIGITAL-OCEAN.com/api/$1"
     },
     {
       "source": "/ucp/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/ucp/$1"
+      "destination": "https://SEU-BACKEND-DIGITAL-OCEAN.com/ucp/$1"
     },
     {
       "source": "/acp/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/acp/$1"
-    },
-    {
-      "source": "/.well-known/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/.well-known/$1"
-    },
-    {
-      "source": "/swagger-ui/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/swagger-ui/$1"
-    },
-    {
-      "source": "/api-docs/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/api-docs/$1"
-    },
-    {
-      "source": "/api-docs",
-      "destination": "https://147.182.163.228.sslip.io/api-docs"
+      "destination": "https://SEU-BACKEND-DIGITAL-OCEAN.com/acp/$1"
     },
     {
       "source": "/(.*)",

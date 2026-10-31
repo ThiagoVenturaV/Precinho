@@ -1,8 +1,8 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CartLine, Coupon } from './chat.models';
-import { Icon } from './icon';
+import { CartLine, Coupon } from '../../models/chat.models';
+import { Icon } from '../../utils/icon';
 
 @Component({
   selector: 'pm-kit-panel',

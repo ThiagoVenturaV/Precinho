@@ -1,8 +1,8 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { UiComponent, Product, CheckoutSessionData } from './chat.models';
-import { ProductCard } from './product-card';
-import { Icon } from './icon';
+import { ProductCard } from '../components/product-card/product-card';
+import { Icon } from '../utils/icon';
 
 @Component({
   selector: 'pm-chat-blocks',

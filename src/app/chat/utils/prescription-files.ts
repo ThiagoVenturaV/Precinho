@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, computed, inject, signal } from '@angular/core';
 import { z } from 'zod';
-import { CHAT_CONFIG } from './chat.config';
-import { PrescriptionAttachment, PrescriptionReceipt } from './chat.models';
+import { CHAT_CONFIG } from '../models/chat.config';
+import { PrescriptionAttachment, PrescriptionReceipt } from '../models/chat.models';
 
 export const PRESCRIPTION_ACCEPT =
   '.pdf,.jpg,.jpeg,.png,.webp,.gif,.bmp,.tif,.tiff,.heic,.heif,.avif,application/pdf,image/*';

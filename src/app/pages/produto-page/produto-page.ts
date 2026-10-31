@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Produto } from '../../models/produto.model';
 import { CatalogoMockService } from '../../services/catalogo-mock.service';
-import { ChatStore } from '../../chat/chat-store';
+import { ChatStore } from '../../chat/services/chat-store';
 
 @Component({
   selector: 'app-produto-page',

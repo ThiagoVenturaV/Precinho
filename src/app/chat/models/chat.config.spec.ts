@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
-import { sessionHeaders } from './api-session';
+import { sessionHeaders } from '../utils/api-session';
 import { CHAT_CONFIG } from './chat.config';
 
 describe('CHAT_CONFIG', () => {

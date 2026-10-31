@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { CHAT_CONFIG } from './chat.config';
+import { CHAT_CONFIG } from '../models/chat.config';
 import { ChatTransport } from './chat-transport';
-import { ChatEvent, ChatRequest } from './chat.models';
-import { parseChatEvent } from './chat-event';
+import { ChatEvent, ChatRequest } from '../models/chat.models';
+import { parseChatEvent } from '../models/chat-event';
 
 const request: ChatRequest = {
   requestId: 'r1',
