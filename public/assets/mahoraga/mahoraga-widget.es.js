@@ -1,10 +1,10 @@
-var v = Object.defineProperty;
-var k = (h, e, t) => e in h ? v(h, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : h[e] = t;
-var a = (h, e, t) => k(h, typeof e != "symbol" ? e + "" : e, t);
-const S = {
+var A = Object.defineProperty;
+var L = (h, e, t) => e in h ? A(h, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : h[e] = t;
+var l = (h, e, t) => L(h, typeof e != "symbol" ? e + "" : e, t);
+const T = {
   token: "mahoraga-accessibility-widget",
   avatar: "THIAGO",
-  align: "bottom",
+  align: "center",
   side: "right",
   maxTextSize: 800,
   highContrast: !1,
@@ -15,7 +15,7 @@ const S = {
   parentElement: null,
   doNotTrack: !1,
   mobileConfig: {
-    align: "bottom",
+    align: "center",
     side: "right"
   },
   addonsMap: {
@@ -49,17 +49,20 @@ const S = {
       pageColors: !0
     }
   }
-}, x = {
+}, y = {
   isTranslatorOpen: !1,
   isAddonsOpen: !1,
   isDictionaryOpen: !1,
   isCollectorActive: !1,
+  isPageStructureOpen: !1,
   avatar: "THIAGO",
   speed: 1,
   opacity: 100,
   currentText: "Olá! Clique em qualquer texto da página ou selecione uma frase para traduzir em Libras.",
+  currentGloss: "OLÁ BEM_VINDO LIBRAS",
   subtitlesEnabled: !0,
   isPlaying: !1,
+  isVlibrasActive: !0,
   fontSizeLevel: 0,
   dyslexicFont: !1,
   lineHeightLevel: 0,
@@ -78,7 +81,7 @@ const S = {
   contrastMode: "none",
   saturationMode: "normal",
   colorblindMode: "none"
-}, b = {
+}, x = {
   acessibilidade: {
     definition: "Qualidade do que é acessível, que permite a inclusão e o uso autônomo por qualquer pessoa.",
     category: "Geral",
@@ -159,33 +162,34 @@ const S = {
     category: "Personagem",
     description: "Sinal de amiga inteligente com sorriso comunicativo."
   }
-}, y = "ht_accessibility_state";
-class w {
+}, w = "ht_accessibility_state";
+class E {
   constructor() {
-    a(this, "state");
-    a(this, "listeners", /* @__PURE__ */ new Set());
+    l(this, "state");
+    l(this, "listeners", /* @__PURE__ */ new Set());
     this.state = this.loadPersistedState();
   }
   loadPersistedState() {
     try {
-      const e = localStorage.getItem(y);
+      const e = localStorage.getItem(w);
       if (e) {
         const t = JSON.parse(e);
         return {
-          ...x,
+          ...y,
           ...t,
           // Don't auto-open panels on page refresh
           isTranslatorOpen: t.isTranslatorOpen ?? !1,
           isAddonsOpen: !1,
           isDictionaryOpen: !1,
           isCollectorActive: !1,
+          isPageStructureOpen: !1,
           isPlaying: !1
         };
       }
     } catch (e) {
       console.warn("[HandTalk] Erro ao carregar preferências do localStorage:", e);
     }
-    return { ...x };
+    return { ...y };
   }
   persist() {
     try {
@@ -208,7 +212,7 @@ class w {
         saturationMode: this.state.saturationMode,
         colorblindMode: this.state.colorblindMode
       };
-      localStorage.setItem(y, JSON.stringify(e));
+      localStorage.setItem(w, JSON.stringify(e));
     } catch (e) {
       console.warn("[HandTalk] Erro ao salvar preferências:", e);
     }
@@ -226,16 +230,16 @@ class w {
   reset() {
     const e = this.state.isTranslatorOpen;
     this.setState({
-      ...x,
+      ...y,
       isTranslatorOpen: e
-    }), localStorage.removeItem(y);
+    }), localStorage.removeItem(w);
   }
 }
-const n = new w();
-class M {
+const s = new E();
+class $ {
   constructor() {
-    a(this, "styleTag", null);
-    a(this, "svgFilterTag", null);
+    l(this, "styleTag", null);
+    l(this, "svgFilterTag", null);
     this.init();
   }
   init() {
@@ -360,15 +364,14 @@ class M {
           border: 2px solid #000000 !important;
         }
       ` : e.contrastMode === "invert" && (i += `
-        html {
-          filter: invert(100%) hue-rotate(180deg) !important;
-          background: #000000 !important;
-        }
-        .ht-widget-root {
+        body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) {
           filter: invert(100%) hue-rotate(180deg) !important;
         }
-      `), e.saturationMode === "monochrome" ? i += "body > :not(.ht-widget-root) { filter: grayscale(100%) !important; }" : e.saturationMode === "low-saturation" ? i += "body > :not(.ht-widget-root) { filter: saturate(40%) !important; }" : e.saturationMode === "high-saturation" && (i += "body > :not(.ht-widget-root) { filter: saturate(200%) !important; }"), e.colorblindMode !== "none" && (i += `
-        body > :not(.ht-widget-root) {
+        body {
+          background-color: #000000 !important;
+        }
+      `), e.saturationMode === "monochrome" ? i += "body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) { filter: grayscale(100%) !important; }" : e.saturationMode === "low-saturation" ? i += "body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) { filter: saturate(40%) !important; }" : e.saturationMode === "high-saturation" && (i += "body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) { filter: saturate(200%) !important; }"), e.colorblindMode !== "none" && (i += `
+        body > :not(.ht-widget-root):not(#vlibras-app-root):not(#vlibras-access-wrapper) {
           filter: url(#ht-${e.colorblindMode}) !important;
         }
       `), e.readerMode && (i += `
@@ -391,72 +394,83 @@ class M {
     (e = this.styleTag) == null || e.remove(), (t = this.svgFilterTag) == null || t.remove();
   }
 }
-class T {
+class C {
   constructor(e) {
-    a(this, "overlay", null);
-    a(this, "currentElement", null);
-    a(this, "isActive", !1);
-    a(this, "onSelectTextCallback");
+    l(this, "currentHoverEl", null);
+    l(this, "isActive", !1);
+    l(this, "onSelectTextCallback");
     this.onSelectTextCallback = e, this.init();
   }
   init() {
-    this.overlay = document.createElement("div"), this.overlay.className = "ht-collector-highlight ht-skip", this.overlay.style.cssText = `
-      position: absolute;
-      pointer-events: none;
-      border: 3px dashed #0084ff;
-      background: rgba(0, 132, 255, 0.15);
-      border-radius: 4px;
-      z-index: 2147483640;
-      transition: all 0.12s ease;
-      display: none;
-    `, document.body.appendChild(this.overlay), document.addEventListener("mousemove", this.handleMouseMove.bind(this), { passive: !0 }), document.addEventListener("click", this.handleClick.bind(this), !0), document.addEventListener("mouseup", this.handleTextSelection.bind(this)), n.subscribe((e) => {
-      this.isActive = e.isCollectorActive, !this.isActive && this.overlay && (this.overlay.style.display = "none", this.currentElement = null);
+    document.addEventListener("mouseover", this.handleMouseOver.bind(this), { passive: !0 }), document.addEventListener("mouseout", this.handleMouseOut.bind(this), { passive: !0 }), document.addEventListener("click", this.handleClick.bind(this), !0), document.addEventListener("mouseup", this.handleTextSelection.bind(this)), s.subscribe((e) => {
+      this.isActive = e.isCollectorActive, this.isActive ? document.body.classList.add("ht-collector-mode") : (document.body.classList.remove("ht-collector-mode"), this.clearHover());
     });
   }
   isIgnored(e) {
-    return e ? !!(e.closest(".ht-widget-root") || e.closest(".ht-skip") || e.closest(".ht-ignore") || e.tagName === "BODY" || e.tagName === "HTML") : !0;
+    return e ? !!(e.closest(".ht-widget-root") || e.closest(".ht-skip") || e.closest(".ht-ignore") || e.closest("#vlibras-app-root") || e.closest("#vlibras-access-wrapper") || e.tagName === "BODY" || e.tagName === "HTML") : !0;
   }
-  handleMouseMove(e) {
-    if (!this.isActive || !this.overlay) return;
-    const t = document.elementFromPoint(e.clientX, e.clientY);
-    if (!t || this.isIgnored(t)) {
-      this.overlay.style.display = "none", this.currentElement = null;
-      return;
-    }
-    if (!(t.innerText || t.textContent || "").trim()) {
-      this.overlay.style.display = "none";
-      return;
-    }
-    this.currentElement = t;
-    const s = t.getBoundingClientRect(), o = window.pageXOffset || document.documentElement.scrollLeft, r = window.pageYOffset || document.documentElement.scrollTop;
-    this.overlay.style.display = "block", this.overlay.style.top = `${s.top + r - 2}px`, this.overlay.style.left = `${s.left + o - 2}px`, this.overlay.style.width = `${s.width + 4}px`, this.overlay.style.height = `${s.height + 4}px`;
+  clearHover() {
+    this.currentHoverEl && (this.currentHoverEl.classList.remove("vlibras--hover"), this.currentHoverEl = null), document.querySelectorAll(".vlibras--hover").forEach((e) => {
+      e.classList.remove("vlibras--hover");
+    });
+  }
+  handleMouseOver(e) {
+    if (!this.isActive) return;
+    const t = e.target;
+    !t || this.isIgnored(t) || (this.currentHoverEl && this.currentHoverEl !== t && this.currentHoverEl.classList.remove("vlibras--hover"), t.classList.add("vlibras--hover"), this.currentHoverEl = t);
+  }
+  handleMouseOut(e) {
+    if (!this.isActive) return;
+    const t = e.target;
+    t && (t.classList.remove("vlibras--hover"), this.currentHoverEl === t && (this.currentHoverEl = null));
+  }
+  /**
+   * Native VLibras text extraction algorithm
+   */
+  extractTextFromElement(e) {
+    var t, i, n, a, o, d, u;
+    return (t = e.dataset.vlibrasGloss) != null && t.trim() ? e.dataset.vlibrasGloss.trim() : e.tagName === "IMG" ? ((i = e.alt) == null ? void 0 : i.trim()) || "" : e.tagName === "INPUT" ? ((n = e.value) == null ? void 0 : n.trim()) || "" : e.tagName === "BUTTON" ? ((a = e.value) == null ? void 0 : a.trim()) || ((o = e.innerText) == null ? void 0 : o.trim()) || "" : e.tagName === "SELECT" ? ((u = (d = e.selectedOptions[0]) == null ? void 0 : d.innerText) == null ? void 0 : u.trim()) || "" : (e.innerText || e.textContent || "").trim();
   }
   handleClick(e) {
-    if (!this.isActive || !this.currentElement) return;
-    e.preventDefault(), e.stopPropagation();
-    const t = (this.currentElement.innerText || this.currentElement.textContent || "").trim();
-    t && (this.onSelectTextCallback(t), n.setState({ isCollectorActive: !1 }));
+    const t = e.target;
+    if (!t || this.isIgnored(t))
+      return;
+    const i = window.getSelection(), n = i ? i.toString().trim() : "";
+    if (n && n.length > 0 && n.length <= 1e3) {
+      e.preventDefault(), e.stopPropagation(), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(n);
+      return;
+    }
+    if (this.isActive) {
+      e.preventDefault(), e.stopPropagation();
+      const a = this.extractTextFromElement(t);
+      a && (t.classList.add("vlibras--active"), setTimeout(() => t.classList.remove("vlibras--active"), 1e3), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(a));
+    }
   }
-  handleTextSelection() {
-    const e = window.getSelection();
-    if (!e || e.isCollapsed) return;
-    const t = e.toString().trim();
-    t.length > 1 && t.length <= 1e3 && n.getState().isTranslatorOpen && this.onSelectTextCallback(t);
+  /**
+   * Handles user dragging mouse to select any text on the page
+   */
+  handleTextSelection(e) {
+    const t = e.target;
+    if (t && this.isIgnored(t))
+      return;
+    const i = window.getSelection();
+    if (!i || i.isCollapsed) return;
+    const n = i.toString().trim();
+    n.length > 1 && n.length <= 1e3 && this.onSelectTextCallback(n);
   }
   destroy() {
-    var e;
-    (e = this.overlay) == null || e.remove(), document.removeEventListener("mousemove", this.handleMouseMove.bind(this)), document.removeEventListener("click", this.handleClick.bind(this), !0), document.removeEventListener("mouseup", this.handleTextSelection.bind(this));
+    this.clearHover(), document.body.classList.remove("ht-collector-mode"), document.removeEventListener("mouseover", this.handleMouseOver.bind(this)), document.removeEventListener("mouseout", this.handleMouseOut.bind(this)), document.removeEventListener("click", this.handleClick.bind(this), !0), document.removeEventListener("mouseup", this.handleTextSelection.bind(this));
   }
 }
-class A {
+class O {
   constructor() {
-    a(this, "synth", null);
-    a(this, "isActive", !1);
-    a(this, "hoveredElement", null);
+    l(this, "synth", null);
+    l(this, "isActive", !1);
+    l(this, "hoveredElement", null);
     typeof window < "u" && "speechSynthesis" in window && (this.synth = window.speechSynthesis), this.init();
   }
   init() {
-    document.addEventListener("mouseover", this.handleMouseOver.bind(this), { passive: !0 }), n.subscribe((e) => {
+    document.addEventListener("mouseover", this.handleMouseOver.bind(this), { passive: !0 }), s.subscribe((e) => {
       this.isActive = e.pageSpeechActive, this.isActive || this.stop();
     });
   }
@@ -466,8 +480,8 @@ class A {
     if (!t || t.closest(".ht-widget-root") || t.closest(".ht-skip")) return;
     if (["P", "H1", "H2", "H3", "H4", "H5", "H6", "BUTTON", "A", "LI", "LABEL"].includes(t.tagName) && t !== this.hoveredElement) {
       this.hoveredElement = t;
-      const s = (t.innerText || t.getAttribute("aria-label") || "").trim();
-      s && this.speak(s);
+      const n = (t.innerText || t.getAttribute("aria-label") || "").trim();
+      n && this.speak(n);
     }
   }
   speak(e) {
@@ -480,17 +494,17 @@ class A {
     this.synth && this.synth.cancel();
   }
 }
-class L {
+class z {
   constructor() {
-    a(this, "mutedElements", []);
-    a(this, "observer", null);
+    l(this, "mutedElements", []);
+    l(this, "observer", null);
     this.init();
   }
   init() {
-    n.subscribe((e) => {
+    s.subscribe((e) => {
       e.disableSounds ? this.muteAll() : this.unmuteAll();
     }), this.observer = new MutationObserver(() => {
-      n.getState().disableSounds && this.muteAll();
+      s.getState().disableSounds && this.muteAll();
     }), this.observer.observe(document.body, {
       childList: !0,
       subtree: !0
@@ -511,97 +525,200 @@ class L {
     this.unmuteAll(), (e = this.observer) == null || e.disconnect();
   }
 }
-class C {
+class H {
   constructor() {
-    a(this, "guideElement", null);
-    a(this, "maskElement", null);
-    a(this, "magnifierElement", null);
+    l(this, "isLoaded", !1);
+    l(this, "isInitializing", !1);
+    l(this, "currentAvatar", "THIAGO");
     this.init();
   }
-  init() {
-    this.createGuide(), this.createMask(), this.createMagnifier(), window.addEventListener("mousemove", this.handleMouseMove.bind(this), { passive: !0 }), n.subscribe((e) => {
-      this.guideElement && (this.guideElement.style.display = e.readingGuideActive ? "block" : "none"), this.maskElement && (this.maskElement.style.display = e.readingMaskActive ? "block" : "none"), this.magnifierElement && (this.magnifierElement.style.display = e.magnifierActive ? "block" : "none");
-    });
-  }
-  createGuide() {
-    this.guideElement = document.createElement("div"), this.guideElement.className = "ht-reading-guide ht-skip", this.guideElement.style.cssText = `
-      position: fixed;
-      left: 0;
-      width: 100vw;
-      height: 12px;
-      background: #00e5ff;
-      opacity: 0.65;
-      box-shadow: 0 0 10px #00e5ff, 0 2px 4px rgba(0,0,0,0.3);
-      pointer-events: none;
-      z-index: 2147483640;
-      display: none;
-      transform: translateY(-50%);
-    `, document.body.appendChild(this.guideElement);
-  }
-  createMask() {
-    this.maskElement = document.createElement("div"), this.maskElement.className = "ht-reading-mask ht-skip", this.maskElement.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 2147483639;
-      display: none;
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
-    `, document.body.appendChild(this.maskElement);
-  }
-  createMagnifier() {
-    this.magnifierElement = document.createElement("div"), this.magnifierElement.className = "ht-magnifier ht-skip", this.magnifierElement.style.cssText = `
-      position: fixed;
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      border: 4px solid #0084ff;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-      pointer-events: none;
-      z-index: 2147483641;
-      display: none;
-      transform: translate(-50%, -50%);
-      background: #ffffff;
-      overflow: hidden;
-    `, document.body.appendChild(this.magnifierElement);
-  }
-  handleMouseMove(e) {
-    const t = n.getState();
-    if (t.readingGuideActive && this.guideElement && (this.guideElement.style.top = `${e.clientY}px`), t.readingMaskActive && this.maskElement) {
-      const s = Math.max(0, e.clientY - 35);
-      this.maskElement.style.background = `
-        linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0.75) 0px,
-          rgba(0, 0, 0, 0.75) ${s}px,
-          transparent ${s}px,
-          transparent ${s + 70}px,
-          rgba(0, 0, 0, 0.75) ${s + 70}px,
-          rgba(0, 0, 0, 0.75) 100%
-        )
-      `;
-    }
-    if (t.magnifierActive && this.magnifierElement) {
-      this.magnifierElement.style.left = `${e.clientX}px`, this.magnifierElement.style.top = `${e.clientY}px`;
-      const i = document.elementFromPoint(e.clientX, e.clientY);
-      if (i && !i.closest(".ht-widget-root") && !i.closest(".ht-skip")) {
-        const s = (i.innerText || i.textContent || "").trim().slice(0, 150);
-        this.magnifierElement.innerHTML = `
-          <div style="padding: 16px; font-size: 20px; font-weight: bold; color: #111; line-height: 1.4; display: flex; align-items: center; justify-content: center; height: 100%; text-align: center;">
-            ${s || "🔍"}
-          </div>
-        `;
+  async init() {
+    var e;
+    if (!(this.isLoaded || this.isInitializing)) {
+      this.isInitializing = !0;
+      try {
+        if (await this.loadScript("https://vlibras.gov.br/app/vlibras-plugin.js"), (e = window.VLibras) != null && e.Widget) {
+          const i = s.getState().avatar === "MARYA" ? "hosana" : "icaro";
+          new window.VLibras.Widget({
+            rootPath: "https://vlibras.gov.br/app",
+            avatar: i,
+            position: "R"
+          }), this.isLoaded = !0, console.log("%c[Mahoraga - VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!", "color: #0070f3; font-weight: bold;", "color: inherit;");
+        }
+        this.setupRootWatcher(), this.hookNativeTranslation(), s.subscribe((t) => {
+          t.avatar !== this.currentAvatar && (this.currentAvatar = t.avatar, this.setAvatar(t.avatar));
+        });
+      } catch (t) {
+        console.warn("[VLibras] Falha ao carregar motor VLibras:", t);
+      } finally {
+        this.isInitializing = !1;
       }
     }
   }
-  destroy() {
-    var e, t, i;
-    (e = this.guideElement) == null || e.remove(), (t = this.maskElement) == null || t.remove(), (i = this.magnifierElement) == null || i.remove();
+  hookNativeTranslation() {
+    let e = !1;
+    const t = () => {
+      if (window.plugin && !("__mahoragaHooked" in window.plugin)) {
+        window.plugin.__mahoragaHooked = !0;
+        const n = window.plugin.translate;
+        typeof n == "function" && (window.plugin.translate = async (a) => {
+          s.setState({ currentText: a, isPlaying: !0, isTranslatorOpen: !0 });
+          const o = await this.translateTextToGloss(a);
+          return s.setState({ currentGloss: o, isPlaying: !1 }), n(a);
+        }, e = !0);
+      }
+      if (window.vlibras && !("__mahoragaHooked" in window.vlibras)) {
+        window.vlibras.__mahoragaHooked = !0;
+        const n = window.vlibras.translateAndPlay;
+        typeof n == "function" && (window.vlibras.translateAndPlay = async (a) => {
+          s.setState({ currentText: a, isPlaying: !0, isTranslatorOpen: !0 });
+          const o = await this.translateTextToGloss(a);
+          return s.setState({ currentGloss: o, isPlaying: !1 }), n(a);
+        }, e = !0);
+      }
+    };
+    t();
+    const i = setInterval(() => {
+      t(), e && clearInterval(i);
+    }, 400);
+    setTimeout(() => clearInterval(i), 15e3);
+  }
+  setupRootWatcher() {
+    const e = () => {
+      const i = document.getElementById("vlibras-app-root");
+      i && this.ensureShadowFix(i);
+    };
+    e(), new MutationObserver(e).observe(document.body, { childList: !0 });
+  }
+  ensureShadowFix(e) {
+    if (!e.shadowRoot || e.shadowRoot.getElementById("mahoraga-vlibras-fix")) return;
+    const t = document.createElement("style");
+    t.id = "mahoraga-vlibras-fix", t.textContent = `
+      .opacity-0 {
+        pointer-events: none !important;
+        visibility: hidden !important;
+      }
+    `, e.shadowRoot.appendChild(t), new MutationObserver(() => {
+      var a;
+      const n = (a = e.shadowRoot) == null ? void 0 : a.querySelectorAll("button");
+      n == null || n.forEach((o) => {
+        const d = (o.getAttribute("aria-label") || "").toLowerCase();
+        (d.includes("fechar") || d.includes("close")) && !o.hasAttribute("data-ht-sync") && (o.setAttribute("data-ht-sync", "true"), o.addEventListener("click", () => {
+          s.setState({ isTranslatorOpen: !1 }), this.closePlayer();
+        }));
+      });
+    }).observe(e.shadowRoot, { childList: !0, subtree: !0 });
+  }
+  loadScript(e) {
+    return new Promise((t, i) => {
+      if (document.querySelector(`script[src="${e}"]`)) {
+        t();
+        return;
+      }
+      const n = document.createElement("script");
+      n.src = e, n.async = !0, n.onload = () => t(), n.onerror = () => i(new Error(`Erro ao carregar script ${e}`)), document.head.appendChild(n);
+    });
+  }
+  /**
+   * Opens the official VLibras 3D WebGL player window
+   */
+  openPlayer() {
+    var n, a;
+    try {
+      const o = localStorage.getItem("@vlibras-widget");
+      o && o.includes('"isOpen":false') && localStorage.setItem("@vlibras-widget", o.replace('"isOpen":false', '"isOpen":true'));
+    } catch {
+    }
+    const e = document.getElementById("vlibras-app-root");
+    if (e && (e.style.display = "", e.style.pointerEvents = "", this.ensureShadowFix(e), e.removeAttribute("data-active"), requestAnimationFrame(() => {
+      e.setAttribute("data-active", "true");
+    })), typeof ((n = window.VLibrasWidget) == null ? void 0 : n.open) == "function") {
+      window.VLibrasWidget.open();
+      return;
+    }
+    const t = document.getElementById("vlibras-access-wrapper"), i = (a = t == null ? void 0 : t.shadowRoot) == null ? void 0 : a.querySelector("#vlibras-button");
+    if (i) {
+      i.click();
+      return;
+    }
+    e && e.setAttribute("data-active", "true");
+  }
+  /**
+   * Closes or hides the VLibras 3D player window
+   */
+  closePlayer() {
+    const e = document.getElementById("vlibras-app-root");
+    e && (e.setAttribute("data-active", "false"), e.style.pointerEvents = "none", e.style.display = "none");
+    try {
+      const t = localStorage.getItem("@vlibras-widget");
+      t && t.includes('"isOpen":true') && localStorage.setItem("@vlibras-widget", t.replace('"isOpen":true', '"isOpen":false'));
+    } catch {
+    }
+  }
+  /**
+   * Switches avatar between Thiago (Ícaro) and Marya (Hosana)
+   */
+  setAvatar(e) {
+    var i, n, a;
+    const t = e === "MARYA" ? "hosana" : "icaro";
+    (n = (i = window.plugin) == null ? void 0 : i.player) != null && n.changeAvatar ? window.plugin.player.changeAvatar(t) : (a = window.vlibras) != null && a.changeAvatar && window.vlibras.changeAvatar(t);
+  }
+  /**
+   * Translates Portuguese text to Libras grammatical glosses using the official open-source VLibras service
+   */
+  async translateTextToGloss(e) {
+    try {
+      const t = await fetch("https://traducao2.vlibras.gov.br/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: e })
+      });
+      if (t.ok)
+        return (await t.text()).trim();
+    } catch (t) {
+      console.warn("[VLibras] Falha ao consultar serviço de glosas:", t);
+    }
+    return e.toUpperCase();
+  }
+  /**
+   * Sends text to the official VLibras 3D engine for authentic Libras signing
+   */
+  async translateAndPlay(e) {
+    if (!e || !e.trim()) return "";
+    this.openPlayer(), s.setState({ currentText: e, isPlaying: !0, isTranslatorOpen: !0 });
+    const t = await this.translateTextToGloss(e);
+    s.setState({ currentGloss: t });
+    const i = () => {
+      var n, a;
+      return typeof ((n = window.plugin) == null ? void 0 : n.translate) == "function" ? (window.plugin.translate(e), !0) : typeof ((a = window.vlibras) == null ? void 0 : a.translateAndPlay) == "function" ? (window.vlibras.translateAndPlay(e), !0) : !1;
+    };
+    if (i())
+      setTimeout(() => s.setState({ isPlaying: !1 }), 400);
+    else {
+      let n = 0;
+      const a = setInterval(() => {
+        n++, (i() || n > 25) && (clearInterval(a), s.setState({ isPlaying: !1 }));
+      }, 250);
+    }
+    return t;
   }
 }
-const l = {
+const m = new H(), r = {
+  // Lateral Launcher - Accessibility Person Symbol (solid white silhouette)
+  accessibilityPerson: `
+    <svg viewBox="0 0 40 40" fill="currentColor">
+      <circle cx="20" cy="9" r="3.3"/>
+      <path d="M9 13.8h22c.9 0 1.6.7 1.6 1.6s-.7 1.6-1.6 1.6H24v5.8h-1.6V23h-4.8v-.2H16v-5.8H9c-.9 0-1.6-.7-1.6-1.6s.7-1.6 1.6-1.6z"/>
+      <path d="M16.2 21h3.3v9.5c0 .9-.7 1.5-1.6 1.5s-1.7-.6-1.7-1.5V21z"/>
+      <path d="M20.5 21h3.3v9.5c0 .9-.7 1.5-1.6 1.5s-1.7-.6-1.7-1.5V21z"/>
+    </svg>
+  `,
+  // Lateral Launcher - Libras / Sign Language Hands Symbol (official VLibras SVG path)
+  librasHands: `
+    <svg viewBox="0 0 40 40" fill="currentColor">
+      <path fill-rule="evenodd" d="M14.35 8a1 1 0 0 0-.38.24c-.22.21-.22.21-.17.72l.11 1.35c.3 3.62.34 4.7.21 4.78-.21.14-.33-.06-2.35-3.97-.69-1.33-.82-1.48-1.24-1.34-.68.23-.63.57.45 2.9l.26.58c0 .01.12.3.27.61.8 1.76 1.01 2.47.75 2.57-.18.07-.51-.1-.78-.42-.14-.16-.3-.36-.38-.43a19 19 0 0 1-.78-.95l-.72-.86a7 7 0 0 0-.8-.86c-.34-.13-.8.13-.8.46 0 .29.7 1.44 2.13 3.56.9 1.33 1.11 1.8 1.32 2.97q.64 3.7 1.78 4.6c.51.4.53.4 1.75.35l1.11-.04.85-1.14.93-1.23c.33-.43 1.17-1.92 1.17-2.07 0-.02-.44-.02-.97 0q-.98.05-1.43-.04c-.52-.1-1.18-.4-1.55-.7a1.55 1.55 0 0 1-.38-1.94c.27-.45.64-.65 1.41-.74.63-.08 1.3-.26 2.27-.62l.51-.19v-.82c0-.84.16-3.78.29-5.16.1-1.09.1-1.08-.17-1.34-.19-.19-.3-.24-.5-.24-.5 0-.52.07-1.02 2.57l-.54 2.8c-.12.68-.21.93-.37 1-.2.07-.39-.25-.48-.82l-.27-1.68c-.19-1.19-.56-3.4-.64-3.8-.05-.24-.36-.6-.57-.65a1 1 0 0 0-.28 0m9.37 7.25a14 14 0 0 0-2.12.8l-1.31.62c-1.49.74-3.2 1.34-3.8 1.34-.4 0-.84.18-.88.37-.04.2.4.6.82.76.38.15.48.15 1.83.11 1.22-.03 1.47-.02 1.67.07.33.16.42.43.31.93-.11.51-.74 1.77-1.25 2.5-.33.48-2.29 3.1-3.43 4.57-.4.53-.42.8-.07 1.15.45.45.39.49 2.8-1.94 2.26-2.27 2.45-2.42 2.55-2.01.07.24.08.2-.92 2.35a16 16 0 0 0-.57 1.25c-1.15 2.49-1.2 2.65-.86 3.08.12.15.2.18.47.18.18 0 .38-.04.44-.09s.4-.62.77-1.28c.63-1.15 1-1.82 1.32-2.37 1.17-2.04 1.16-2.03 1.38-2.03.13 0 .13.03.1.86-.05.76-.14 1.66-.4 3.75-.1.79-.1 1.45.02 1.6.14.19.63.24.85.1.23-.15.33-.53.6-2.12.55-3.38.7-4.02.91-4.22.14-.13.15-.13.3 0 .07.08.17.19.2.26.04.06.15.85.24 1.76.27 2.53.29 2.66.5 2.85q.35.3.7 0c.2-.17.2-.21.26-1.12.04-.52.05-1.54.03-2.28-.03-1.43.04-2.63.17-3.04l.49-1.21c.22-.52.54-1.36.7-1.87.5-1.55.47-2.8-.1-3.36a5 5 0 0 0-.8-.54 6 6 0 0 1-1.32-1c-.57-.54-.78-.68-1.04-.75a6 6 0 0 0-1.56-.03m5.5 2.06c-.04.08.02.32.12.58.23.58.28 1.1.18 1.78-.13.88-.12.98.06 1 .24.04.36-.24.45-1 .1-.85.01-1.49-.28-2.08-.2-.42-.45-.55-.54-.28m1.27.24c-.02.05.03.3.1.54.19.58.15 1.5-.08 2.2-.15.43-.15.48-.05.59.24.24.49-.1.65-.88a4 4 0 0 0-.17-2.4c-.1-.17-.4-.2-.45-.05m-19.45 6.03c-.14.15-.1.35.2.9.52.94 1.77 2.01 2.06 1.77.21-.17.13-.33-.3-.6a4 4 0 0 1-1.38-1.56c-.29-.55-.42-.67-.58-.5m-1 .45c-.11.13-.02.46.3 1.12.45.91 1.41 1.84 1.77 1.7.18-.07.14-.35-.09-.48a4 4 0 0 1-1.45-1.99q-.25-.68-.53-.35" clip-rule="evenodd"/>
+    </svg>
+  `,
   libras: `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
@@ -734,6 +851,16 @@ const l = {
       <line x1="8" y1="10" x2="16" y2="10"/>
     </svg>
   `,
+  pageStructure: `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"/>
+      <line x1="8" y1="12" x2="21" y2="12"/>
+      <line x1="8" y1="18" x2="21" y2="18"/>
+      <line x1="3" y1="6" x2="3.01" y2="6"/>
+      <line x1="3" y1="12" x2="3.01" y2="12"/>
+      <line x1="3" y1="18" x2="3.01" y2="18"/>
+    </svg>
+  `,
   saturation: `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="10"/>
@@ -790,120 +917,187 @@ const l = {
       <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
       <path d="M3 3v5h5"/>
     </svg>
+  `,
+  swap: `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m16 3 4 4-4 4"/>
+      <path d="M20 7H4"/>
+      <path d="m8 21-4-4 4-4"/>
+      <path d="M4 17h16"/>
+    </svg>
   `
 };
-class E {
-  constructor(e = "right", t = "bottom") {
-    a(this, "element", null);
-    a(this, "side", "right");
-    a(this, "align", "bottom");
-    a(this, "isMenuOpen", !1);
+class B {
+  constructor() {
+    l(this, "guideElement", null);
+    l(this, "maskElement", null);
+    l(this, "magnifierElement", null);
+    this.init();
+  }
+  init() {
+    this.createGuide(), this.createMask(), this.createMagnifier(), window.addEventListener("mousemove", this.handleMouseMove.bind(this), { passive: !0 }), s.subscribe((e) => {
+      this.guideElement && (this.guideElement.style.display = e.readingGuideActive ? "block" : "none"), this.maskElement && (this.maskElement.style.display = e.readingMaskActive ? "block" : "none"), this.magnifierElement && (this.magnifierElement.style.display = e.magnifierActive ? "block" : "none");
+    });
+  }
+  createGuide() {
+    this.guideElement = document.createElement("div"), this.guideElement.className = "ht-widget-root ht-reading-guide ht-skip", this.guideElement.style.cssText = `
+      position: fixed;
+      left: 0;
+      width: 100vw;
+      height: 12px;
+      background: #00e5ff;
+      opacity: 0.65;
+      box-shadow: 0 0 10px #00e5ff, 0 2px 4px rgba(0,0,0,0.3);
+      pointer-events: none;
+      z-index: 2147483640;
+      display: none;
+      transform: translateY(-50%);
+    `, document.body.appendChild(this.guideElement);
+  }
+  createMask() {
+    this.maskElement = document.createElement("div"), this.maskElement.className = "ht-widget-root ht-reading-mask ht-skip", this.maskElement.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2147483639;
+      display: none;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+    `, document.body.appendChild(this.maskElement);
+  }
+  createMagnifier() {
+    this.magnifierElement = document.createElement("div"), this.magnifierElement.className = "ht-widget-root ht-magnifier ht-skip", this.magnifierElement.style.cssText = `
+      position: fixed;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 4px solid #0084ff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      pointer-events: none;
+      z-index: 2147483641;
+      display: none;
+      transform: translate(-50%, -50%);
+      background: #ffffff;
+      overflow: hidden;
+    `, document.body.appendChild(this.magnifierElement);
+  }
+  handleMouseMove(e) {
+    const t = s.getState();
+    if (t.readingGuideActive && this.guideElement && (this.guideElement.style.top = `${e.clientY}px`), t.readingMaskActive && this.maskElement) {
+      const n = Math.max(0, e.clientY - 35);
+      this.maskElement.style.background = `
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.75) 0px,
+          rgba(0, 0, 0, 0.75) ${n}px,
+          transparent ${n}px,
+          transparent ${n + 70}px,
+          rgba(0, 0, 0, 0.75) ${n + 70}px,
+          rgba(0, 0, 0, 0.75) 100%
+        )
+      `;
+    }
+    if (t.magnifierActive && this.magnifierElement) {
+      this.magnifierElement.style.left = `${e.clientX}px`, this.magnifierElement.style.top = `${e.clientY}px`;
+      const i = document.elementFromPoint(e.clientX, e.clientY);
+      if (i && !i.closest(".ht-widget-root") && !i.closest(".ht-skip")) {
+        const n = (i.innerText || i.textContent || "").trim().slice(0, 150);
+        this.magnifierElement.innerHTML = `
+          <div style="padding: 16px; font-size: 20px; font-weight: bold; color: #111; line-height: 1.4; display: flex; align-items: center; justify-content: center; height: 100%; text-align: center;">
+            ${n || `<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${r.magnifier}</span>`}
+          </div>
+        `;
+      }
+    }
+  }
+  destroy() {
+    var e, t, i;
+    (e = this.guideElement) == null || e.remove(), (t = this.maskElement) == null || t.remove(), (i = this.magnifierElement) == null || i.remove();
+  }
+}
+class q {
+  constructor(e = "right", t = "center") {
+    l(this, "element", null);
+    l(this, "side", "right");
+    l(this, "align", "center");
     this.side = e, this.align = t, this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-launcher-container ht-skip", this.element.setAttribute("role", "region"), this.element.setAttribute("aria-label", "Ativador de Acessibilidade Hand Talk"), this.render(), document.body.appendChild(this.element), this.attachEvents(), n.subscribe((e) => {
-      var i;
-      const t = (i = this.element) == null ? void 0 : i.querySelector(".ht-launcher-main-btn");
-      t && (e.isTranslatorOpen || e.isAddonsOpen ? t.style.boxShadow = "0 0 0 4px rgba(0, 112, 243, 0.4), 0 8px 24px rgba(0, 112, 243, 0.35)" : t.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.2)");
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-launcher-container ht-skip", this.element.setAttribute("role", "region"), this.element.setAttribute("aria-label", "Atalhos de Acessibilidade e Tradutor de Libras"), this.render(), document.body.appendChild(this.element), this.attachEvents(), s.subscribe((e) => {
+      if (!this.element) return;
+      const t = this.element.querySelector(".ht-lateral-btn-addons"), i = this.element.querySelector(".ht-lateral-btn-libras");
+      t && (e.isAddonsOpen ? (t.classList.add("ht-lateral-active"), t.style.background = "#0a3875") : (t.classList.remove("ht-lateral-active"), t.style.background = "transparent")), i && (e.isTranslatorOpen ? (i.classList.add("ht-lateral-active"), i.style.background = "#0a3875") : (i.classList.remove("ht-lateral-active"), i.style.background = "transparent"));
     });
   }
   render() {
     if (!this.element) return;
-    const e = this.side === "right", t = this.align === "top", i = this.align === "center";
-    let s = "";
-    e ? s += "right: 20px;" : s += "left: 20px;", t ? s += "top: 20px;" : i ? s += "top: 50%; transform: translateY(-50%);" : s += "bottom: 24px;", this.element.innerHTML = `
-      <div class="ht-launcher-wrapper" style="
+    const e = this.side !== "left";
+    let t = "";
+    e ? t += "right: 0; left: auto;" : t += "left: 0; right: auto;", this.align === "top" ? t += "top: 120px;" : this.align === "bottom" ? t += "bottom: 120px;" : t += "top: 50%; transform: translateY(-50%);";
+    const i = e ? "12px 0 0 12px" : "0 12px 12px 0", n = e ? "border: 2px solid #ffffff; border-right: none;" : "border: 2px solid #ffffff; border-left: none;";
+    this.element.innerHTML = `
+      <div class="ht-lateral-launcher" style="
         position: fixed;
-        ${s}
-        z-index: 2147483643;
+        ${t}
+        z-index: 2147483647;
         display: flex;
         flex-direction: column;
-        align-items: ${e ? "flex-end" : "flex-start"};
-        gap: 10px;
+        background: #1351b4;
+        ${n}
+        border-radius: ${i};
+        box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.22);
+        overflow: hidden;
+        width: 46px;
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
       ">
         
-        <!-- Expandable Options Menu -->
-        <div class="ht-launcher-menu" style="
-          display: none;
-          flex-direction: column;
-          gap: 8px;
-          background: #ffffff;
-          padding: 8px;
-          border-radius: 16px;
-          box-shadow: 0 12px 32px rgba(0,0,0,0.2);
-          border: 1px solid rgba(0,0,0,0.08);
-          animation: htFadeScale 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        ">
-          <!-- Button 1: Libras Translator -->
-          <button class="ht-launcher-opt-libras" style="
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            background: #f0f7ff;
-            border: 1px solid #c7e0ff;
-            color: #0070f3;
-            font-size: 0.88rem;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
-          ">
-            <span style="width: 20px; height: 20px; display: inline-block;">${l.libras}</span>
-            <span>Tradutor de Libras</span>
-          </button>
-
-          <!-- Button 2: Accessibility Panel -->
-          <button class="ht-launcher-opt-addons" style="
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            color: #1e293b;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
-          ">
-            <span style="width: 20px; height: 20px; display: inline-block; color: #0070f3;">${l.accessibility}</span>
-            <span>Recursos Assistivos</span>
-          </button>
-        </div>
-
-        <!-- Main Launcher Circle / Pill Button -->
-        <button class="ht-launcher-main-btn" style="
-          width: 58px;
-          height: 58px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #0070f3 0%, #0051b3 100%);
-          color: #ffffff;
+        <!-- Top Button: Accessibility / Addons -->
+        <button class="ht-lateral-btn ht-lateral-btn-addons" style="
+          width: 46px;
+          height: 48px;
+          background: transparent;
           border: none;
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-          cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          position: relative;
-          transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+          color: #ffffff;
+          cursor: pointer;
+          padding: 0;
           outline: none;
-        " aria-label="Abrir menu de acessibilidade e tradutor de Libras Hand Talk">
-          <span style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
-            ${l.libras}
+          transition: background 0.15s ease;
+        " title="Recursos Assistivos de Acessibilidade (Alt+A)" aria-label="Abrir painel de acessibilidade e recursos assistivos">
+          <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+            ${r.accessibilityPerson}
           </span>
-          <span class="ht-launcher-pulse" style="
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 2px solid #0070f3;
-            opacity: 0.5;
-            animation: htPulse 2.5s infinite;
-            pointer-events: none;
-          "></span>
+        </button>
+
+        <!-- White Divider Line -->
+        <div class="ht-lateral-divider" style="
+          width: 100%;
+          height: 1.5px;
+          background: #ffffff;
+        "></div>
+
+        <!-- Bottom Button: Libras 3D Translator -->
+        <button class="ht-lateral-btn ht-lateral-btn-libras" style="
+          width: 46px;
+          height: 48px;
+          background: transparent;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          cursor: pointer;
+          padding: 0;
+          outline: none;
+          transition: background 0.15s ease;
+        " title="Tradutor de Libras com Avatar 3D (Alt+L)" aria-label="Abrir tradutor de Libras em 3D">
+          <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+            ${r.librasHands}
+          </span>
         </button>
 
       </div>
@@ -911,18 +1105,21 @@ class E {
   }
   attachEvents() {
     if (!this.element) return;
-    const e = this.element.querySelector(".ht-launcher-main-btn"), t = this.element.querySelector(".ht-launcher-menu"), i = this.element.querySelector(".ht-launcher-opt-libras"), s = this.element.querySelector(".ht-launcher-opt-addons");
+    const e = this.element.querySelector(".ht-lateral-btn-addons"), t = this.element.querySelector(".ht-lateral-btn-libras"), i = this.element.querySelector(".ht-lateral-launcher");
+    if (i) {
+      const n = this.side !== "left";
+      i.addEventListener("mouseenter", () => {
+        this.align === "center" ? i.style.transform = n ? "translateY(-50%) translateX(-3px)" : "translateY(-50%) translateX(3px)" : i.style.transform = n ? "translateX(-3px)" : "translateX(3px)";
+      }), i.addEventListener("mouseleave", () => {
+        this.align === "center" ? i.style.transform = "translateY(-50%)" : i.style.transform = "none";
+      });
+    }
     e == null || e.addEventListener("click", () => {
-      this.isMenuOpen = !this.isMenuOpen, t && (t.style.display = this.isMenuOpen ? "flex" : "none");
-    }), i == null || i.addEventListener("click", () => {
-      const o = n.getState();
-      n.setState({ isTranslatorOpen: !o.isTranslatorOpen }), this.isMenuOpen = !1, t && (t.style.display = "none");
-    }), s == null || s.addEventListener("click", () => {
-      const o = n.getState();
-      n.setState({ isAddonsOpen: !o.isAddonsOpen }), this.isMenuOpen = !1, t && (t.style.display = "none");
-    }), document.addEventListener("click", (o) => {
-      var r;
-      !((r = this.element) != null && r.contains(o.target)) && this.isMenuOpen && (this.isMenuOpen = !1, t && (t.style.display = "none"));
+      const n = s.getState();
+      s.setState({ isAddonsOpen: !n.isAddonsOpen });
+    }), t == null || t.addEventListener("click", () => {
+      const n = s.getState();
+      s.setState({ isTranslatorOpen: !n.isTranslatorOpen });
     });
   }
   destroy() {
@@ -930,188 +1127,35 @@ class E {
     (e = this.element) == null || e.remove();
   }
 }
-class H {
-  constructor(e) {
-    a(this, "canvas");
-    a(this, "ctx");
-    a(this, "animFrameId", null);
-    a(this, "avatar", "THIAGO");
-    // Animation state
-    a(this, "time", 0);
-    a(this, "blinkTime", 0);
-    a(this, "isBlinking", !1);
-    a(this, "headY", 0);
-    a(this, "handLeftX", 0);
-    a(this, "handLeftY", 0);
-    a(this, "handRightX", 0);
-    a(this, "handRightY", 0);
-    a(this, "isSigning", !1);
-    a(this, "signProgress", 0);
-    a(this, "signDuration", 180);
-    // frames
-    a(this, "signSequence", []);
-    a(this, "onFinishCallback");
-    this.canvas = e;
-    const t = e.getContext("2d");
-    if (!t) throw new Error("Não foi possível obter contexto 2D para o avatar.");
-    this.ctx = t, this.resize(), this.startLoop(), n.subscribe((i) => {
-      this.avatar = i.avatar;
-    });
-  }
-  isMale() {
-    return this.avatar === "THIAGO" || this.avatar === "HUGO";
-  }
-  resize() {
-    const e = this.canvas.getBoundingClientRect(), t = window.devicePixelRatio || 1;
-    this.canvas.width = (e.width || 320) * t, this.canvas.height = (e.height || 360) * t, this.ctx.scale(t, t);
-  }
-  sign(e, t) {
-    this.isSigning = !0, this.signProgress = 0, this.onFinishCallback = t;
-    const i = e.toLowerCase().replace(/[.,!?;:]/g, "").split(/\s+/).filter(Boolean);
-    this.signSequence = [], i.forEach((o) => {
-      if (o === "olá" || o === "oi")
-        this.signSequence.push(
-          { leftHand: [-30, 20], rightHand: [45, -70], label: "Olá!" },
-          { leftHand: [-30, 20], rightHand: [65, -75], label: "Olá!" },
-          { leftHand: [-30, 20], rightHand: [45, -70], label: "Olá!" }
-        );
-      else if (o === "libras")
-        this.signSequence.push(
-          { leftHand: [-30, -50], rightHand: [30, -50], label: "Libras" },
-          { leftHand: [-50, -40], rightHand: [50, -40], label: "Libras" },
-          { leftHand: [-25, -55], rightHand: [25, -55], label: "Libras" }
-        );
-      else if (o === "obrigado")
-        this.signSequence.push(
-          { leftHand: [-20, 10], rightHand: [15, -85], label: "Obrigado" },
-          { leftHand: [-20, 10], rightHand: [5, -35], label: "Obrigado" }
-        );
-      else if (o === "acessibilidade")
-        this.signSequence.push(
-          { leftHand: [-40, -40], rightHand: [40, -40], label: "Acessibilidade" },
-          { leftHand: [-10, -50], rightHand: [10, -50], label: "Acessibilidade" },
-          { leftHand: [-50, -30], rightHand: [50, -30], label: "Acessibilidade" }
-        );
-      else
-        for (let r = 0; r < Math.min(o.length, 4); r++) {
-          const d = (r % 2 === 0 ? 1 : -1) * 15;
-          this.signSequence.push({
-            leftHand: [-25 + d, 0],
-            rightHand: [30 + d, -45 - r * 5],
-            label: o.toUpperCase()
-          });
-        }
-    }), this.signSequence.length === 0 && this.signSequence.push({ leftHand: [-20, 10], rightHand: [20, 10], label: "" });
-    const s = n.getState().speed;
-    this.signDuration = Math.max(60, this.signSequence.length * 40 / s);
-  }
-  stop() {
-    var e;
-    this.isSigning = !1, this.signProgress = 0, this.signSequence = [], (e = this.onFinishCallback) == null || e.call(this);
-  }
-  startLoop() {
-    const e = () => {
-      this.update(), this.render(), this.animFrameId = requestAnimationFrame(e);
-    };
-    this.animFrameId = requestAnimationFrame(e);
-  }
-  update() {
-    var e;
-    if (this.time += 0.04, this.blinkTime += 1, this.blinkTime > 160 && (this.isBlinking = !0, this.blinkTime > 172 && (this.isBlinking = !1, this.blinkTime = 0)), this.headY = Math.sin(this.time) * 3, this.isSigning && this.signSequence.length > 0) {
-      const t = n.getState().speed;
-      if (this.signProgress += 1 / this.signDuration * t, this.signProgress >= 1)
-        this.isSigning = !1, this.signProgress = 0, (e = this.onFinishCallback) == null || e.call(this);
-      else {
-        const i = this.signProgress * (this.signSequence.length - 1), s = Math.floor(i), o = Math.min(s + 1, this.signSequence.length - 1), r = i - s, d = this.signSequence[s], p = this.signSequence[o];
-        this.handLeftX = d.leftHand[0] + (p.leftHand[0] - d.leftHand[0]) * r, this.handLeftY = d.leftHand[1] + (p.leftHand[1] - d.leftHand[1]) * r, this.handRightX = d.rightHand[0] + (p.rightHand[0] - d.rightHand[0]) * r, this.handRightY = d.rightHand[1] + (p.rightHand[1] - d.rightHand[1]) * r;
-      }
-    } else
-      this.handLeftX = -35 + Math.sin(this.time * 0.8) * 3, this.handLeftY = 20 + Math.cos(this.time * 0.8) * 2, this.handRightX = 35 - Math.sin(this.time * 0.8) * 3, this.handRightY = 20 + Math.cos(this.time * 0.8) * 2;
-  }
-  render() {
-    const e = this.canvas.width / (window.devicePixelRatio || 1), t = this.canvas.height / (window.devicePixelRatio || 1), i = e / 2, s = t * 0.52;
-    this.ctx.clearRect(0, 0, e, t);
-    const o = this.ctx.createRadialGradient(i, s - 20, 30, i, s, e * 0.7);
-    o.addColorStop(0, this.isMale() ? "rgba(0, 132, 255, 0.08)" : "rgba(156, 39, 176, 0.08)"), o.addColorStop(1, "rgba(0, 0, 0, 0)"), this.ctx.fillStyle = o, this.ctx.fillRect(0, 0, e, t), this.ctx.save(), this.ctx.translate(i, s + this.headY), this.drawBody(), this.drawNeck(), this.drawHead(), this.drawArmsAndHands(), this.ctx.restore();
-  }
-  drawBody() {
-    const e = this.isMale(), t = e ? "#0070f3" : "#7928ca", i = e ? "#3291ff" : "#9e46f7", s = e ? "#004fc5" : "#57189a";
-    this.ctx.beginPath(), this.ctx.moveTo(-60, 40), this.ctx.quadraticCurveTo(-75, 140, -85, 180), this.ctx.lineTo(85, 180), this.ctx.quadraticCurveTo(75, 140, 60, 40), this.ctx.closePath();
-    const o = this.ctx.createLinearGradient(-60, 40, 60, 180);
-    o.addColorStop(0, i), o.addColorStop(0.4, t), o.addColorStop(1, s), this.ctx.fillStyle = o, this.ctx.fill(), this.ctx.beginPath(), this.ctx.moveTo(-22, 40), this.ctx.quadraticCurveTo(0, 62, 22, 40), this.ctx.lineWidth = 4, this.ctx.strokeStyle = e ? "#ffffff" : "#f0d9ff", this.ctx.stroke(), this.ctx.fillStyle = "rgba(255, 255, 255, 0.7)", this.ctx.beginPath(), this.ctx.arc(28, 90, 7, 0, Math.PI * 2), this.ctx.fill();
-  }
-  drawNeck() {
-    const e = this.isMale() ? "#f8c291" : "#fbc5a8", t = this.isMale() ? "#e59866" : "#e09f80";
-    this.ctx.beginPath(), this.ctx.rect(-16, 12, 32, 32);
-    const i = this.ctx.createLinearGradient(-16, 12, 16, 44);
-    i.addColorStop(0, t), i.addColorStop(1, e), this.ctx.fillStyle = i, this.ctx.fill();
-  }
-  drawHead() {
-    const e = this.isMale(), t = e ? "#fcd6b5" : "#fde2cf", i = "#fff0e5", s = e ? "#e8a980" : "#e2ab90", o = e ? "#3d2314" : "#2b1b17";
-    e || (this.ctx.beginPath(), this.ctx.moveTo(35, -45), this.ctx.quadraticCurveTo(70, -60, 75, -20), this.ctx.quadraticCurveTo(80, 25, 45, 10), this.ctx.closePath(), this.ctx.fillStyle = o, this.ctx.fill()), this.ctx.beginPath(), this.ctx.ellipse(0, -25, 44, 52, 0, 0, Math.PI * 2);
-    const r = this.ctx.createRadialGradient(-10, -35, 10, 0, -25, 50);
-    r.addColorStop(0, i), r.addColorStop(0.5, t), r.addColorStop(1, s), this.ctx.fillStyle = r, this.ctx.shadowColor = "rgba(0,0,0,0.15)", this.ctx.shadowBlur = 10, this.ctx.shadowOffsetY = 4, this.ctx.fill(), this.ctx.shadowColor = "transparent", this.drawEar(-45, -25, t), this.drawEar(45, -25, t), this.ctx.fillStyle = o, e ? (this.ctx.beginPath(), this.ctx.moveTo(-44, -35), this.ctx.quadraticCurveTo(-46, -75, 0, -82), this.ctx.quadraticCurveTo(46, -78, 44, -35), this.ctx.quadraticCurveTo(35, -55, 15, -60), this.ctx.quadraticCurveTo(-15, -65, -44, -35), this.ctx.closePath(), this.ctx.fill()) : (this.ctx.beginPath(), this.ctx.moveTo(-45, -25), this.ctx.quadraticCurveTo(-48, -75, 0, -80), this.ctx.quadraticCurveTo(48, -75, 45, -25), this.ctx.quadraticCurveTo(30, -50, 0, -52), this.ctx.quadraticCurveTo(-30, -50, -45, -25), this.ctx.closePath(), this.ctx.fill()), this.drawEye(-18, -25), this.drawEye(18, -25), this.ctx.strokeStyle = o, this.ctx.lineWidth = 3, this.ctx.lineCap = "round", this.ctx.beginPath(), this.ctx.moveTo(-28, -38), this.ctx.quadraticCurveTo(-18, -42, -8, -38), this.ctx.stroke(), this.ctx.beginPath(), this.ctx.moveTo(8, -38), this.ctx.quadraticCurveTo(18, -42, 28, -38), this.ctx.stroke(), this.ctx.strokeStyle = s, this.ctx.lineWidth = 2.5, this.ctx.beginPath(), this.ctx.moveTo(0, -22), this.ctx.lineTo(2, -10), this.ctx.lineTo(-4, -8), this.ctx.stroke(), this.ctx.beginPath(), this.isSigning ? (this.ctx.ellipse(0, 5, 8, 5, 0, 0, Math.PI * 2), this.ctx.fillStyle = "#b71c1c", this.ctx.fill()) : (this.ctx.arc(0, -2, 14, 0.25 * Math.PI, 0.75 * Math.PI), this.ctx.lineWidth = 3, this.ctx.strokeStyle = "#c2185b", this.ctx.stroke());
-  }
-  drawEar(e, t, i) {
-    this.ctx.beginPath(), this.ctx.ellipse(e, t, 7, 12, 0, 0, Math.PI * 2), this.ctx.fillStyle = i, this.ctx.fill();
-  }
-  drawEye(e, t) {
-    if (this.isBlinking) {
-      this.ctx.beginPath(), this.ctx.moveTo(e - 8, t), this.ctx.lineTo(e + 8, t), this.ctx.lineWidth = 2.5, this.ctx.strokeStyle = "#2b1b17", this.ctx.stroke();
-      return;
-    }
-    this.ctx.beginPath(), this.ctx.ellipse(e, t, 9, 7, 0, 0, Math.PI * 2), this.ctx.fillStyle = "#ffffff", this.ctx.fill(), this.ctx.beginPath(), this.ctx.arc(e, t, 5, 0, Math.PI * 2), this.ctx.fillStyle = this.isMale() ? "#5d4037" : "#4e342e", this.ctx.fill(), this.ctx.beginPath(), this.ctx.arc(e, t, 2.5, 0, Math.PI * 2), this.ctx.fillStyle = "#000000", this.ctx.fill(), this.ctx.beginPath(), this.ctx.arc(e - 2, t - 2, 1.8, 0, Math.PI * 2), this.ctx.fillStyle = "#ffffff", this.ctx.fill();
-  }
-  drawArmsAndHands() {
-    const e = this.isMale() ? "#fcd6b5" : "#fde2cf";
-    this.drawLibrasHand(-55, 60, this.handLeftX, this.handLeftY, e, !0), this.drawLibrasHand(55, 60, this.handRightX, this.handRightY, e, !1);
-  }
-  drawLibrasHand(e, t, i, s, o, r) {
-    const d = (e + i) / 2 + (r ? -15 : 15), p = (t + s) / 2 + 10;
-    this.ctx.beginPath(), this.ctx.moveTo(e, t), this.ctx.quadraticCurveTo(d, p, i, s), this.ctx.lineWidth = 14, this.ctx.lineCap = "round", this.ctx.strokeStyle = o, this.ctx.stroke(), this.ctx.save(), this.ctx.translate(i, s), this.ctx.beginPath(), this.ctx.arc(0, 0, 11, 0, Math.PI * 2), this.ctx.fillStyle = o, this.ctx.fill();
-    const g = r ? -0.4 : 0.4;
-    for (let c = -2; c <= 2; c++) {
-      this.ctx.beginPath(), this.ctx.moveTo(c * 3.5, 0);
-      const u = g + c * 0.15, m = 12 + Math.cos(c) * 4;
-      this.ctx.lineTo(c * 3.5 + Math.sin(u) * m, -Math.cos(u) * m), this.ctx.lineWidth = 4, this.ctx.lineCap = "round", this.ctx.strokeStyle = o, this.ctx.stroke();
-    }
-    this.ctx.restore();
-  }
-  destroy() {
-    this.animFrameId && cancelAnimationFrame(this.animFrameId);
-  }
-}
-class $ {
+class P {
   constructor() {
-    a(this, "element", null);
-    a(this, "renderer", null);
-    a(this, "canvas", null);
-    a(this, "isMinimized", !1);
-    a(this, "isDragging", !1);
-    a(this, "dragStartX", 0);
-    a(this, "dragStartY", 0);
+    l(this, "element", null);
+    l(this, "isMinimized", !1);
+    l(this, "isDragging", !1);
+    l(this, "dragStartX", 0);
+    l(this, "dragStartY", 0);
     this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-translator-window ht-skip", this.element.setAttribute("role", "region"), this.element.setAttribute("aria-label", "Janela do Tradutor de Libras"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), this.canvas = this.element.querySelector(".ht-avatar-canvas"), this.canvas && (this.renderer = new H(this.canvas)), this.attachEvents(), n.subscribe((e, t) => {
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-translator-window ht-skip", this.element.setAttribute("role", "region"), this.element.setAttribute("aria-label", "Janela de Tradução em Libras Mahoraga"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), this.attachEvents(), s.subscribe((e, t) => {
       if (!this.element) return;
-      this.element.style.display = e.isTranslatorOpen ? "flex" : "none";
+      this.element.style.display = e.isTranslatorOpen ? "flex" : "none", e.isTranslatorOpen && !t.isTranslatorOpen && m.openPlayer();
       const i = this.element.querySelector(".ht-translator-subtitle-text");
-      i && (i.innerText = e.currentText || "Selecione ou clique em um texto para traduzir em Libras");
-      const s = this.element.querySelector(".ht-translator-card");
-      s && (s.style.background = e.opacity === 100 ? "#ffffff" : e.opacity === 50 ? "rgba(255, 255, 255, 0.75)" : "rgba(255, 255, 255, 0.35)");
-      const o = this.element.querySelector(".ht-avatar-name-badge");
-      o && (o.innerText = e.avatar === "THIAGO" || e.avatar === "HUGO" ? "Thiago" : "Marya");
-      const r = this.element.querySelector(".ht-btn-collector");
-      r && (e.isCollectorActive ? (r.classList.add("ht-btn-active"), r.style.background = "#0070f3", r.style.color = "#ffffff") : (r.classList.remove("ht-btn-active"), r.style.background = "#f1f5f9", r.style.color = "#334155"));
-      const d = this.element.querySelector(".ht-btn-speed span");
-      d && (d.innerText = `${e.speed}x`), e.currentText !== t.currentText && e.isTranslatorOpen && this.translateText(e.currentText);
+      i && (i.innerText = e.currentText || "Selecione ou clique em qualquer texto para traduzir em Libras");
+      const n = this.element.querySelector(".ht-translator-subtitle-gloss");
+      n && (e.currentGloss ? (n.innerHTML = `<span style="width: 14px; height: 14px; display: inline-flex; vertical-align: -2px; margin-right: 4px;">${r.libras}</span> Glosa Libras: [${e.currentGloss}]`, n.style.display = "block") : n.style.display = "none");
+      const a = this.element.querySelector(".ht-translator-card");
+      a && (a.style.background = e.opacity === 100 ? "#ffffff" : e.opacity === 50 ? "rgba(255, 255, 255, 0.82)" : "rgba(255, 255, 255, 0.45)");
+      const o = this.element.querySelector(".ht-avatar-name-badge"), d = this.element.querySelector(".ht-avatar-status-name"), u = e.avatar === "MARYA", c = u ? "Marya" : "Thiago", g = u ? "Hosana" : "Ícaro";
+      o && (o.innerText = c), d && (d.innerText = `Avatar 3D: ${c} (${g})`);
+      const p = this.element.querySelector(".ht-btn-collector");
+      p && (e.isCollectorActive ? (p.classList.add("ht-btn-active"), p.style.background = "#0070f3", p.style.color = "#ffffff") : (p.classList.remove("ht-btn-active"), p.style.background = "#f1f5f9", p.style.color = "#334155"));
+      const f = this.element.querySelector(".ht-btn-speed span");
+      f && (f.innerText = `${e.speed}x`);
     });
   }
-  translateText(e) {
-    this.renderer && (n.setState({ isPlaying: !0 }), this.renderer.sign(e, () => {
-      n.setState({ isPlaying: !1 });
-    }));
+  async translateText(e) {
+    !e || !e.trim() || await m.translateAndPlay(e);
   }
   render() {
     this.element && (this.element.innerHTML = `
@@ -1119,8 +1163,7 @@ class $ {
         position: fixed;
         bottom: 24px;
         right: 24px;
-        width: 320px;
-        height: 480px;
+        width: 340px;
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -1140,11 +1183,11 @@ class $ {
           justify-content: space-between;
           padding: 10px 14px;
           border-bottom: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.8);
+          background: rgba(255,255,255,0.85);
           cursor: grab;
           user-select: none;
         ">
-          <!-- Avatar Switcher -->
+          <!-- Avatar Switcher (Thiago <-> Marya) -->
           <button class="ht-btn-avatar-switch" style="
             display: flex;
             align-items: center;
@@ -1158,9 +1201,10 @@ class $ {
             color: #0070f3;
             cursor: pointer;
             outline: none;
-          " title="Alternar entre Thiago e Marya">
-            <span style="width: 14px; height: 14px; display: inline-block;">${l.libras}</span>
+          " title="Alternar entre Thiago (Ícaro) e Marya (Hosana)">
+            <span style="width: 14px; height: 14px; display: inline-block;">${r.libras}</span>
             <span class="ht-avatar-name-badge">Thiago</span>
+            <span style="width: 12px; height: 12px; display: inline-flex; color: #64748b;">${r.swap}</span>
           </button>
 
           <!-- Window Controls -->
@@ -1177,7 +1221,7 @@ class $ {
               align-items: center;
               justify-content: center;
             " aria-label="Minimizar janela">
-              <span style="width: 16px; height: 16px;">${l.minimize}</span>
+              <span style="width: 16px; height: 16px;">${r.minimize}</span>
             </button>
             <button class="ht-btn-close" style="
               width: 28px;
@@ -1191,48 +1235,103 @@ class $ {
               align-items: center;
               justify-content: center;
             " aria-label="Fechar tradutor de Libras">
-              <span style="width: 16px; height: 16px;">${l.close}</span>
+              <span style="width: 16px; height: 16px;">${r.close}</span>
             </button>
           </div>
         </div>
 
-        <!-- Canvas Body (Avatar) -->
-        <div class="ht-avatar-body" style="
-          flex: 1;
-          position: relative;
+        <!-- Body / Live 3D Motor Status & Subtitles -->
+        <div class="ht-translator-body" style="
+          padding: 16px;
           display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
+          flex-direction: column;
+          gap: 12px;
         ">
-          <canvas class="ht-avatar-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
           
+          <!-- 3D Engine Card -->
+          <div style="
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-radius: 14px;
+            padding: 14px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+          ">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;"></span>
+                <span style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: #94a3b8; text-transform: uppercase;">VLibras 3D Engine</span>
+              </div>
+              <button class="ht-btn-focus-3d" style="
+                background: rgba(255,255,255,0.12);
+                border: 1px solid rgba(255,255,255,0.2);
+                color: #ffffff;
+                font-size: 0.72rem;
+                font-weight: 600;
+                padding: 3px 8px;
+                border-radius: 6px;
+                cursor: pointer;
+              ">Focar Avatar 3D</button>
+            </div>
+
+            <div class="ht-avatar-status-name" style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">
+              Avatar 3D: Thiago (Ícaro)
+            </div>
+
+            <p style="font-size: 0.75rem; color: #94a3b8; margin: 0; line-height: 1.4;">
+              Motor oficial open-source do Governo Federal e UFPB. Sinalização em Libras autêntica com expressões faciais e datilologia.
+            </p>
+          </div>
+
           <!-- Subtitle Box -->
           <div class="ht-translator-subtitle" style="
-            position: absolute;
-            bottom: 8px;
-            left: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.78);
-            backdrop-filter: blur(8px);
-            border-radius: 10px;
-            padding: 8px 12px;
-            color: #ffffff;
-            font-size: 0.82rem;
-            line-height: 1.35;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            pointer-events: none;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
           ">
-            <span class="ht-translator-subtitle-text">Clique em qualquer texto do site para traduzir em Libras</span>
+            <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">
+              Texto Selecionado:
+            </div>
+            <div class="ht-translator-subtitle-text" style="
+              font-size: 0.85rem;
+              color: #0f172a;
+              font-weight: 500;
+              line-height: 1.4;
+              max-height: 80px;
+              overflow-y: auto;
+            ">
+              Clique em qualquer texto do site para traduzir em Libras
+            </div>
+            
+            <!-- Libras Grammatical Gloss -->
+            <div class="ht-translator-subtitle-gloss" style="
+              display: none;
+              font-size: 0.75rem;
+              color: #0284c7;
+              font-weight: 700;
+              background: #f0f9ff;
+              border: 1px dashed #bae6fd;
+              border-radius: 6px;
+              padding: 6px 8px;
+              line-height: 1.35;
+              text-transform: uppercase;
+              word-break: break-word;
+            "></div>
           </div>
+
         </div>
 
         <!-- Toolbar / Controls -->
         <div class="ht-translator-toolbar" style="
           padding: 8px 12px;
           border-top: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.9);
+          background: rgba(255,255,255,0.92);
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -1253,7 +1352,7 @@ class $ {
             cursor: pointer;
             transition: all 0.2s;
           " title="Seletor de Texto: clique em qualquer elemento do site">
-            <span style="width: 14px; height: 14px; display: inline-block;">${l.collector}</span>
+            <span style="width: 14px; height: 14px; display: inline-block;">${r.collector}</span>
             <span>Seletor</span>
           </button>
 
@@ -1270,8 +1369,8 @@ class $ {
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
-          " title="Alterar velocidade de sinalização">
-            <span style="width: 14px; height: 14px; display: inline-block;">${l.speed}</span>
+          " title="Alterar velocidade da sinalização">
+            <span style="width: 14px; height: 14px; display: inline-block;">${r.speed}</span>
             <span>1x</span>
           </button>
 
@@ -1288,7 +1387,7 @@ class $ {
             justify-content: center;
             cursor: pointer;
           " title="Repetir tradução">
-            <span style="width: 16px; height: 16px;">${l.repeat}</span>
+            <span style="width: 16px; height: 16px;">${r.repeat}</span>
           </button>
 
           <!-- Dictionary Button -->
@@ -1304,7 +1403,7 @@ class $ {
             justify-content: center;
             cursor: pointer;
           " title="Dicionário de Libras e Sinônimos">
-            <span style="width: 16px; height: 16px;">${l.dictionary}</span>
+            <span style="width: 16px; height: 16px;">${r.dictionary}</span>
           </button>
 
           <!-- Opacity Button -->
@@ -1320,7 +1419,7 @@ class $ {
             justify-content: center;
             cursor: pointer;
           " title="Alternar transparência da janela">
-            <span style="width: 16px; height: 16px;">${l.contrast}</span>
+            <span style="width: 16px; height: 16px;">${r.contrast}</span>
           </button>
         </div>
 
@@ -1331,66 +1430,71 @@ class $ {
     if (!this.element) return;
     const e = this.element.querySelector(".ht-btn-avatar-switch");
     e == null || e.addEventListener("click", () => {
-      const c = n.getState().avatar, u = c === "THIAGO" || c === "HUGO" ? "MARYA" : "THIAGO";
-      n.setState({ avatar: u });
+      const p = s.getState().avatar, f = p === "THIAGO" || p === "HUGO" ? "MARYA" : "THIAGO";
+      s.setState({ avatar: f }), m.setAvatar(f);
     });
-    const t = this.element.querySelector(".ht-btn-close");
+    const t = this.element.querySelector(".ht-btn-focus-3d");
     t == null || t.addEventListener("click", () => {
-      n.setState({ isTranslatorOpen: !1, isCollectorActive: !1 });
+      m.openPlayer();
     });
-    const i = this.element.querySelector(".ht-btn-minimize");
+    const i = this.element.querySelector(".ht-btn-close");
     i == null || i.addEventListener("click", () => {
+      s.setState({ isTranslatorOpen: !1, isCollectorActive: !1 }), m.closePlayer();
+    });
+    const n = this.element.querySelector(".ht-btn-minimize");
+    n == null || n.addEventListener("click", () => {
       this.toggleMinimize();
     });
-    const s = this.element.querySelector(".ht-btn-collector");
-    s == null || s.addEventListener("click", () => {
-      const c = n.getState().isCollectorActive;
-      n.setState({ isCollectorActive: !c });
+    const a = this.element.querySelector(".ht-btn-collector");
+    a == null || a.addEventListener("click", () => {
+      const p = s.getState().isCollectorActive;
+      s.setState({ isCollectorActive: !p });
     });
     const o = this.element.querySelector(".ht-btn-speed");
     o == null || o.addEventListener("click", () => {
-      const c = [1, 1.5, 2, 0.5], u = n.getState().speed, m = (c.indexOf(u) + 1) % c.length;
-      n.setState({ speed: c[m] });
+      var S, M;
+      const p = [1, 1.5, 2, 0.5], f = s.getState().speed, v = (p.indexOf(f) + 1) % p.length, k = p[v];
+      s.setState({ speed: k }), (M = (S = window.plugin) == null ? void 0 : S.player) != null && M.setSpeed && window.plugin.player.setSpeed(k);
     });
-    const r = this.element.querySelector(".ht-btn-repeat");
-    r == null || r.addEventListener("click", () => {
-      const c = n.getState().currentText;
-      c && this.translateText(c);
-    });
-    const d = this.element.querySelector(".ht-btn-dictionary");
+    const d = this.element.querySelector(".ht-btn-repeat");
     d == null || d.addEventListener("click", () => {
-      n.setState({ isDictionaryOpen: !0 });
+      const p = s.getState().currentText;
+      p && this.translateText(p);
     });
-    const p = this.element.querySelector(".ht-btn-opacity");
-    p == null || p.addEventListener("click", () => {
-      const c = [100, 50, 0], u = n.getState().opacity, m = (c.indexOf(u) + 1) % c.length;
-      n.setState({ opacity: c[m] });
+    const u = this.element.querySelector(".ht-btn-dictionary");
+    u == null || u.addEventListener("click", () => {
+      s.setState({ isDictionaryOpen: !0 });
+    });
+    const c = this.element.querySelector(".ht-btn-opacity");
+    c == null || c.addEventListener("click", () => {
+      const p = [100, 50, 0], f = s.getState().opacity, v = (p.indexOf(f) + 1) % p.length;
+      s.setState({ opacity: p[v] });
     });
     const g = this.element.querySelector(".ht-translator-header");
     g == null || g.addEventListener("mousedown", this.handleMouseDown.bind(this)), window.addEventListener("mousemove", this.handleMouseMove.bind(this)), window.addEventListener("mouseup", this.handleMouseUp.bind(this));
   }
   toggleMinimize() {
-    var s, o, r, d;
+    var i, n;
     this.isMinimized = !this.isMinimized;
-    const e = (s = this.element) == null ? void 0 : s.querySelector(".ht-translator-card"), t = (o = this.element) == null ? void 0 : o.querySelector(".ht-avatar-body"), i = (r = this.element) == null ? void 0 : r.querySelector(".ht-translator-toolbar");
-    e && t && i && (this.isMinimized ? (e.style.height = "48px", t.style.display = "none", i.style.display = "none") : (e.style.height = "480px", t.style.display = "flex", i.style.display = "flex", (d = this.renderer) == null || d.resize()));
+    const e = (i = this.element) == null ? void 0 : i.querySelector(".ht-translator-body"), t = (n = this.element) == null ? void 0 : n.querySelector(".ht-translator-toolbar");
+    e && t && (this.isMinimized ? (e.style.display = "none", t.style.display = "none") : (e.style.display = "flex", t.style.display = "flex"));
   }
   handleMouseDown(e) {
-    var s;
+    var n;
     if (e.target.closest("button")) return;
     this.isDragging = !0;
-    const t = (s = this.element) == null ? void 0 : s.querySelector(".ht-translator-card");
+    const t = (n = this.element) == null ? void 0 : n.querySelector(".ht-translator-card");
     if (!t) return;
     const i = t.getBoundingClientRect();
     this.dragStartX = e.clientX - i.left, this.dragStartY = e.clientY - i.top, t.style.cursor = "grabbing";
   }
   handleMouseMove(e) {
-    var g;
+    var c;
     if (!this.isDragging) return;
-    const t = (g = this.element) == null ? void 0 : g.querySelector(".ht-translator-card");
+    const t = (c = this.element) == null ? void 0 : c.querySelector(".ht-translator-card");
     if (!t) return;
-    const i = e.clientX - this.dragStartX, s = e.clientY - this.dragStartY, o = window.innerWidth - t.offsetWidth - 10, r = window.innerHeight - t.offsetHeight - 10, d = Math.max(10, Math.min(o, i)), p = Math.max(10, Math.min(r, s));
-    t.style.left = `${d}px`, t.style.top = `${p}px`, t.style.right = "auto", t.style.bottom = "auto";
+    const i = e.clientX - this.dragStartX, n = e.clientY - this.dragStartY, a = window.innerWidth - t.offsetWidth - 10, o = window.innerHeight - t.offsetHeight - 10, d = Math.max(10, Math.min(a, i)), u = Math.max(10, Math.min(o, n));
+    t.style.left = `${d}px`, t.style.top = `${u}px`, t.style.right = "auto", t.style.bottom = "auto";
   }
   handleMouseUp() {
     var e;
@@ -1401,18 +1505,24 @@ class $ {
     }
   }
   destroy() {
-    var e, t;
-    (e = this.renderer) == null || e.destroy(), (t = this.element) == null || t.remove();
+    var e;
+    (e = this.element) == null || e.remove();
   }
 }
-class O {
+class j {
   constructor() {
-    a(this, "element", null);
+    l(this, "element", null);
     this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-addons-panel ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-label", "Painel de Recursos de Acessibilidade"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), this.attachEvents(), n.subscribe((e) => {
-      this.element && (this.element.style.display = e.isAddonsOpen ? "flex" : "none", this.updateActiveIndicators());
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-addons-panel ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-label", "Painel de Recursos de Acessibilidade"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), this.attachEvents(), s.subscribe((e) => {
+      if (this.element) {
+        if (this.element.style.display = e.isAddonsOpen ? "flex" : "none", e.isAddonsOpen) {
+          const t = this.element.querySelector(".ht-addons-card");
+          t && (t.style.transform = "translateX(0)");
+        }
+        this.updateActiveIndicators();
+      }
     });
   }
   render() {
@@ -1422,7 +1532,7 @@ class O {
         inset: 0;
         background: rgba(0, 0, 0, 0.45);
         backdrop-filter: blur(4px);
-        z-index: 2147483644;
+        z-index: 2147483646;
         display: flex;
         justify-content: flex-end;
       ">
@@ -1435,7 +1545,8 @@ class O {
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          animation: htSlideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          transform: translateX(0);
+          animation: htSlideInRight 0.28s cubic-bezier(0.16, 1, 0.3, 1);
         ">
           
           <!-- Header -->
@@ -1458,7 +1569,7 @@ class O {
                 align-items: center;
                 justify-content: center;
               ">
-                <span style="width: 22px; height: 22px; display: inline-block;">${l.accessibility}</span>
+                <span style="width: 22px; height: 22px; display: inline-block;">${r.accessibility}</span>
               </div>
               <div>
                 <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">Recursos Assistivos</h2>
@@ -1478,7 +1589,7 @@ class O {
               align-items: center;
               justify-content: center;
             " aria-label="Fechar recursos assistivos">
-              <span style="width: 20px; height: 20px;">${l.close}</span>
+              <span style="width: 20px; height: 20px;">${r.close}</span>
             </button>
           </div>
 
@@ -1494,57 +1605,62 @@ class O {
             
             <!-- Category: AI Assistant / Libras -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                <span>🤖 Assistente IA & Libras</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.libras}</span>
+                <span>Tradutor de Libras 3D</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("signTranslator", "Tradutor de Libras", "Avatar 3D em tempo real", l.libras)}
-                ${this.renderToolButton("synonymsMeanings", "Dicionário Libras", "Sinais e significados", l.dictionary)}
+                ${this.renderToolButton("signTranslator", "Tradutor de Libras", "Avatar 3D em tempo real", r.libras)}
+                ${this.renderToolButton("synonymsMeanings", "Dicionário Libras", "Sinais e significados", r.dictionary)}
               </div>
             </div>
 
             <!-- Category: Font Control -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px;">
-                <span>🔤 Controle de Fonte</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.fontSize}</span>
+                <span>Controle de Fonte</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("fontSize", "Tamanho da Fonte", "3 opções (+0%, +15%, +30%)", l.fontSize)}
-                ${this.renderToolButton("textStyle", "Fonte Legível", "Adaptada para dislexia", l.dyslexicFont)}
-                ${this.renderToolButton("lineHeight", "Espaço Linhas", "3 opções de entrelinha", l.lineHeight)}
-                ${this.renderToolButton("letterSpacing", "Espaço Letras", "3 opções de espaçamento", l.letterSpacing)}
-                ${this.renderToolButton("highlightLetters", "Destacar Letras", "Primeira letra colorida", l.highlightLetters)}
+                ${this.renderToolButton("fontSize", "Tamanho da Fonte", "3 opções (+0%, +15%, +30%)", r.fontSize)}
+                ${this.renderToolButton("textStyle", "Fonte Legível", "Adaptada para dislexia", r.dyslexicFont)}
+                ${this.renderToolButton("lineHeight", "Espaço Linhas", "3 opções de entrelinha", r.lineHeight)}
+                ${this.renderToolButton("letterSpacing", "Espaço Letras", "3 opções de espaçamento", r.letterSpacing)}
+                ${this.renderToolButton("highlightLetters", "Destacar Letras", "Primeira letra colorida", r.highlightLetters)}
               </div>
             </div>
 
             <!-- Category: Navigation & Reading -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px;">
-                <span>🧭 Navegação & Leitura</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.readingGuide}</span>
+                <span>Navegação & Leitura</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("pageSpeech", "Leitor de Sites", "Leitura em voz alta (TTS)", l.speech)}
-                ${this.renderToolButton("readingGuide", "Guia de Leitura", "Régua horizontal móvel", l.readingGuide)}
-                ${this.renderToolButton("readingMask", "Máscara Leitura", "Foco na linha atual", l.readingMask)}
-                ${this.renderToolButton("magnifier", "Lupa de Conteúdo", "Lente de aumento no mouse", l.magnifier)}
-                ${this.renderToolButton("highlightLinks", "Destacar Links", "Bordas e realce amarelo", l.highlightLinks)}
-                ${this.renderToolButton("highlightHeadings", "Destacar Títulos", "Marcações H1 a H6", l.highlightHeadings)}
-                ${this.renderToolButton("hideImages", "Ocultar Imagens", "Diminui poluição visual", l.hideImages)}
-                ${this.renderToolButton("pauseAnimations", "Pausar Animações", "Congela GIFs e transições", l.pauseAnimations)}
-                ${this.renderToolButton("disableSounds", "Parar Sons", "Muta mídias da página", l.disableSounds)}
-                ${this.renderToolButton("readerMode", "Modo Leitura", "Texto limpo sem distrações", l.readerMode)}
+                ${this.renderToolButton("pageSpeech", "Leitor de Sites", "Leitura em voz alta (TTS)", r.speech)}
+                ${this.renderToolButton("pageStructure", "Estrutura da Página", "Navegação por títulos e seções", r.pageStructure)}
+                ${this.renderToolButton("readingGuide", "Guia de Leitura", "Régua horizontal móvel", r.readingGuide)}
+                ${this.renderToolButton("readingMask", "Máscara Leitura", "Foco na linha atual", r.readingMask)}
+                ${this.renderToolButton("magnifier", "Lupa de Conteúdo", "Lente de aumento no mouse", r.magnifier)}
+                ${this.renderToolButton("highlightLinks", "Destacar Links", "Bordas e realce amarelo", r.highlightLinks)}
+                ${this.renderToolButton("highlightHeadings", "Destacar Títulos", "Marcações H1 a H6", r.highlightHeadings)}
+                ${this.renderToolButton("hideImages", "Ocultar Imagens", "Diminui poluição visual", r.hideImages)}
+                ${this.renderToolButton("pauseAnimations", "Pausar Animações", "Congela GIFs e transições", r.pauseAnimations)}
+                ${this.renderToolButton("disableSounds", "Parar Sons", "Muta mídias da página", r.disableSounds)}
+                ${this.renderToolButton("readerMode", "Modo Leitura", "Texto limpo sem distrações", r.readerMode)}
               </div>
             </div>
 
             <!-- Category: Color Control -->
             <div>
-              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px;">
-                <span>🎨 Controle de Cores</span>
+              <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.contrast}</span>
+                <span>Controle de Cores</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("contrastMode", "Contraste", "Escuro, Claro, Invertido", l.contrast)}
-                ${this.renderToolButton("saturationMode", "Saturação", "Monocromático e Níveis", l.saturation)}
-                ${this.renderToolButton("colorblindMode", "Modo Daltônico", "Filtros Protanopia / Trit.", l.colorblind)}
+                ${this.renderToolButton("contrastMode", "Contraste", "Escuro, Claro, Invertido", r.contrast)}
+                ${this.renderToolButton("saturationMode", "Saturação", "Monocromático e Níveis", r.saturation)}
+                ${this.renderToolButton("colorblindMode", "Modo Daltônico", "Filtros Protanopia / Trit.", r.colorblind)}
               </div>
             </div>
 
@@ -1573,7 +1689,7 @@ class O {
               cursor: pointer;
               transition: background 0.2s;
             ">
-              <span style="width: 16px; height: 16px;">${l.reset}</span>
+              <span style="width: 16px; height: 16px;">${r.reset}</span>
               <span>Limpar configurações</span>
             </button>
 
@@ -1591,7 +1707,7 @@ class O {
       </div>
     `);
   }
-  renderToolButton(e, t, i, s) {
+  renderToolButton(e, t, i, n) {
     return `
       <button class="ht-tool-btn" data-tool="${e}" style="
         display: flex;
@@ -1609,7 +1725,7 @@ class O {
       ">
         <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <div class="ht-tool-icon" style="width: 28px; height: 28px; color: #475569;">
-            ${s}
+            ${n}
           </div>
           <span class="ht-tool-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; display: inline-block;"></span>
         </div>
@@ -1622,96 +1738,99 @@ class O {
     if (!this.element) return;
     const e = this.element.querySelector(".ht-addons-close-btn");
     e == null || e.addEventListener("click", () => {
-      n.setState({ isAddonsOpen: !1 });
+      s.setState({ isAddonsOpen: !1 });
     });
     const t = this.element.querySelector(".ht-addons-backdrop");
-    t == null || t.addEventListener("click", (o) => {
-      o.target === t && n.setState({ isAddonsOpen: !1 });
+    t == null || t.addEventListener("click", (a) => {
+      a.target === t && s.setState({ isAddonsOpen: !1 });
     });
     const i = this.element.querySelector(".ht-btn-reset-all");
     i == null || i.addEventListener("click", () => {
-      n.reset();
-    }), this.element.querySelectorAll(".ht-tool-btn").forEach((o) => {
-      o.addEventListener("click", () => {
-        const r = o.getAttribute("data-tool");
-        r && this.handleToolClick(r);
+      s.reset();
+    }), this.element.querySelectorAll(".ht-tool-btn").forEach((a) => {
+      a.addEventListener("click", () => {
+        const o = a.getAttribute("data-tool");
+        o && this.handleToolClick(o);
       });
     });
   }
   handleToolClick(e) {
-    const t = n.getState();
+    const t = s.getState();
     switch (e) {
       case "signTranslator":
-        n.setState({ isTranslatorOpen: !t.isTranslatorOpen });
+        s.setState({ isTranslatorOpen: !t.isTranslatorOpen });
         break;
       case "synonymsMeanings":
-        n.setState({ isDictionaryOpen: !0 });
+        s.setState({ isDictionaryOpen: !0 });
         break;
       case "fontSize":
-        n.setState({ fontSizeLevel: (t.fontSizeLevel + 1) % 3 });
+        s.setState({ fontSizeLevel: (t.fontSizeLevel + 1) % 3 });
         break;
       case "textStyle":
-        n.setState({ dyslexicFont: !t.dyslexicFont });
+        s.setState({ dyslexicFont: !t.dyslexicFont });
         break;
       case "lineHeight":
-        n.setState({ lineHeightLevel: (t.lineHeightLevel + 1) % 3 });
+        s.setState({ lineHeightLevel: (t.lineHeightLevel + 1) % 3 });
         break;
       case "letterSpacing":
-        n.setState({ letterSpacingLevel: (t.letterSpacingLevel + 1) % 3 });
+        s.setState({ letterSpacingLevel: (t.letterSpacingLevel + 1) % 3 });
         break;
       case "highlightLetters":
-        n.setState({ highlightLetters: !t.highlightLetters });
+        s.setState({ highlightLetters: !t.highlightLetters });
         break;
       case "pageSpeech":
-        n.setState({ pageSpeechActive: !t.pageSpeechActive });
+        s.setState({ pageSpeechActive: !t.pageSpeechActive });
+        break;
+      case "pageStructure":
+        s.setState({ isPageStructureOpen: !0 });
         break;
       case "readingGuide":
-        n.setState({ readingGuideActive: !t.readingGuideActive });
+        s.setState({ readingGuideActive: !t.readingGuideActive });
         break;
       case "readingMask":
-        n.setState({ readingMaskActive: !t.readingMaskActive });
+        s.setState({ readingMaskActive: !t.readingMaskActive });
         break;
       case "magnifier":
-        n.setState({ magnifierActive: !t.magnifierActive });
+        s.setState({ magnifierActive: !t.magnifierActive });
         break;
       case "highlightLinks":
-        n.setState({ highlightLinks: !t.highlightLinks });
+        s.setState({ highlightLinks: !t.highlightLinks });
         break;
       case "highlightHeadings":
-        n.setState({ highlightHeadings: !t.highlightHeadings });
+        s.setState({ highlightHeadings: !t.highlightHeadings });
         break;
       case "hideImages":
-        n.setState({ hideImages: !t.hideImages });
+        s.setState({ hideImages: !t.hideImages });
         break;
       case "pauseAnimations":
-        n.setState({ pauseAnimations: !t.pauseAnimations });
+        s.setState({ pauseAnimations: !t.pauseAnimations });
         break;
       case "disableSounds":
-        n.setState({ disableSounds: !t.disableSounds });
+        s.setState({ disableSounds: !t.disableSounds });
         break;
       case "readerMode":
-        n.setState({ readerMode: !t.readerMode });
+        s.setState({ readerMode: !t.readerMode });
         break;
       case "contrastMode": {
-        const i = ["none", "high-contrast-dark", "high-contrast-light", "invert"], s = i[(i.indexOf(t.contrastMode) + 1) % i.length];
-        n.setState({ contrastMode: s });
+        const i = ["none", "high-contrast-dark", "high-contrast-light", "invert"], n = i[(i.indexOf(t.contrastMode) + 1) % i.length];
+        s.setState({ contrastMode: n });
         break;
       }
       case "saturationMode": {
-        const i = ["normal", "monochrome", "low-saturation", "high-saturation"], s = i[(i.indexOf(t.saturationMode) + 1) % i.length];
-        n.setState({ saturationMode: s });
+        const i = ["normal", "monochrome", "low-saturation", "high-saturation"], n = i[(i.indexOf(t.saturationMode) + 1) % i.length];
+        s.setState({ saturationMode: n });
         break;
       }
       case "colorblindMode": {
-        const i = ["none", "protanopia", "deuteranopia", "tritanopia", "achromatopsia"], s = i[(i.indexOf(t.colorblindMode) + 1) % i.length];
-        n.setState({ colorblindMode: s });
+        const i = ["none", "protanopia", "deuteranopia", "tritanopia", "achromatopsia"], n = i[(i.indexOf(t.colorblindMode) + 1) % i.length];
+        s.setState({ colorblindMode: n });
         break;
       }
     }
   }
   updateActiveIndicators() {
     if (!this.element) return;
-    const e = n.getState();
+    const e = s.getState();
     let t = 0;
     const i = {
       signTranslator: { active: e.isTranslatorOpen },
@@ -1722,6 +1841,7 @@ class O {
       letterSpacing: { active: e.letterSpacingLevel > 0, label: e.letterSpacingLevel === 0 ? "Padrão" : e.letterSpacingLevel === 1 ? "0.12em" : "0.24em" },
       highlightLetters: { active: e.highlightLetters },
       pageSpeech: { active: e.pageSpeechActive },
+      pageStructure: { active: e.isPageStructureOpen },
       readingGuide: { active: e.readingGuideActive },
       readingMask: { active: e.readingMaskActive },
       magnifier: { active: e.magnifierActive },
@@ -1735,30 +1855,30 @@ class O {
       saturationMode: { active: e.saturationMode !== "normal", label: e.saturationMode === "normal" ? "Padrão" : e.saturationMode },
       colorblindMode: { active: e.colorblindMode !== "none", label: e.colorblindMode === "none" ? "Padrão" : e.colorblindMode }
     };
-    Object.entries(i).forEach(([o, r]) => {
-      var p;
-      const d = (p = this.element) == null ? void 0 : p.querySelector(`[data-tool="${o}"]`);
+    Object.entries(i).forEach(([a, o]) => {
+      var u;
+      const d = (u = this.element) == null ? void 0 : u.querySelector(`[data-tool="${a}"]`);
       if (d) {
-        const g = d.querySelector(".ht-tool-status-dot"), c = d.querySelector(".ht-tool-icon"), u = d.querySelector(".ht-tool-sub");
-        r.active ? (t++, d.style.borderColor = "#0070f3", d.style.background = "#f0f7ff", g && (g.style.background = "#0070f3"), c && (c.style.color = "#0070f3")) : (d.style.borderColor = "#e2e8f0", d.style.background = "#f8fafc", g && (g.style.background = "#cbd5e1"), c && (c.style.color = "#475569")), r.label && u && (u.innerText = `Ativo: ${r.label}`);
+        const c = d.querySelector(".ht-tool-status-dot"), g = d.querySelector(".ht-tool-icon"), p = d.querySelector(".ht-tool-sub");
+        o.active ? (t++, d.style.borderColor = "#0070f3", d.style.background = "#f0f7ff", c && (c.style.background = "#0070f3"), g && (g.style.color = "#0070f3")) : (d.style.borderColor = "#e2e8f0", d.style.background = "#f8fafc", c && (c.style.background = "#cbd5e1"), g && (g.style.color = "#475569")), o.label && p && (p.innerText = `Ativo: ${o.label}`);
       }
     });
-    const s = this.element.querySelector(".ht-active-counter-badge");
-    s && (s.innerHTML = `${t} ${t === 1 ? "ativo" : "ativos"}`);
+    const n = this.element.querySelector(".ht-active-counter-badge");
+    n && (n.innerHTML = `${t} ${t === 1 ? "ativo" : "ativos"}`);
   }
   destroy() {
     var e;
     (e = this.element) == null || e.remove();
   }
 }
-class z {
+class I {
   constructor(e) {
-    a(this, "element", null);
-    a(this, "onSignSelected");
+    l(this, "element", null);
+    l(this, "onSignSelected");
     this.onSignSelected = e, this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-dictionary-modal ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-modal", "true"), this.element.setAttribute("aria-label", "Dicionário de Libras"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), n.subscribe((e) => {
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-dictionary-modal ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-modal", "true"), this.element.setAttribute("aria-label", "Dicionário de Libras"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), s.subscribe((e) => {
       if (this.element && (this.element.style.display = e.isDictionaryOpen ? "flex" : "none", e.isDictionaryOpen)) {
         const t = this.element.querySelector(".ht-dict-search-input");
         t == null || t.focus();
@@ -1774,12 +1894,12 @@ class z {
           <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #eef0f3;">
             <div style="display:flex;align-items:center;gap:10px;">
               <div style="width:36px;height:36px;border-radius:10px;background:#eef6ff;color:#0070f3;display:flex;align-items:center;justify-content:center;">
-                <span style="width:20px;height:20px;display:inline-block;">${l.dictionary}</span>
+                <span style="width:20px;height:20px;display:inline-block;">${r.dictionary}</span>
               </div>
               <h2 style="margin:0;font-size:1.2rem;font-weight:700;color:#1a202c;">Dicionário de Libras</h2>
             </div>
             <button class="ht-dict-close-btn" style="background:none;border:none;cursor:pointer;color:#718096;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;" aria-label="Fechar dicionário">
-              <span style="width:20px;height:20px;">${l.close}</span>
+              <span style="width:20px;height:20px;">${r.close}</span>
             </button>
           </div>
 
@@ -1797,7 +1917,7 @@ class z {
 
           <!-- Footer -->
           <div style="padding:14px 24px;background:#f8fafc;border-top:1px solid #eef0f3;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:0.85rem;color:#718096;">Total de termos cadastrados: ${Object.keys(b).length}</span>
+            <span style="font-size:0.85rem;color:#718096;">Total de termos cadastrados: ${Object.keys(x).length}</span>
             <button class="ht-dict-close-btn2" style="background:#0070f3;color:#ffffff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.88rem;cursor:pointer;">Concluído</button>
           </div>
 
@@ -1806,23 +1926,23 @@ class z {
     `, this.attachEvents());
   }
   renderList(e = "") {
-    const t = Object.keys(b).filter((i) => i.includes(e.toLowerCase()));
+    const t = Object.keys(x).filter((i) => i.includes(e.toLowerCase()));
     return t.length === 0 ? `
         <div style="text-align:center;padding:32px;color:#a0aec0;">
           <p style="margin:0;font-size:0.95rem;">Nenhum sinal encontrado para "${e}".</p>
           <p style="margin:6px 0 0;font-size:0.85rem;">Tente pesquisar por termos comuns como "acessibilidade", "libras", "olá", "obrigado".</p>
         </div>
       ` : t.map((i) => {
-      const s = b[i], o = i.charAt(0).toUpperCase() + i.slice(1);
+      const n = x[i], a = i.charAt(0).toUpperCase() + i.slice(1);
       return `
         <div class="ht-dict-item" data-term="${i}" style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;background:#ffffff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;transition:box-shadow 0.2s;">
           <div style="flex:1;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <strong style="font-size:1rem;color:#1a202c;">${o}</strong>
-              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${s.category}</span>
+              <strong style="font-size:1rem;color:#1a202c;">${a}</strong>
+              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${n.category}</span>
             </div>
-            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${s.definition}</p>
-            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${s.description}</p>
+            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${n.definition}</p>
+            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${n.description}</p>
           </div>
           <button class="ht-dict-sign-btn" data-term="${i}" style="background:#0070f3;color:#ffffff;border:none;border-radius:8px;padding:8px 12px;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;">
             <span>Ver Sinal</span>
@@ -1833,19 +1953,19 @@ class z {
   }
   attachEvents() {
     if (!this.element) return;
-    this.element.querySelectorAll(".ht-dict-close-btn, .ht-dict-close-btn2").forEach((o) => {
-      o.addEventListener("click", () => {
-        n.setState({ isDictionaryOpen: !1 });
+    this.element.querySelectorAll(".ht-dict-close-btn, .ht-dict-close-btn2").forEach((a) => {
+      a.addEventListener("click", () => {
+        s.setState({ isDictionaryOpen: !1 });
       });
     });
     const t = this.element.querySelector(".ht-modal-backdrop");
-    t == null || t.addEventListener("click", (o) => {
-      o.target === t && n.setState({ isDictionaryOpen: !1 });
+    t == null || t.addEventListener("click", (a) => {
+      a.target === t && s.setState({ isDictionaryOpen: !1 });
     });
-    const i = this.element.querySelector(".ht-dict-search-input"), s = this.element.querySelector(".ht-dict-list");
-    i == null || i.addEventListener("input", (o) => {
-      const r = o.target.value;
-      s && (s.innerHTML = this.renderList(r), this.attachSignButtons());
+    const i = this.element.querySelector(".ht-dict-search-input"), n = this.element.querySelector(".ht-dict-list");
+    i == null || i.addEventListener("input", (a) => {
+      const o = a.target.value;
+      n && (n.innerHTML = this.renderList(o), this.attachSignButtons());
     }), this.attachSignButtons();
   }
   attachSignButtons() {
@@ -1853,7 +1973,7 @@ class z {
     this.element.querySelectorAll(".ht-dict-sign-btn").forEach((t) => {
       t.addEventListener("click", () => {
         const i = t.getAttribute("data-term");
-        i && (n.setState({ isDictionaryOpen: !1, isTranslatorOpen: !0 }), this.onSignSelected(i));
+        i && (s.setState({ isDictionaryOpen: !1, isTranslatorOpen: !0 }), this.onSignSelected(i));
       });
     });
   }
@@ -1862,79 +1982,276 @@ class z {
     (e = this.element) == null || e.remove();
   }
 }
-class f {
+class D {
+  constructor() {
+    l(this, "element", null);
+    this.init();
+  }
+  init() {
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-page-structure-modal ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-modal", "true"), this.element.setAttribute("aria-label", "Estrutura da Página e Navegação por Títulos"), this.element.style.display = "none", document.body.appendChild(this.element), s.subscribe((e) => {
+      this.element && (e.isPageStructureOpen ? (this.render(), this.element.style.display = "flex") : this.element.style.display = "none");
+    });
+  }
+  scanStructure() {
+    const e = Array.from(
+      document.querySelectorAll('h1, h2, h3, h4, h5, h6, nav, main, header, footer, [role="heading"], [role="banner"], [role="navigation"], [role="main"]')
+    ), t = [];
+    return e.forEach((i) => {
+      if (i.closest(".ht-widget-root") || i.closest(".ht-skip") || i.closest("#vlibras-app-root"))
+        return;
+      const n = (i.innerText || i.textContent || "").trim().replace(/\s+/g, " ");
+      if (!n && !i.getAttribute("aria-label")) return;
+      const a = i.tagName.toLowerCase();
+      let o = 1, d = n;
+      a.startsWith("h") && a.length === 2 ? o = parseInt(a[1], 10) : a === "header" || i.getAttribute("role") === "banner" ? (o = 1, d = d || "Cabeçalho do Site") : a === "nav" || i.getAttribute("role") === "navigation" ? (o = 2, d = d || "Menu de Navegação") : a === "main" || i.getAttribute("role") === "main" ? (o = 1, d = d || "Conteúdo Principal") : a === "footer" && (o = 1, d = d || "Rodapé da Página"), d.length > 80 && (d = d.slice(0, 80) + "..."), t.push({
+        element: i,
+        tag: a.toUpperCase(),
+        level: o,
+        text: d
+      });
+    }), t;
+  }
+  render() {
+    if (!this.element) return;
+    const e = this.scanStructure();
+    this.element.innerHTML = `
+      <div class="ht-structure-backdrop" style="
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(4px);
+        z-index: 2147483645;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      ">
+        <div class="ht-structure-card" style="
+          background: #ffffff;
+          border-radius: 16px;
+          max-width: 560px;
+          width: 100%;
+          max-height: 85vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+          overflow: hidden;
+        ">
+          <!-- Header -->
+          <div style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-bottom: 1px solid #eef0f3;
+            background: #ffffff;
+          ">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                background: #eef6ff;
+                color: #0070f3;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+                <span style="width: 20px; height: 20px; display: inline-block;">${r.pageStructure}</span>
+              </div>
+              <div>
+                <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">Estrutura da Página</h2>
+                <span style="font-size: 0.8rem; color: #64748b;">Navegue rapidamente pelos títulos e seções</span>
+              </div>
+            </div>
+
+            <button class="ht-structure-close-btn" style="
+              width: 32px;
+              height: 32px;
+              border-radius: 8px;
+              background: #f1f5f9;
+              border: none;
+              color: #475569;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            " aria-label="Fechar estrutura da página">
+              <span style="width: 18px; height: 18px;">${r.close}</span>
+            </button>
+          </div>
+
+          <!-- List of Headings / Landmarks -->
+          <div class="ht-structure-list" style="
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          ">
+            ${e.length === 0 ? `
+              <div style="text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.95rem;">
+                Nenhum cabeçalho ou seção estrutural identificado nesta página.
+              </div>
+            ` : e.map((a, o) => `
+              <button class="ht-structure-item-btn" data-index="${o}" style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 14px;
+                margin-left: ${(a.level - 1) * 16}px;
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                cursor: pointer;
+                text-align: left;
+                transition: all 0.15s ease;
+                outline: none;
+              ">
+                <span style="
+                  font-size: 0.72rem;
+                  font-weight: 800;
+                  color: #0070f3;
+                  background: #eef6ff;
+                  padding: 2px 7px;
+                  border-radius: 4px;
+                  letter-spacing: 0.05em;
+                ">${a.tag}</span>
+                <span style="
+                  font-size: 0.88rem;
+                  color: #1e293b;
+                  font-weight: ${a.level === 1 ? "700" : "500"};
+                  line-height: 1.35;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                ">${a.text}</span>
+              </button>
+            `).join("")}
+          </div>
+
+          <!-- Footer -->
+          <div style="
+            padding: 12px 20px;
+            border-top: 1px solid #eef0f3;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #64748b;
+          ">
+            <span>${e.length} itens estruturais encontrados</span>
+            <span>Clique para saltar diretamente para a seção</span>
+          </div>
+        </div>
+      </div>
+    `;
+    const t = this.element.querySelector(".ht-structure-close-btn");
+    t == null || t.addEventListener("click", () => {
+      s.setState({ isPageStructureOpen: !1 });
+    });
+    const i = this.element.querySelector(".ht-structure-backdrop");
+    i == null || i.addEventListener("click", (a) => {
+      a.target === i && s.setState({ isPageStructureOpen: !1 });
+    }), this.element.querySelectorAll(".ht-structure-item-btn").forEach((a) => {
+      a.addEventListener("click", () => {
+        var d;
+        const o = a.getAttribute("data-index");
+        if (o !== null) {
+          const u = parseInt(o, 10), c = (d = e[u]) == null ? void 0 : d.element;
+          if (c) {
+            s.setState({ isPageStructureOpen: !1, isAddonsOpen: !1 }), c.scrollIntoView({ behavior: "smooth", block: "center" });
+            const g = c.style.transition, p = c.style.outline, f = c.style.outlineOffset;
+            c.style.transition = "outline 0.2s ease", c.style.outline = "4px solid #0070f3", c.style.outlineOffset = "4px", c.hasAttribute("tabindex") || c.setAttribute("tabindex", "-1"), c.focus(), setTimeout(() => {
+              c.style.outline = p, c.style.outlineOffset = f, c.style.transition = g;
+            }, 1800);
+          }
+        }
+      });
+    });
+  }
+  destroy() {
+    var e;
+    (e = this.element) == null || e.remove();
+  }
+}
+class b {
   constructor(e = {}) {
-    a(this, "options");
-    a(this, "styleManager");
-    a(this, "collectorManager");
-    a(this, "speechManager");
-    a(this, "audioManager");
-    a(this, "readingToolsManager");
-    a(this, "launcher");
-    a(this, "translatorWindow");
-    a(this, "addonsPanel");
-    a(this, "dictionaryModal");
-    this.options = { ...S, ...e }, n.setState({
+    l(this, "options");
+    l(this, "styleManager");
+    l(this, "collectorManager");
+    l(this, "speechManager");
+    l(this, "audioManager");
+    l(this, "readingToolsManager");
+    l(this, "launcher");
+    l(this, "translatorWindow");
+    l(this, "addonsPanel");
+    l(this, "dictionaryModal");
+    l(this, "pageStructureModal");
+    this.options = { ...T, ...e }, s.setState({
       avatar: this.options.avatar,
       opacity: this.options.opacity
-    }), this.options.highContrast && n.setState({ contrastMode: "high-contrast-dark" }), this.styleManager = new M(), this.speechManager = new A(), this.audioManager = new L(), this.readingToolsManager = new C(), this.translatorWindow = new $(), this.addonsPanel = new O(), this.dictionaryModal = new z((t) => {
+    }), this.options.highContrast && s.setState({ contrastMode: "high-contrast-dark" }), this.styleManager = new $(), this.speechManager = new O(), this.audioManager = new z(), this.readingToolsManager = new B(), m.init(), this.translatorWindow = new P(), this.addonsPanel = new j(), this.dictionaryModal = new I((t) => {
       this.translate(t);
-    }), this.collectorManager = new T((t) => {
+    }), this.pageStructureModal = new D(), this.collectorManager = new C((t) => {
       this.translate(t);
-    }), this.launcher = new E(this.options.side, this.options.align), n.subscribe((t) => {
+    }), this.launcher = new q(this.options.side, this.options.align), s.subscribe((t) => {
       this.styleManager.apply(t);
-    }), this.styleManager.apply(n.getState()), this.setupKeyboardShortcuts(), console.log("%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)", "color: #0070f3; font-weight: bold;", "color: inherit;");
+    }), this.styleManager.apply(s.getState()), this.setupKeyboardShortcuts(), console.log("%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)", "color: #0070f3; font-weight: bold;", "color: inherit;");
   }
   setupKeyboardShortcuts() {
     window.addEventListener("keydown", (e) => {
       if (e.altKey && (e.key === "a" || e.key === "A")) {
         e.preventDefault();
-        const t = n.getState().isAddonsOpen;
-        n.setState({ isAddonsOpen: !t });
+        const t = s.getState().isAddonsOpen;
+        s.setState({ isAddonsOpen: !t });
       }
       if (e.altKey && (e.key === "l" || e.key === "L")) {
         e.preventDefault();
-        const t = n.getState().isTranslatorOpen;
-        n.setState({ isTranslatorOpen: !t });
+        const t = s.getState().isTranslatorOpen;
+        s.setState({ isTranslatorOpen: !t });
       }
-      e.key === "Escape" && n.setState({
+      e.key === "Escape" && s.setState({
         isAddonsOpen: !1,
         isDictionaryOpen: !1,
-        isCollectorActive: !1
+        isCollectorActive: !1,
+        isPageStructureOpen: !1
       });
     });
   }
   openTranslator() {
-    n.setState({ isTranslatorOpen: !0 });
+    s.setState({ isTranslatorOpen: !0 });
   }
   closeTranslator() {
-    n.setState({ isTranslatorOpen: !1, isCollectorActive: !1 });
+    s.setState({ isTranslatorOpen: !1, isCollectorActive: !1 });
   }
   openAddons() {
-    n.setState({ isAddonsOpen: !0 });
+    s.setState({ isAddonsOpen: !0 });
   }
   closeAddons() {
-    n.setState({ isAddonsOpen: !1 });
+    s.setState({ isAddonsOpen: !1 });
   }
   translate(e) {
-    n.setState({ isTranslatorOpen: !0, currentText: e }), this.translatorWindow.translateText(e);
+    this.translatorWindow.translateText(e);
   }
   setAvatar(e) {
-    n.setState({ avatar: e });
+    s.setState({ avatar: e }), m.setAvatar(e);
   }
   reset() {
-    n.reset();
+    s.reset();
   }
   destroy() {
-    this.styleManager.destroy(), this.collectorManager.destroy(), this.speechManager.stop(), this.audioManager.destroy(), this.readingToolsManager.destroy(), this.launcher.destroy(), this.translatorWindow.destroy(), this.addonsPanel.destroy(), this.dictionaryModal.destroy();
+    this.styleManager.destroy(), this.collectorManager.destroy(), this.speechManager.stop(), this.audioManager.destroy(), this.readingToolsManager.destroy(), this.launcher.destroy(), this.translatorWindow.destroy(), this.addonsPanel.destroy(), this.dictionaryModal.destroy(), this.pageStructureModal.destroy();
   }
 }
-const B = f, P = f, I = f;
-typeof window < "u" && (window.Mahoraga = f, window.MahoragaWidget = f, window.HT = f, window.HandTalkWidget = f);
+const F = b, N = b, R = b;
+typeof window < "u" && (window.Mahoraga = b, window.MahoragaWidget = b, window.HT = b, window.HandTalkWidget = b);
 export {
-  I as HT,
-  f as HandTalkWidget,
-  P as Mahoraga,
-  B as MahoragaWidget,
-  f as default
+  R as HT,
+  b as HandTalkWidget,
+  N as Mahoraga,
+  F as MahoragaWidget,
+  b as default
 };
