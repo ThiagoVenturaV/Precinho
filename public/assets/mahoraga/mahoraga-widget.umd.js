@@ -1,4 +1,4 @@
-(function(p,g){typeof exports=="object"&&typeof module<"u"?g(exports):typeof define=="function"&&define.amd?define(["exports"],g):(p=typeof globalThis<"u"?globalThis:p||self,g(p.Mahoraga={}))})(this,function(p){"use strict";var N=Object.defineProperty;var R=(p,g,y)=>g in p?N(p,g,{enumerable:!0,configurable:!0,writable:!0,value:y}):p[g]=y;var l=(p,g,y)=>R(p,typeof g!="symbol"?g+"":g,y);const g={token:"mahoraga-accessibility-widget",avatar:"THIAGO",align:"center",side:"right",maxTextSize:800,highContrast:!1,opacity:100,language:"pt-BR",exceptions:[".ht-skip",".ht-ignore"],clickables:["button","a",'[role="button"]'],parentElement:null,doNotTrack:!1,mobileConfig:{align:"center",side:"right"},addonsMap:{aiAssistant:{signTranslator:!0,synonymsMeanings:!0},fontControl:{fontSize:!0,textStyle:!0,lineHeight:!0,letterSpacing:!0,highlightLetters:!0},navigation:{pageSpeech:!0,readerMode:!0,readingMask:!0,readingGuide:!0,highlightLinks:!0,pageStructure:!0,magnifier:!0,hideImages:!0,highlightHeadings:!0,pauseAnimations:!0,disableSounds:!0},colorControl:{contrastMode:!0,saturationMode:!0,pageColors:!0}}},y={isTranslatorOpen:!1,isAddonsOpen:!1,isDictionaryOpen:!1,isCollectorActive:!1,isPageStructureOpen:!1,avatar:"THIAGO",speed:1,opacity:100,currentText:"Olá! Clique em qualquer texto da página ou selecione uma frase para traduzir em Libras.",currentGloss:"OLÁ BEM_VINDO LIBRAS",subtitlesEnabled:!0,isPlaying:!1,isVlibrasActive:!0,fontSizeLevel:0,dyslexicFont:!1,lineHeightLevel:0,letterSpacingLevel:0,highlightLetters:!1,pageSpeechActive:!1,readingGuideActive:!1,readingMaskActive:!1,highlightLinks:!1,highlightHeadings:!1,magnifierActive:!1,hideImages:!1,pauseAnimations:!1,disableSounds:!1,readerMode:!1,contrastMode:"none",saturationMode:"normal",colorblindMode:"none"},w={acessibilidade:{definition:"Qualidade do que é acessível, que permite a inclusão e o uso autônomo por qualquer pessoa.",category:"Geral",description:"Mãos abertas em frente ao peito com movimentos circulares e dedos entrelaçados simbolizando inclusão."},libras:{definition:"Língua Brasileira de Sinais, meio legal de comunicação e expressão das comunidades surdas do Brasil.",category:"Comunicação",description:'Mãos em configuração em "L" unidas na frente do peito, alternando movimentos suaves para os lados.'},olá:{definition:"Saudação cordial.",category:"Saudações",description:"Mão aberta em frente ao rosto realizando um movimento suave de onda para a direita."},oi:{definition:"Cumprimento amigável informal.",category:"Saudações",description:'Mão em formato da letra "O" com o dedo mínimo estendido formando o "I", balançando levemente.'},obrigado:{definition:"Expressão de gratidão.",category:"Cortesia",description:"Mão aberta toca a testa e em seguida o peito, inclinando a cabeça levemente em respeito."},"por favor":{definition:"Pedido respeitoso.",category:"Cortesia",description:"Palmas das mãos unidas na frente do peito deslizando para a frente suavemente."},"bom dia":{definition:"Saudação usada pela manhã.",category:"Saudações",description:'Mão toca os lábios e abre para frente (BOM), seguida da mão em "D" saindo do olho direito (DIA).'},"boa tarde":{definition:"Saudação usada à tarde.",category:"Saudações",description:"Sinal de BOM seguido da mão deslizando no antebraço indicando o sol poente da tarde."},"boa noite":{definition:"Saudação usada ao anoitecer.",category:"Saudações",description:"Sinal de BOM seguido de ambas as mãos cobrindo os olhos suavemente (escurecer)."},ajuda:{definition:"Ato de prestar auxílio, socorro ou apoio.",category:"Ação",description:"Mão fechada com polegar para cima apoiada na palma aberta da outra mão, movendo-se à frente."},sim:{definition:"Expressão afirmativa.",category:"Resposta",description:"Mão em punho com o dedo indicador balançando para cima e para baixo (como o sinal de concordância)."},não:{definition:"Expressão negativa.",category:"Resposta",description:"Indicador levantado balançando lateralmente acompanhado de expressão facial de negação."},thiago:{definition:"Avatar virtual masculino inteligente e acessível do widget.",category:"Personagem",description:"Sinal amigável e expressivo de Thiago com topete característico e sinalização fluente."},marya:{definition:"Avatar virtual feminina inteligente e expressiva do widget.",category:"Personagem",description:"Sinal identificador de Marya com referência ao rabo de cavalo e sorriso comunicativo."},hugo:{definition:"Avatar virtual masculino (alias de Thiago).",category:"Personagem",description:"Sinal de amigo inteligente com topete característico."},maya:{definition:"Avatar virtual feminina (alias de Marya).",category:"Personagem",description:"Sinal de amiga inteligente com sorriso comunicativo."}},k="ht_accessibility_state";class T{constructor(){l(this,"state");l(this,"listeners",new Set);this.state=this.loadPersistedState()}loadPersistedState(){try{const e=localStorage.getItem(k);if(e){const t=JSON.parse(e);return{...y,...t,isTranslatorOpen:t.isTranslatorOpen??!1,isAddonsOpen:!1,isDictionaryOpen:!1,isCollectorActive:!1,isPageStructureOpen:!1,isPlaying:!1}}}catch(e){console.warn("[HandTalk] Erro ao carregar preferências do localStorage:",e)}return{...y}}persist(){try{const e={avatar:this.state.avatar,speed:this.state.speed,opacity:this.state.opacity,subtitlesEnabled:this.state.subtitlesEnabled,fontSizeLevel:this.state.fontSizeLevel,dyslexicFont:this.state.dyslexicFont,lineHeightLevel:this.state.lineHeightLevel,letterSpacingLevel:this.state.letterSpacingLevel,highlightLetters:this.state.highlightLetters,highlightLinks:this.state.highlightLinks,highlightHeadings:this.state.highlightHeadings,hideImages:this.state.hideImages,pauseAnimations:this.state.pauseAnimations,disableSounds:this.state.disableSounds,contrastMode:this.state.contrastMode,saturationMode:this.state.saturationMode,colorblindMode:this.state.colorblindMode};localStorage.setItem(k,JSON.stringify(e))}catch(e){console.warn("[HandTalk] Erro ao salvar preferências:",e)}}getState(){return{...this.state}}setState(e){const t={...this.state};this.state={...this.state,...e},this.persist(),this.listeners.forEach(i=>i(this.state,t))}subscribe(e){return this.listeners.add(e),()=>this.listeners.delete(e)}reset(){const e=this.state.isTranslatorOpen;this.setState({...y,isTranslatorOpen:e}),localStorage.removeItem(k)}}const s=new T;class E{constructor(){l(this,"styleTag",null);l(this,"svgFilterTag",null);this.init()}init(){document.getElementById("ht-accessibility-styles")?this.styleTag=document.getElementById("ht-accessibility-styles"):(this.styleTag=document.createElement("style"),this.styleTag.id="ht-accessibility-styles",document.head.appendChild(this.styleTag)),document.getElementById("ht-svg-filters")||this.injectSvgFilters()}injectSvgFilters(){const e=document.createElement("div");e.id="ht-svg-filters",e.style.cssText="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;",e.innerHTML=`
+(function(h,p){typeof exports=="object"&&typeof module<"u"?p(exports):typeof define=="function"&&define.amd?define(["exports"],p):(h=typeof globalThis<"u"?globalThis:h||self,p(h.Mahoraga={}))})(this,function(h){"use strict";var j=Object.defineProperty;var q=(h,p,f)=>p in h?j(h,p,{enumerable:!0,configurable:!0,writable:!0,value:f}):h[p]=f;var r=(h,p,f)=>q(h,typeof p!="symbol"?p+"":p,f);const p={token:"mahoraga-accessibility-widget",avatar:"THIAGO",align:"center",side:"right",maxTextSize:800,highContrast:!1,opacity:100,language:"pt-BR",exceptions:[".ht-skip",".ht-ignore"],clickables:["button","a",'[role="button"]'],parentElement:null,doNotTrack:!1,mobileConfig:{align:"center",side:"right"},addonsMap:{aiAssistant:{signTranslator:!0,synonymsMeanings:!0},fontControl:{fontSize:!0,textStyle:!0,lineHeight:!0,letterSpacing:!0,highlightLetters:!0},navigation:{pageSpeech:!0,readerMode:!0,readingMask:!0,readingGuide:!0,highlightLinks:!0,pageStructure:!0,magnifier:!0,hideImages:!0,highlightHeadings:!0,pauseAnimations:!0,disableSounds:!0},colorControl:{contrastMode:!0,saturationMode:!0,pageColors:!0}}},f={isTranslatorOpen:!1,isAddonsOpen:!1,isDictionaryOpen:!1,isCollectorActive:!1,isPageStructureOpen:!1,avatar:"THIAGO",speed:1,opacity:100,currentText:"Olá! Clique em qualquer texto da página ou selecione uma frase para traduzir em Libras.",currentGloss:"OLÁ BEM_VINDO LIBRAS",subtitlesEnabled:!0,isPlaying:!1,isVlibrasActive:!0,fontSizeLevel:0,dyslexicFont:!1,lineHeightLevel:0,letterSpacingLevel:0,highlightLetters:!1,pageSpeechActive:!1,readingGuideActive:!1,readingMaskActive:!1,highlightLinks:!1,highlightHeadings:!1,magnifierActive:!1,hideImages:!1,pauseAnimations:!1,disableSounds:!1,readerMode:!1,contrastMode:"none",saturationMode:"normal",colorblindMode:"none"},x={acessibilidade:{definition:"Qualidade do que é acessível, que permite a inclusão e o uso autônomo por qualquer pessoa.",category:"Geral",description:"Mãos abertas em frente ao peito com movimentos circulares e dedos entrelaçados simbolizando inclusão."},libras:{definition:"Língua Brasileira de Sinais, meio legal de comunicação e expressão das comunidades surdas do Brasil.",category:"Comunicação",description:'Mãos em configuração em "L" unidas na frente do peito, alternando movimentos suaves para os lados.'},olá:{definition:"Saudação cordial.",category:"Saudações",description:"Mão aberta em frente ao rosto realizando um movimento suave de onda para a direita."},oi:{definition:"Cumprimento amigável informal.",category:"Saudações",description:'Mão em formato da letra "O" com o dedo mínimo estendido formando o "I", balançando levemente.'},obrigado:{definition:"Expressão de gratidão.",category:"Cortesia",description:"Mão aberta toca a testa e em seguida o peito, inclinando a cabeça levemente em respeito."},"por favor":{definition:"Pedido respeitoso.",category:"Cortesia",description:"Palmas das mãos unidas na frente do peito deslizando para a frente suavemente."},"bom dia":{definition:"Saudação usada pela manhã.",category:"Saudações",description:'Mão toca os lábios e abre para frente (BOM), seguida da mão em "D" saindo do olho direito (DIA).'},"boa tarde":{definition:"Saudação usada à tarde.",category:"Saudações",description:"Sinal de BOM seguido da mão deslizando no antebraço indicando o sol poente da tarde."},"boa noite":{definition:"Saudação usada ao anoitecer.",category:"Saudações",description:"Sinal de BOM seguido de ambas as mãos cobrindo os olhos suavemente (escurecer)."},ajuda:{definition:"Ato de prestar auxílio, socorro ou apoio.",category:"Ação",description:"Mão fechada com polegar para cima apoiada na palma aberta da outra mão, movendo-se à frente."},sim:{definition:"Expressão afirmativa.",category:"Resposta",description:"Mão em punho com o dedo indicador balançando para cima e para baixo (como o sinal de concordância)."},não:{definition:"Expressão negativa.",category:"Resposta",description:"Indicador levantado balançando lateralmente acompanhado de expressão facial de negação."},thiago:{definition:"Avatar virtual masculino inteligente e acessível do widget.",category:"Personagem",description:"Sinal amigável e expressivo de Thiago com topete característico e sinalização fluente."},marya:{definition:"Avatar virtual feminina inteligente e expressiva do widget.",category:"Personagem",description:"Sinal identificador de Marya com referência ao rabo de cavalo e sorriso comunicativo."},hugo:{definition:"Avatar virtual masculino (alias de Thiago).",category:"Personagem",description:"Sinal de amigo inteligente com topete característico."},maya:{definition:"Avatar virtual feminina (alias de Marya).",category:"Personagem",description:"Sinal de amiga inteligente com sorriso comunicativo."}},w="ht_accessibility_state";class k{constructor(){r(this,"state");r(this,"listeners",new Set);this.state=this.loadPersistedState()}loadPersistedState(){try{const e=localStorage.getItem(w);if(e){const t=JSON.parse(e);return{...f,...t,isTranslatorOpen:t.isTranslatorOpen??!1,isAddonsOpen:!1,isDictionaryOpen:!1,isCollectorActive:!1,isPageStructureOpen:!1,isPlaying:!1}}}catch(e){console.warn("[HandTalk] Erro ao carregar preferências do localStorage:",e)}return{...f}}persist(){try{const e={avatar:this.state.avatar,speed:this.state.speed,opacity:this.state.opacity,subtitlesEnabled:this.state.subtitlesEnabled,fontSizeLevel:this.state.fontSizeLevel,dyslexicFont:this.state.dyslexicFont,lineHeightLevel:this.state.lineHeightLevel,letterSpacingLevel:this.state.letterSpacingLevel,highlightLetters:this.state.highlightLetters,highlightLinks:this.state.highlightLinks,highlightHeadings:this.state.highlightHeadings,hideImages:this.state.hideImages,pauseAnimations:this.state.pauseAnimations,disableSounds:this.state.disableSounds,contrastMode:this.state.contrastMode,saturationMode:this.state.saturationMode,colorblindMode:this.state.colorblindMode};localStorage.setItem(w,JSON.stringify(e))}catch(e){console.warn("[HandTalk] Erro ao salvar preferências:",e)}}getState(){return{...this.state}}setState(e){const t={...this.state};this.state={...this.state,...e},this.persist(),this.listeners.forEach(i=>i(this.state,t))}subscribe(e){return this.listeners.add(e),()=>this.listeners.delete(e)}reset(){const e=this.state.isTranslatorOpen;this.setState({...f,isTranslatorOpen:e}),localStorage.removeItem(w)}}const s=new k;class S{constructor(){r(this,"styleTag",null);r(this,"svgFilterTag",null);this.init()}init(){document.getElementById("ht-accessibility-styles")?this.styleTag=document.getElementById("ht-accessibility-styles"):(this.styleTag=document.createElement("style"),this.styleTag.id="ht-accessibility-styles",document.head.appendChild(this.styleTag)),document.getElementById("ht-svg-filters")||this.injectSvgFilters()}injectSvgFilters(){const e=document.createElement("div");e.id="ht-svg-filters",e.style.cssText="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;",e.innerHTML=`
       <svg xmlns="http://www.w3.org/2000/svg">
         <filter id="ht-protanopia">
           <feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0   0.558, 0.442, 0, 0, 0   0, 0.242, 0.758, 0, 0   0, 0, 0, 1, 0"/>
@@ -132,12 +132,12 @@
           background: #ffffff !important;
           color: #222222 !important;
         }
-      `),this.styleTag.innerHTML=i}destroy(){var e,t;(e=this.styleTag)==null||e.remove(),(t=this.svgFilterTag)==null||t.remove()}}class ${constructor(e){l(this,"currentHoverEl",null);l(this,"isActive",!1);l(this,"onSelectTextCallback");this.onSelectTextCallback=e,this.init()}init(){document.addEventListener("mouseover",this.handleMouseOver.bind(this),{passive:!0}),document.addEventListener("mouseout",this.handleMouseOut.bind(this),{passive:!0}),document.addEventListener("click",this.handleClick.bind(this),!0),document.addEventListener("mouseup",this.handleTextSelection.bind(this)),s.subscribe(e=>{this.isActive=e.isCollectorActive,this.isActive?document.body.classList.add("ht-collector-mode"):(document.body.classList.remove("ht-collector-mode"),this.clearHover())})}isIgnored(e){return e?!!(e.closest(".ht-widget-root")||e.closest(".ht-skip")||e.closest(".ht-ignore")||e.closest("#vlibras-app-root")||e.closest("#vlibras-access-wrapper")||e.tagName==="BODY"||e.tagName==="HTML"):!0}clearHover(){this.currentHoverEl&&(this.currentHoverEl.classList.remove("vlibras--hover"),this.currentHoverEl=null),document.querySelectorAll(".vlibras--hover").forEach(e=>{e.classList.remove("vlibras--hover")})}handleMouseOver(e){if(!this.isActive)return;const t=e.target;!t||this.isIgnored(t)||(this.currentHoverEl&&this.currentHoverEl!==t&&this.currentHoverEl.classList.remove("vlibras--hover"),t.classList.add("vlibras--hover"),this.currentHoverEl=t)}handleMouseOut(e){if(!this.isActive)return;const t=e.target;t&&(t.classList.remove("vlibras--hover"),this.currentHoverEl===t&&(this.currentHoverEl=null))}extractTextFromElement(e){var t,i,n,a,r,d,u;return(t=e.dataset.vlibrasGloss)!=null&&t.trim()?e.dataset.vlibrasGloss.trim():e.tagName==="IMG"?((i=e.alt)==null?void 0:i.trim())||"":e.tagName==="INPUT"?((n=e.value)==null?void 0:n.trim())||"":e.tagName==="BUTTON"?((a=e.value)==null?void 0:a.trim())||((r=e.innerText)==null?void 0:r.trim())||"":e.tagName==="SELECT"?((u=(d=e.selectedOptions[0])==null?void 0:d.innerText)==null?void 0:u.trim())||"":(e.innerText||e.textContent||"").trim()}handleClick(e){const t=e.target;if(!t||this.isIgnored(t))return;const i=window.getSelection(),n=i?i.toString().trim():"";if(n&&n.length>0&&n.length<=1e3){e.preventDefault(),e.stopPropagation(),this.clearHover(),s.setState({isCollectorActive:!1}),this.onSelectTextCallback(n);return}if(this.isActive){e.preventDefault(),e.stopPropagation();const a=this.extractTextFromElement(t);a&&(t.classList.add("vlibras--active"),setTimeout(()=>t.classList.remove("vlibras--active"),1e3),this.clearHover(),s.setState({isCollectorActive:!1}),this.onSelectTextCallback(a))}}handleTextSelection(e){const t=e.target;if(t&&this.isIgnored(t))return;const i=window.getSelection();if(!i||i.isCollapsed)return;const n=i.toString().trim();n.length>1&&n.length<=1e3&&this.onSelectTextCallback(n)}destroy(){this.clearHover(),document.body.classList.remove("ht-collector-mode"),document.removeEventListener("mouseover",this.handleMouseOver.bind(this)),document.removeEventListener("mouseout",this.handleMouseOut.bind(this)),document.removeEventListener("click",this.handleClick.bind(this),!0),document.removeEventListener("mouseup",this.handleTextSelection.bind(this))}}class C{constructor(){l(this,"synth",null);l(this,"isActive",!1);l(this,"hoveredElement",null);typeof window<"u"&&"speechSynthesis"in window&&(this.synth=window.speechSynthesis),this.init()}init(){document.addEventListener("mouseover",this.handleMouseOver.bind(this),{passive:!0}),s.subscribe(e=>{this.isActive=e.pageSpeechActive,this.isActive||this.stop()})}handleMouseOver(e){if(!this.isActive||!this.synth)return;const t=e.target;if(!t||t.closest(".ht-widget-root")||t.closest(".ht-skip"))return;if(["P","H1","H2","H3","H4","H5","H6","BUTTON","A","LI","LABEL"].includes(t.tagName)&&t!==this.hoveredElement){this.hoveredElement=t;const n=(t.innerText||t.getAttribute("aria-label")||"").trim();n&&this.speak(n)}}speak(e){if(!this.synth)return;this.stop();const t=new SpeechSynthesisUtterance(e);t.lang="pt-BR",t.rate=1,this.synth.speak(t)}stop(){this.synth&&this.synth.cancel()}}class O{constructor(){l(this,"mutedElements",[]);l(this,"observer",null);this.init()}init(){s.subscribe(e=>{e.disableSounds?this.muteAll():this.unmuteAll()}),this.observer=new MutationObserver(()=>{s.getState().disableSounds&&this.muteAll()}),this.observer.observe(document.body,{childList:!0,subtree:!0})}muteAll(){document.querySelectorAll("video, audio").forEach(t=>{t.muted||(t.muted=!0,this.mutedElements.push(t))})}unmuteAll(){this.mutedElements.forEach(e=>{e.muted=!1}),this.mutedElements=[]}destroy(){var e;this.unmuteAll(),(e=this.observer)==null||e.disconnect()}}class H{constructor(){l(this,"isLoaded",!1);l(this,"isInitializing",!1);l(this,"currentAvatar","THIAGO");this.init()}async init(){var e;if(!(this.isLoaded||this.isInitializing)){this.isInitializing=!0;try{if(await this.loadScript("https://vlibras.gov.br/app/vlibras-plugin.js"),(e=window.VLibras)!=null&&e.Widget){const i=s.getState().avatar==="MARYA"?"hosana":"icaro";new window.VLibras.Widget({rootPath:"https://vlibras.gov.br/app",avatar:i,position:"R"}),this.isLoaded=!0,console.log("%c[Mahoraga - VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!","color: #0070f3; font-weight: bold;","color: inherit;")}this.setupRootWatcher(),this.hookNativeTranslation(),s.subscribe(t=>{t.avatar!==this.currentAvatar&&(this.currentAvatar=t.avatar,this.setAvatar(t.avatar))})}catch(t){console.warn("[VLibras] Falha ao carregar motor VLibras:",t)}finally{this.isInitializing=!1}}}hookNativeTranslation(){let e=!1;const t=()=>{if(window.plugin&&!("__mahoragaHooked"in window.plugin)){window.plugin.__mahoragaHooked=!0;const n=window.plugin.translate;typeof n=="function"&&(window.plugin.translate=async a=>{s.setState({currentText:a,isPlaying:!0,isTranslatorOpen:!0});const r=await this.translateTextToGloss(a);return s.setState({currentGloss:r,isPlaying:!1}),n(a)},e=!0)}if(window.vlibras&&!("__mahoragaHooked"in window.vlibras)){window.vlibras.__mahoragaHooked=!0;const n=window.vlibras.translateAndPlay;typeof n=="function"&&(window.vlibras.translateAndPlay=async a=>{s.setState({currentText:a,isPlaying:!0,isTranslatorOpen:!0});const r=await this.translateTextToGloss(a);return s.setState({currentGloss:r,isPlaying:!1}),n(a)},e=!0)}};t();const i=setInterval(()=>{t(),e&&clearInterval(i)},400);setTimeout(()=>clearInterval(i),15e3)}setupRootWatcher(){const e=()=>{const i=document.getElementById("vlibras-app-root");i&&this.ensureShadowFix(i)};e(),new MutationObserver(e).observe(document.body,{childList:!0})}ensureShadowFix(e){if(!e.shadowRoot||e.shadowRoot.getElementById("mahoraga-vlibras-fix"))return;const t=document.createElement("style");t.id="mahoraga-vlibras-fix",t.textContent=`
+      `),this.styleTag.innerHTML=i}destroy(){var e,t;(e=this.styleTag)==null||e.remove(),(t=this.svgFilterTag)==null||t.remove()}}class M{constructor(e){r(this,"currentHoverEl",null);r(this,"isActive",!1);r(this,"onSelectTextCallback");this.onSelectTextCallback=e,this.init()}init(){document.addEventListener("mouseover",this.handleMouseOver.bind(this),{passive:!0}),document.addEventListener("mouseout",this.handleMouseOut.bind(this),{passive:!0}),document.addEventListener("click",this.handleClick.bind(this),!0),document.addEventListener("mouseup",this.handleTextSelection.bind(this)),s.subscribe(e=>{this.isActive=e.isCollectorActive,this.isActive?document.body.classList.add("ht-collector-mode"):(document.body.classList.remove("ht-collector-mode"),this.clearHover())})}isIgnored(e){return e?!!(e.closest(".ht-widget-root")||e.closest(".ht-skip")||e.closest(".ht-ignore")||e.closest("#vlibras-app-root")||e.closest("#vlibras-access-wrapper")||e.tagName==="BODY"||e.tagName==="HTML"):!0}clearHover(){this.currentHoverEl&&(this.currentHoverEl.classList.remove("vlibras--hover"),this.currentHoverEl=null),document.querySelectorAll(".vlibras--hover").forEach(e=>{e.classList.remove("vlibras--hover")})}handleMouseOver(e){if(!this.isActive)return;const t=e.target;!t||this.isIgnored(t)||(this.currentHoverEl&&this.currentHoverEl!==t&&this.currentHoverEl.classList.remove("vlibras--hover"),t.classList.add("vlibras--hover"),this.currentHoverEl=t)}handleMouseOut(e){if(!this.isActive)return;const t=e.target;t&&(t.classList.remove("vlibras--hover"),this.currentHoverEl===t&&(this.currentHoverEl=null))}extractTextFromElement(e){var t,i,a,o,n,d,v;return(t=e.dataset.vlibrasGloss)!=null&&t.trim()?e.dataset.vlibrasGloss.trim():e.tagName==="IMG"?((i=e.alt)==null?void 0:i.trim())||"":e.tagName==="INPUT"?((a=e.value)==null?void 0:a.trim())||"":e.tagName==="BUTTON"?((o=e.value)==null?void 0:o.trim())||((n=e.innerText)==null?void 0:n.trim())||"":e.tagName==="SELECT"?((v=(d=e.selectedOptions[0])==null?void 0:d.innerText)==null?void 0:v.trim())||"":(e.innerText||e.textContent||"").trim()}handleClick(e){const t=e.target;if(!t||this.isIgnored(t))return;const i=window.getSelection(),a=i?i.toString().trim():"";if(a&&a.length>0&&a.length<=1e3){e.preventDefault(),e.stopPropagation(),this.clearHover(),s.setState({isCollectorActive:!1}),this.onSelectTextCallback(a);return}if(this.isActive){e.preventDefault(),e.stopPropagation();const o=this.extractTextFromElement(t);o&&(t.classList.add("vlibras--active"),setTimeout(()=>t.classList.remove("vlibras--active"),1e3),this.clearHover(),s.setState({isCollectorActive:!1}),this.onSelectTextCallback(o))}}handleTextSelection(e){const t=e.target;if(t&&this.isIgnored(t))return;const i=window.getSelection();if(!i||i.isCollapsed)return;const a=i.toString().trim();a.length>1&&a.length<=1e3&&(this.isActive||s.getState().isTranslatorOpen)&&this.onSelectTextCallback(a)}destroy(){this.clearHover(),document.body.classList.remove("ht-collector-mode"),document.removeEventListener("mouseover",this.handleMouseOver.bind(this)),document.removeEventListener("mouseout",this.handleMouseOut.bind(this)),document.removeEventListener("click",this.handleClick.bind(this),!0),document.removeEventListener("mouseup",this.handleTextSelection.bind(this))}}class A{constructor(){r(this,"synth",null);r(this,"isActive",!1);r(this,"hoveredElement",null);typeof window<"u"&&"speechSynthesis"in window&&(this.synth=window.speechSynthesis),this.init()}init(){document.addEventListener("mouseover",this.handleMouseOver.bind(this),{passive:!0}),s.subscribe(e=>{this.isActive=e.pageSpeechActive,this.isActive||this.stop()})}handleMouseOver(e){if(!this.isActive||!this.synth)return;const t=e.target;if(!t||t.closest(".ht-widget-root")||t.closest(".ht-skip"))return;if(["P","H1","H2","H3","H4","H5","H6","BUTTON","A","LI","LABEL"].includes(t.tagName)&&t!==this.hoveredElement){this.hoveredElement=t;const a=(t.innerText||t.getAttribute("aria-label")||"").trim();a&&this.speak(a)}}speak(e){if(!this.synth)return;this.stop();const t=new SpeechSynthesisUtterance(e);t.lang="pt-BR",t.rate=1,this.synth.speak(t)}stop(){this.synth&&this.synth.cancel()}}class L{constructor(){r(this,"mutedElements",[]);r(this,"observer",null);this.init()}init(){s.subscribe(e=>{e.disableSounds?this.muteAll():this.unmuteAll()}),this.observer=new MutationObserver(()=>{s.getState().disableSounds&&this.muteAll()}),this.observer.observe(document.body,{childList:!0,subtree:!0})}muteAll(){document.querySelectorAll("video, audio").forEach(t=>{t.muted||(t.muted=!0,this.mutedElements.push(t))})}unmuteAll(){this.mutedElements.forEach(e=>{e.muted=!1}),this.mutedElements=[]}destroy(){var e;this.unmuteAll(),(e=this.observer)==null||e.disconnect()}}class T{constructor(){r(this,"isLoaded",!1);r(this,"isInitializing",!1);r(this,"currentAvatar","THIAGO");this.init()}async init(){var e;if(!(this.isLoaded||this.isInitializing)){this.isInitializing=!0;try{if(await this.loadScript("https://vlibras.gov.br/app/vlibras-plugin.js"),(e=window.VLibras)!=null&&e.Widget){const a=s.getState().avatar==="MARYA"?"hosana":"icaro";new window.VLibras.Widget({rootPath:"https://vlibras.gov.br/app",avatar:a,position:"R"}),this.isLoaded=!0,console.log("%c[Mahoraga - VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!","color: #0070f3; font-weight: bold;","color: inherit;")}this.setupRootWatcher(),this.hookNativeTranslation();let t=s.getState().isTranslatorOpen;s.subscribe(i=>{i.isTranslatorOpen&&!t?this.openPlayer():!i.isTranslatorOpen&&t&&this.closePlayer(),t=i.isTranslatorOpen,i.avatar!==this.currentAvatar&&(this.currentAvatar=i.avatar,this.setAvatar(i.avatar))})}catch(t){console.warn("[VLibras] Falha ao carregar motor VLibras:",t)}finally{this.isInitializing=!1}}}hookNativeTranslation(){let e=!1;const t=()=>{if(window.plugin&&!("__mahoragaHooked"in window.plugin)){window.plugin.__mahoragaHooked=!0;const a=window.plugin.translate;typeof a=="function"&&(window.plugin.translate=async o=>{s.setState({currentText:o,isPlaying:!0,isTranslatorOpen:!0});const n=await this.translateTextToGloss(o);return s.setState({currentGloss:n,isPlaying:!1}),a(o)},e=!0)}if(window.vlibras&&!("__mahoragaHooked"in window.vlibras)){window.vlibras.__mahoragaHooked=!0;const a=window.vlibras.translateAndPlay;typeof a=="function"&&(window.vlibras.translateAndPlay=async o=>{s.setState({currentText:o,isPlaying:!0,isTranslatorOpen:!0});const n=await this.translateTextToGloss(o);return s.setState({currentGloss:n,isPlaying:!1}),a(o)},e=!0)}};t();const i=setInterval(()=>{t(),e&&clearInterval(i)},400);setTimeout(()=>clearInterval(i),15e3)}setupRootWatcher(){const e=()=>{const i=document.getElementById("vlibras-app-root");i&&this.ensureShadowFix(i)};e(),new MutationObserver(e).observe(document.body,{childList:!0})}ensureShadowFix(e){if(!e.shadowRoot||e.shadowRoot.getElementById("mahoraga-vlibras-fix"))return;const t=document.createElement("style");t.id="mahoraga-vlibras-fix",t.textContent=`
       .opacity-0 {
         pointer-events: none !important;
         visibility: hidden !important;
       }
-    `,e.shadowRoot.appendChild(t),new MutationObserver(()=>{var a;const n=(a=e.shadowRoot)==null?void 0:a.querySelectorAll("button");n==null||n.forEach(r=>{const d=(r.getAttribute("aria-label")||"").toLowerCase();(d.includes("fechar")||d.includes("close"))&&!r.hasAttribute("data-ht-sync")&&(r.setAttribute("data-ht-sync","true"),r.addEventListener("click",()=>{s.setState({isTranslatorOpen:!1}),this.closePlayer()}))})}).observe(e.shadowRoot,{childList:!0,subtree:!0})}loadScript(e){return new Promise((t,i)=>{if(document.querySelector(`script[src="${e}"]`)){t();return}const n=document.createElement("script");n.src=e,n.async=!0,n.onload=()=>t(),n.onerror=()=>i(new Error(`Erro ao carregar script ${e}`)),document.head.appendChild(n)})}openPlayer(){var n,a;try{const r=localStorage.getItem("@vlibras-widget");r&&r.includes('"isOpen":false')&&localStorage.setItem("@vlibras-widget",r.replace('"isOpen":false','"isOpen":true'))}catch{}const e=document.getElementById("vlibras-app-root");if(e&&(e.style.display="",e.style.pointerEvents="",this.ensureShadowFix(e),e.removeAttribute("data-active"),requestAnimationFrame(()=>{e.setAttribute("data-active","true")})),typeof((n=window.VLibrasWidget)==null?void 0:n.open)=="function"){window.VLibrasWidget.open();return}const t=document.getElementById("vlibras-access-wrapper"),i=(a=t==null?void 0:t.shadowRoot)==null?void 0:a.querySelector("#vlibras-button");if(i){i.click();return}e&&e.setAttribute("data-active","true")}closePlayer(){const e=document.getElementById("vlibras-app-root");e&&(e.setAttribute("data-active","false"),e.style.pointerEvents="none",e.style.display="none");try{const t=localStorage.getItem("@vlibras-widget");t&&t.includes('"isOpen":true')&&localStorage.setItem("@vlibras-widget",t.replace('"isOpen":true','"isOpen":false'))}catch{}}setAvatar(e){var i,n,a;const t=e==="MARYA"?"hosana":"icaro";(n=(i=window.plugin)==null?void 0:i.player)!=null&&n.changeAvatar?window.plugin.player.changeAvatar(t):(a=window.vlibras)!=null&&a.changeAvatar&&window.vlibras.changeAvatar(t)}async translateTextToGloss(e){try{const t=await fetch("https://traducao2.vlibras.gov.br/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:e})});if(t.ok)return(await t.text()).trim()}catch(t){console.warn("[VLibras] Falha ao consultar serviço de glosas:",t)}return e.toUpperCase()}async translateAndPlay(e){if(!e||!e.trim())return"";this.openPlayer(),s.setState({currentText:e,isPlaying:!0,isTranslatorOpen:!0});const t=await this.translateTextToGloss(e);s.setState({currentGloss:t});const i=()=>{var n,a;return typeof((n=window.plugin)==null?void 0:n.translate)=="function"?(window.plugin.translate(e),!0):typeof((a=window.vlibras)==null?void 0:a.translateAndPlay)=="function"?(window.vlibras.translateAndPlay(e),!0):!1};if(i())setTimeout(()=>s.setState({isPlaying:!1}),400);else{let n=0;const a=setInterval(()=>{n++,(i()||n>25)&&(clearInterval(a),s.setState({isPlaying:!1}))},250)}return t}}const x=new H,o={accessibilityPerson:`
+    `,e.shadowRoot.appendChild(t),new MutationObserver(()=>{var o;const a=(o=e.shadowRoot)==null?void 0:o.querySelectorAll("button");a==null||a.forEach(n=>{const d=(n.getAttribute("aria-label")||"").toLowerCase();(d.includes("fechar")||d.includes("close"))&&!n.hasAttribute("data-ht-sync")&&(n.setAttribute("data-ht-sync","true"),n.addEventListener("click",()=>{s.setState({isTranslatorOpen:!1}),this.closePlayer()}))})}).observe(e.shadowRoot,{childList:!0,subtree:!0})}loadScript(e){return new Promise((t,i)=>{if(document.querySelector(`script[src="${e}"]`)){t();return}const a=document.createElement("script");a.src=e,a.async=!0,a.onload=()=>t(),a.onerror=()=>i(new Error(`Erro ao carregar script ${e}`)),document.head.appendChild(a)})}openPlayer(){var a,o;try{const n=localStorage.getItem("@vlibras-widget");n&&n.includes('"isOpen":false')&&localStorage.setItem("@vlibras-widget",n.replace('"isOpen":false','"isOpen":true'))}catch{}const e=document.getElementById("vlibras-app-root");if(e&&(e.style.display="",e.style.pointerEvents="",this.ensureShadowFix(e),e.removeAttribute("data-active"),requestAnimationFrame(()=>{e.setAttribute("data-active","true")})),typeof((a=window.VLibrasWidget)==null?void 0:a.open)=="function"){window.VLibrasWidget.open();return}const t=document.getElementById("vlibras-access-wrapper"),i=(o=t==null?void 0:t.shadowRoot)==null?void 0:o.querySelector("#vlibras-button");if(i){i.click();return}e&&e.setAttribute("data-active","true")}closePlayer(){const e=document.getElementById("vlibras-app-root");e&&(e.setAttribute("data-active","false"),e.style.pointerEvents="none",e.style.display="none");try{const t=localStorage.getItem("@vlibras-widget");t&&t.includes('"isOpen":true')&&localStorage.setItem("@vlibras-widget",t.replace('"isOpen":true','"isOpen":false'))}catch{}}setAvatar(e){var i,a,o;const t=e==="MARYA"?"hosana":"icaro";(a=(i=window.plugin)==null?void 0:i.player)!=null&&a.changeAvatar?window.plugin.player.changeAvatar(t):(o=window.vlibras)!=null&&o.changeAvatar&&window.vlibras.changeAvatar(t)}async translateTextToGloss(e){try{const t=await fetch("https://traducao2.vlibras.gov.br/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:e})});if(t.ok)return(await t.text()).trim()}catch(t){console.warn("[VLibras] Falha ao consultar serviço de glosas:",t)}return e.toUpperCase()}async translateAndPlay(e){if(!e||!e.trim())return"";this.openPlayer(),s.setState({currentText:e,isPlaying:!0,isTranslatorOpen:!0});const t=await this.translateTextToGloss(e);s.setState({currentGloss:t});const i=()=>{var a,o;return typeof((a=window.plugin)==null?void 0:a.translate)=="function"?(window.plugin.translate(e),!0):typeof((o=window.vlibras)==null?void 0:o.translateAndPlay)=="function"?(window.vlibras.translateAndPlay(e),!0):!1};if(i())setTimeout(()=>s.setState({isPlaying:!1}),400);else{let a=0;const o=setInterval(()=>{a++,(i()||a>25)&&(clearInterval(o),s.setState({isPlaying:!1}))},250)}return t}}const m=new T,l={accessibilityPerson:`
     <svg viewBox="0 0 40 40" fill="currentColor">
       <circle cx="20" cy="9" r="3.3"/>
       <path d="M9 13.8h22c.9 0 1.6.7 1.6 1.6s-.7 1.6-1.6 1.6H24v5.8h-1.6V23h-4.8v-.2H16v-5.8H9c-.9 0-1.6-.7-1.6-1.6s.7-1.6 1.6-1.6z"/>
@@ -289,44 +289,17 @@
       <path d="M9 10h6"/>
       <path d="M12 7v6"/>
     </svg>
-  `,collector:`
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-      <path d="m13 13 6 6"/>
-    </svg>
-  `,repeat:`
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="1 4 1 10 7 10"/>
-      <polyline points="23 20 23 14 17 14"/>
-      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
-    </svg>
-  `,speed:`
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <polyline points="12 6 12 12 16 14"/>
-    </svg>
   `,close:`
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="18" y1="6" x2="6" y2="18"/>
       <line x1="6" y1="6" x2="18" y2="18"/>
-    </svg>
-  `,minimize:`
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="5" y1="12" x2="19" y2="12"/>
     </svg>
   `,reset:`
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
       <path d="M3 3v5h5"/>
     </svg>
-  `,swap:`
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m16 3 4 4-4 4"/>
-      <path d="M20 7H4"/>
-      <path d="m8 21-4-4 4-4"/>
-      <path d="M4 17h16"/>
-    </svg>
-  `};class z{constructor(){l(this,"guideElement",null);l(this,"maskElement",null);l(this,"magnifierElement",null);this.init()}init(){this.createGuide(),this.createMask(),this.createMagnifier(),window.addEventListener("mousemove",this.handleMouseMove.bind(this),{passive:!0}),s.subscribe(e=>{this.guideElement&&(this.guideElement.style.display=e.readingGuideActive?"block":"none"),this.maskElement&&(this.maskElement.style.display=e.readingMaskActive?"block":"none"),this.magnifierElement&&(this.magnifierElement.style.display=e.magnifierActive?"block":"none")})}createGuide(){this.guideElement=document.createElement("div"),this.guideElement.className="ht-widget-root ht-reading-guide ht-skip",this.guideElement.style.cssText=`
+  `};class E{constructor(){r(this,"guideElement",null);r(this,"maskElement",null);r(this,"magnifierElement",null);this.init()}init(){this.createGuide(),this.createMask(),this.createMagnifier(),window.addEventListener("mousemove",this.handleMouseMove.bind(this),{passive:!0}),s.subscribe(e=>{this.guideElement&&(this.guideElement.style.display=e.readingGuideActive?"block":"none"),this.maskElement&&(this.maskElement.style.display=e.readingMaskActive?"block":"none"),this.magnifierElement&&(this.magnifierElement.style.display=e.magnifierActive?"block":"none")})}createGuide(){this.guideElement=document.createElement("div"),this.guideElement.className="ht-widget-root ht-reading-guide ht-skip",this.guideElement.style.cssText=`
       position: fixed;
       left: 0;
       width: 100vw;
@@ -361,21 +334,21 @@
       transform: translate(-50%, -50%);
       background: #ffffff;
       overflow: hidden;
-    `,document.body.appendChild(this.magnifierElement)}handleMouseMove(e){const t=s.getState();if(t.readingGuideActive&&this.guideElement&&(this.guideElement.style.top=`${e.clientY}px`),t.readingMaskActive&&this.maskElement){const n=Math.max(0,e.clientY-35);this.maskElement.style.background=`
+    `,document.body.appendChild(this.magnifierElement)}handleMouseMove(e){const t=s.getState();if(t.readingGuideActive&&this.guideElement&&(this.guideElement.style.top=`${e.clientY}px`),t.readingMaskActive&&this.maskElement){const a=Math.max(0,e.clientY-35);this.maskElement.style.background=`
         linear-gradient(
           to bottom,
           rgba(0, 0, 0, 0.75) 0px,
-          rgba(0, 0, 0, 0.75) ${n}px,
-          transparent ${n}px,
-          transparent ${n+70}px,
-          rgba(0, 0, 0, 0.75) ${n+70}px,
+          rgba(0, 0, 0, 0.75) ${a}px,
+          transparent ${a}px,
+          transparent ${a+70}px,
+          rgba(0, 0, 0, 0.75) ${a+70}px,
           rgba(0, 0, 0, 0.75) 100%
         )
-      `}if(t.magnifierActive&&this.magnifierElement){this.magnifierElement.style.left=`${e.clientX}px`,this.magnifierElement.style.top=`${e.clientY}px`;const i=document.elementFromPoint(e.clientX,e.clientY);if(i&&!i.closest(".ht-widget-root")&&!i.closest(".ht-skip")){const n=(i.innerText||i.textContent||"").trim().slice(0,150);this.magnifierElement.innerHTML=`
+      `}if(t.magnifierActive&&this.magnifierElement){this.magnifierElement.style.left=`${e.clientX}px`,this.magnifierElement.style.top=`${e.clientY}px`;const i=document.elementFromPoint(e.clientX,e.clientY);if(i&&!i.closest(".ht-widget-root")&&!i.closest(".ht-skip")){const a=(i.innerText||i.textContent||"").trim().slice(0,150);this.magnifierElement.innerHTML=`
           <div style="padding: 16px; font-size: 20px; font-weight: bold; color: #111; line-height: 1.4; display: flex; align-items: center; justify-content: center; height: 100%; text-align: center;">
-            ${n||`<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${o.magnifier}</span>`}
+            ${a||`<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${l.magnifier}</span>`}
           </div>
-        `}}}destroy(){var e,t,i;(e=this.guideElement)==null||e.remove(),(t=this.maskElement)==null||t.remove(),(i=this.magnifierElement)==null||i.remove()}}class B{constructor(e="right",t="center"){l(this,"element",null);l(this,"side","right");l(this,"align","center");this.side=e,this.align=t,this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-launcher-container ht-skip",this.element.setAttribute("role","region"),this.element.setAttribute("aria-label","Atalhos de Acessibilidade e Tradutor de Libras"),this.render(),document.body.appendChild(this.element),this.attachEvents(),s.subscribe(e=>{if(!this.element)return;const t=this.element.querySelector(".ht-lateral-btn-addons"),i=this.element.querySelector(".ht-lateral-btn-libras");t&&(e.isAddonsOpen?(t.classList.add("ht-lateral-active"),t.style.background="#0a3875"):(t.classList.remove("ht-lateral-active"),t.style.background="transparent")),i&&(e.isTranslatorOpen?(i.classList.add("ht-lateral-active"),i.style.background="#0a3875"):(i.classList.remove("ht-lateral-active"),i.style.background="transparent"))})}render(){if(!this.element)return;const e=this.side!=="left";let t="";e?t+="right: 0; left: auto;":t+="left: 0; right: auto;",this.align==="top"?t+="top: 120px;":this.align==="bottom"?t+="bottom: 120px;":t+="top: 50%; transform: translateY(-50%);";const i=e?"12px 0 0 12px":"0 12px 12px 0",n=e?"border: 2px solid #ffffff; border-right: none;":"border: 2px solid #ffffff; border-left: none;";this.element.innerHTML=`
+        `}}}destroy(){var e,t,i;(e=this.guideElement)==null||e.remove(),(t=this.maskElement)==null||t.remove(),(i=this.magnifierElement)==null||i.remove()}}class ${constructor(e="right",t="center"){r(this,"element",null);r(this,"side","right");r(this,"align","center");this.side=e,this.align=t,this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-launcher-container ht-skip",this.element.setAttribute("role","region"),this.element.setAttribute("aria-label","Atalhos de Acessibilidade e Tradutor de Libras"),this.render(),document.body.appendChild(this.element),this.attachEvents(),s.subscribe(e=>{if(!this.element)return;const t=this.element.querySelector(".ht-lateral-btn-addons"),i=this.element.querySelector(".ht-lateral-btn-libras");t&&(e.isAddonsOpen?(t.classList.add("ht-lateral-active"),t.style.background="#0a3875"):(t.classList.remove("ht-lateral-active"),t.style.background="transparent")),i&&(e.isTranslatorOpen?(i.classList.add("ht-lateral-active"),i.style.background="#0a3875"):(i.classList.remove("ht-lateral-active"),i.style.background="transparent"))})}render(){if(!this.element)return;const e=this.side!=="left";let t="";e?t+="right: 0; left: auto;":t+="left: 0; right: auto;",this.align==="top"?t+="top: 120px;":this.align==="bottom"?t+="bottom: 120px;":t+="top: 50%; transform: translateY(-50%);";const i=e?"12px 0 0 12px":"0 12px 12px 0",a=e?"border: 2px solid #ffffff; border-right: none;":"border: 2px solid #ffffff; border-left: none;";this.element.innerHTML=`
       <div class="ht-lateral-launcher" style="
         position: fixed;
         ${t}
@@ -383,7 +356,7 @@
         display: flex;
         flex-direction: column;
         background: #1351b4;
-        ${n}
+        ${a}
         border-radius: ${i};
         box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.22);
         overflow: hidden;
@@ -407,7 +380,7 @@
           transition: background 0.15s ease;
         " title="Recursos Assistivos de Acessibilidade (Alt+A)" aria-label="Abrir painel de acessibilidade e recursos assistivos">
           <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
-            ${o.accessibilityPerson}
+            ${l.accessibilityPerson}
           </span>
         </button>
 
@@ -434,278 +407,12 @@
           transition: background 0.15s ease;
         " title="Tradutor de Libras com Avatar 3D (Alt+L)" aria-label="Abrir tradutor de Libras em 3D">
           <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
-            ${o.librasHands}
+            ${l.librasHands}
           </span>
         </button>
 
       </div>
-    `}attachEvents(){if(!this.element)return;const e=this.element.querySelector(".ht-lateral-btn-addons"),t=this.element.querySelector(".ht-lateral-btn-libras"),i=this.element.querySelector(".ht-lateral-launcher");if(i){const n=this.side!=="left";i.addEventListener("mouseenter",()=>{this.align==="center"?i.style.transform=n?"translateY(-50%) translateX(-3px)":"translateY(-50%) translateX(3px)":i.style.transform=n?"translateX(-3px)":"translateX(3px)"}),i.addEventListener("mouseleave",()=>{this.align==="center"?i.style.transform="translateY(-50%)":i.style.transform="none"})}e==null||e.addEventListener("click",()=>{const n=s.getState();s.setState({isAddonsOpen:!n.isAddonsOpen})}),t==null||t.addEventListener("click",()=>{const n=s.getState();s.setState({isTranslatorOpen:!n.isTranslatorOpen})})}destroy(){var e;(e=this.element)==null||e.remove()}}class q{constructor(){l(this,"element",null);l(this,"isMinimized",!1);l(this,"isDragging",!1);l(this,"dragStartX",0);l(this,"dragStartY",0);this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-translator-window ht-skip",this.element.setAttribute("role","region"),this.element.setAttribute("aria-label","Janela de Tradução em Libras Mahoraga"),this.element.style.display="none",this.render(),document.body.appendChild(this.element),this.attachEvents(),s.subscribe((e,t)=>{if(!this.element)return;this.element.style.display=e.isTranslatorOpen?"flex":"none",e.isTranslatorOpen&&!t.isTranslatorOpen&&x.openPlayer();const i=this.element.querySelector(".ht-translator-subtitle-text");i&&(i.innerText=e.currentText||"Selecione ou clique em qualquer texto para traduzir em Libras");const n=this.element.querySelector(".ht-translator-subtitle-gloss");n&&(e.currentGloss?(n.innerHTML=`<span style="width: 14px; height: 14px; display: inline-flex; vertical-align: -2px; margin-right: 4px;">${o.libras}</span> Glosa Libras: [${e.currentGloss}]`,n.style.display="block"):n.style.display="none");const a=this.element.querySelector(".ht-translator-card");a&&(a.style.background=e.opacity===100?"#ffffff":e.opacity===50?"rgba(255, 255, 255, 0.82)":"rgba(255, 255, 255, 0.45)");const r=this.element.querySelector(".ht-avatar-name-badge"),d=this.element.querySelector(".ht-avatar-status-name"),u=e.avatar==="MARYA",c=u?"Marya":"Thiago",m=u?"Hosana":"Ícaro";r&&(r.innerText=c),d&&(d.innerText=`Avatar 3D: ${c} (${m})`);const h=this.element.querySelector(".ht-btn-collector");h&&(e.isCollectorActive?(h.classList.add("ht-btn-active"),h.style.background="#0070f3",h.style.color="#ffffff"):(h.classList.remove("ht-btn-active"),h.style.background="#f1f5f9",h.style.color="#334155"));const b=this.element.querySelector(".ht-btn-speed span");b&&(b.innerText=`${e.speed}x`)})}async translateText(e){!e||!e.trim()||await x.translateAndPlay(e)}render(){this.element&&(this.element.innerHTML=`
-      <div class="ht-translator-card" style="
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        width: 340px;
-        background: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        z-index: 2147483642;
-        transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        backdrop-filter: blur(12px);
-      ">
-        
-        <!-- Header / Drag bar -->
-        <div class="ht-translator-header" style="
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 10px 14px;
-          border-bottom: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.85);
-          cursor: grab;
-          user-select: none;
-        ">
-          <!-- Avatar Switcher (Thiago <-> Marya) -->
-          <button class="ht-btn-avatar-switch" style="
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #eef6ff;
-            border: 1px solid #c7e0ff;
-            border-radius: 20px;
-            padding: 4px 10px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #0070f3;
-            cursor: pointer;
-            outline: none;
-          " title="Alternar entre Thiago (Ícaro) e Marya (Hosana)">
-            <span style="width: 14px; height: 14px; display: inline-block;">${o.libras}</span>
-            <span class="ht-avatar-name-badge">Thiago</span>
-            <span style="width: 12px; height: 12px; display: inline-flex; color: #64748b;">${o.swap}</span>
-          </button>
-
-          <!-- Window Controls -->
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <button class="ht-btn-minimize" style="
-              width: 28px;
-              height: 28px;
-              border-radius: 6px;
-              background: none;
-              border: none;
-              color: #64748b;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            " aria-label="Minimizar janela">
-              <span style="width: 16px; height: 16px;">${o.minimize}</span>
-            </button>
-            <button class="ht-btn-close" style="
-              width: 28px;
-              height: 28px;
-              border-radius: 6px;
-              background: none;
-              border: none;
-              color: #64748b;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            " aria-label="Fechar tradutor de Libras">
-              <span style="width: 16px; height: 16px;">${o.close}</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Body / Live 3D Motor Status & Subtitles -->
-        <div class="ht-translator-body" style="
-          padding: 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        ">
-          
-          <!-- 3D Engine Card -->
-          <div style="
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            border-radius: 14px;
-            padding: 14px;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
-          ">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;"></span>
-                <span style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: #94a3b8; text-transform: uppercase;">VLibras 3D Engine</span>
-              </div>
-              <button class="ht-btn-focus-3d" style="
-                background: rgba(255,255,255,0.12);
-                border: 1px solid rgba(255,255,255,0.2);
-                color: #ffffff;
-                font-size: 0.72rem;
-                font-weight: 600;
-                padding: 3px 8px;
-                border-radius: 6px;
-                cursor: pointer;
-              ">Focar Avatar 3D</button>
-            </div>
-
-            <div class="ht-avatar-status-name" style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">
-              Avatar 3D: Thiago (Ícaro)
-            </div>
-
-            <p style="font-size: 0.75rem; color: #94a3b8; margin: 0; line-height: 1.4;">
-              Motor oficial open-source do Governo Federal e UFPB. Sinalização em Libras autêntica com expressões faciais e datilologia.
-            </p>
-          </div>
-
-          <!-- Subtitle Box -->
-          <div class="ht-translator-subtitle" style="
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-          ">
-            <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">
-              Texto Selecionado:
-            </div>
-            <div class="ht-translator-subtitle-text" style="
-              font-size: 0.85rem;
-              color: #0f172a;
-              font-weight: 500;
-              line-height: 1.4;
-              max-height: 80px;
-              overflow-y: auto;
-            ">
-              Clique em qualquer texto do site para traduzir em Libras
-            </div>
-            
-            <!-- Libras Grammatical Gloss -->
-            <div class="ht-translator-subtitle-gloss" style="
-              display: none;
-              font-size: 0.75rem;
-              color: #0284c7;
-              font-weight: 700;
-              background: #f0f9ff;
-              border: 1px dashed #bae6fd;
-              border-radius: 6px;
-              padding: 6px 8px;
-              line-height: 1.35;
-              text-transform: uppercase;
-              word-break: break-word;
-            "></div>
-          </div>
-
-        </div>
-
-        <!-- Toolbar / Controls -->
-        <div class="ht-translator-toolbar" style="
-          padding: 8px 12px;
-          border-top: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.92);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 6px;
-        ">
-          <!-- Text Collector Button -->
-          <button class="ht-btn-collector" style="
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            padding: 7px 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-          " title="Seletor de Texto: clique em qualquer elemento do site">
-            <span style="width: 14px; height: 14px; display: inline-block;">${o.collector}</span>
-            <span>Seletor</span>
-          </button>
-
-          <!-- Speed Selector Button -->
-          <button class="ht-btn-speed" style="
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            padding: 7px 9px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-          " title="Alterar velocidade da sinalização">
-            <span style="width: 14px; height: 14px; display: inline-block;">${o.speed}</span>
-            <span>1x</span>
-          </button>
-
-          <!-- Repeat Button -->
-          <button class="ht-btn-repeat" style="
-            width: 32px;
-            height: 32px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          " title="Repetir tradução">
-            <span style="width: 16px; height: 16px;">${o.repeat}</span>
-          </button>
-
-          <!-- Dictionary Button -->
-          <button class="ht-btn-dictionary" style="
-            width: 32px;
-            height: 32px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          " title="Dicionário de Libras e Sinônimos">
-            <span style="width: 16px; height: 16px;">${o.dictionary}</span>
-          </button>
-
-          <!-- Opacity Button -->
-          <button class="ht-btn-opacity" style="
-            width: 32px;
-            height: 32px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          " title="Alternar transparência da janela">
-            <span style="width: 16px; height: 16px;">${o.contrast}</span>
-          </button>
-        </div>
-
-      </div>
-    `)}attachEvents(){if(!this.element)return;const e=this.element.querySelector(".ht-btn-avatar-switch");e==null||e.addEventListener("click",()=>{const h=s.getState().avatar,b=h==="THIAGO"||h==="HUGO"?"MARYA":"THIAGO";s.setState({avatar:b}),x.setAvatar(b)});const t=this.element.querySelector(".ht-btn-focus-3d");t==null||t.addEventListener("click",()=>{x.openPlayer()});const i=this.element.querySelector(".ht-btn-close");i==null||i.addEventListener("click",()=>{s.setState({isTranslatorOpen:!1,isCollectorActive:!1}),x.closePlayer()});const n=this.element.querySelector(".ht-btn-minimize");n==null||n.addEventListener("click",()=>{this.toggleMinimize()});const a=this.element.querySelector(".ht-btn-collector");a==null||a.addEventListener("click",()=>{const h=s.getState().isCollectorActive;s.setState({isCollectorActive:!h})});const r=this.element.querySelector(".ht-btn-speed");r==null||r.addEventListener("click",()=>{var A,L;const h=[1,1.5,2,.5],b=s.getState().speed,S=(h.indexOf(b)+1)%h.length,M=h[S];s.setState({speed:M}),(L=(A=window.plugin)==null?void 0:A.player)!=null&&L.setSpeed&&window.plugin.player.setSpeed(M)});const d=this.element.querySelector(".ht-btn-repeat");d==null||d.addEventListener("click",()=>{const h=s.getState().currentText;h&&this.translateText(h)});const u=this.element.querySelector(".ht-btn-dictionary");u==null||u.addEventListener("click",()=>{s.setState({isDictionaryOpen:!0})});const c=this.element.querySelector(".ht-btn-opacity");c==null||c.addEventListener("click",()=>{const h=[100,50,0],b=s.getState().opacity,S=(h.indexOf(b)+1)%h.length;s.setState({opacity:h[S]})});const m=this.element.querySelector(".ht-translator-header");m==null||m.addEventListener("mousedown",this.handleMouseDown.bind(this)),window.addEventListener("mousemove",this.handleMouseMove.bind(this)),window.addEventListener("mouseup",this.handleMouseUp.bind(this))}toggleMinimize(){var i,n;this.isMinimized=!this.isMinimized;const e=(i=this.element)==null?void 0:i.querySelector(".ht-translator-body"),t=(n=this.element)==null?void 0:n.querySelector(".ht-translator-toolbar");e&&t&&(this.isMinimized?(e.style.display="none",t.style.display="none"):(e.style.display="flex",t.style.display="flex"))}handleMouseDown(e){var n;if(e.target.closest("button"))return;this.isDragging=!0;const t=(n=this.element)==null?void 0:n.querySelector(".ht-translator-card");if(!t)return;const i=t.getBoundingClientRect();this.dragStartX=e.clientX-i.left,this.dragStartY=e.clientY-i.top,t.style.cursor="grabbing"}handleMouseMove(e){var c;if(!this.isDragging)return;const t=(c=this.element)==null?void 0:c.querySelector(".ht-translator-card");if(!t)return;const i=e.clientX-this.dragStartX,n=e.clientY-this.dragStartY,a=window.innerWidth-t.offsetWidth-10,r=window.innerHeight-t.offsetHeight-10,d=Math.max(10,Math.min(a,i)),u=Math.max(10,Math.min(r,n));t.style.left=`${d}px`,t.style.top=`${u}px`,t.style.right="auto",t.style.bottom="auto"}handleMouseUp(){var e;if(this.isDragging){this.isDragging=!1;const t=(e=this.element)==null?void 0:e.querySelector(".ht-translator-card");t&&(t.style.cursor="default")}}destroy(){var e;(e=this.element)==null||e.remove()}}class P{constructor(){l(this,"element",null);this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-addons-panel ht-skip",this.element.setAttribute("role","dialog"),this.element.setAttribute("aria-label","Painel de Recursos de Acessibilidade"),this.element.style.display="none",this.render(),document.body.appendChild(this.element),this.attachEvents(),s.subscribe(e=>{if(this.element){if(this.element.style.display=e.isAddonsOpen?"flex":"none",e.isAddonsOpen){const t=this.element.querySelector(".ht-addons-card");t&&(t.style.transform="translateX(0)")}this.updateActiveIndicators()}})}render(){this.element&&(this.element.innerHTML=`
+    `}attachEvents(){if(!this.element)return;const e=this.element.querySelector(".ht-lateral-btn-addons"),t=this.element.querySelector(".ht-lateral-btn-libras"),i=this.element.querySelector(".ht-lateral-launcher");if(i){const a=this.side!=="left";i.addEventListener("mouseenter",()=>{this.align==="center"?i.style.transform=a?"translateY(-50%) translateX(-3px)":"translateY(-50%) translateX(3px)":i.style.transform=a?"translateX(-3px)":"translateX(3px)"}),i.addEventListener("mouseleave",()=>{this.align==="center"?i.style.transform="translateY(-50%)":i.style.transform="none"})}e==null||e.addEventListener("click",()=>{const a=s.getState();s.setState({isAddonsOpen:!a.isAddonsOpen})}),t==null||t.addEventListener("click",()=>{const o=!s.getState().isTranslatorOpen;s.setState({isTranslatorOpen:o}),o?m.openPlayer():m.closePlayer()})}destroy(){var e;(e=this.element)==null||e.remove()}}class O{constructor(){r(this,"element",null);this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-addons-panel ht-skip",this.element.setAttribute("role","dialog"),this.element.setAttribute("aria-label","Painel de Recursos de Acessibilidade"),this.element.style.display="none",this.render(),document.body.appendChild(this.element),this.attachEvents(),s.subscribe(e=>{if(this.element){if(this.element.style.display=e.isAddonsOpen?"flex":"none",e.isAddonsOpen){const t=this.element.querySelector(".ht-addons-card");t&&(t.style.transform="translateX(0)")}this.updateActiveIndicators()}})}render(){this.element&&(this.element.innerHTML=`
       <div class="ht-addons-backdrop" style="
         position: fixed;
         inset: 0;
@@ -748,7 +455,7 @@
                 align-items: center;
                 justify-content: center;
               ">
-                <span style="width: 22px; height: 22px; display: inline-block;">${o.accessibility}</span>
+                <span style="width: 22px; height: 22px; display: inline-block;">${l.accessibility}</span>
               </div>
               <div>
                 <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">Recursos Assistivos</h2>
@@ -768,7 +475,7 @@
               align-items: center;
               justify-content: center;
             " aria-label="Fechar recursos assistivos">
-              <span style="width: 20px; height: 20px;">${o.close}</span>
+              <span style="width: 20px; height: 20px;">${l.close}</span>
             </button>
           </div>
 
@@ -785,61 +492,61 @@
             <!-- Category: AI Assistant / Libras -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${o.libras}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.libras}</span>
                 <span>Tradutor de Libras 3D</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("signTranslator","Tradutor de Libras","Avatar 3D em tempo real",o.libras)}
-                ${this.renderToolButton("synonymsMeanings","Dicionário Libras","Sinais e significados",o.dictionary)}
+                ${this.renderToolButton("signTranslator","Tradutor de Libras","Avatar 3D em tempo real",l.libras)}
+                ${this.renderToolButton("synonymsMeanings","Dicionário Libras","Sinais e significados",l.dictionary)}
               </div>
             </div>
 
             <!-- Category: Font Control -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${o.fontSize}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.fontSize}</span>
                 <span>Controle de Fonte</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("fontSize","Tamanho da Fonte","3 opções (+0%, +15%, +30%)",o.fontSize)}
-                ${this.renderToolButton("textStyle","Fonte Legível","Adaptada para dislexia",o.dyslexicFont)}
-                ${this.renderToolButton("lineHeight","Espaço Linhas","3 opções de entrelinha",o.lineHeight)}
-                ${this.renderToolButton("letterSpacing","Espaço Letras","3 opções de espaçamento",o.letterSpacing)}
-                ${this.renderToolButton("highlightLetters","Destacar Letras","Primeira letra colorida",o.highlightLetters)}
+                ${this.renderToolButton("fontSize","Tamanho da Fonte","3 opções (+0%, +15%, +30%)",l.fontSize)}
+                ${this.renderToolButton("textStyle","Fonte Legível","Adaptada para dislexia",l.dyslexicFont)}
+                ${this.renderToolButton("lineHeight","Espaço Linhas","3 opções de entrelinha",l.lineHeight)}
+                ${this.renderToolButton("letterSpacing","Espaço Letras","3 opções de espaçamento",l.letterSpacing)}
+                ${this.renderToolButton("highlightLetters","Destacar Letras","Primeira letra colorida",l.highlightLetters)}
               </div>
             </div>
 
             <!-- Category: Navigation & Reading -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${o.readingGuide}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.readingGuide}</span>
                 <span>Navegação & Leitura</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("pageSpeech","Leitor de Sites","Leitura em voz alta (TTS)",o.speech)}
-                ${this.renderToolButton("pageStructure","Estrutura da Página","Navegação por títulos e seções",o.pageStructure)}
-                ${this.renderToolButton("readingGuide","Guia de Leitura","Régua horizontal móvel",o.readingGuide)}
-                ${this.renderToolButton("readingMask","Máscara Leitura","Foco na linha atual",o.readingMask)}
-                ${this.renderToolButton("magnifier","Lupa de Conteúdo","Lente de aumento no mouse",o.magnifier)}
-                ${this.renderToolButton("highlightLinks","Destacar Links","Bordas e realce amarelo",o.highlightLinks)}
-                ${this.renderToolButton("highlightHeadings","Destacar Títulos","Marcações H1 a H6",o.highlightHeadings)}
-                ${this.renderToolButton("hideImages","Ocultar Imagens","Diminui poluição visual",o.hideImages)}
-                ${this.renderToolButton("pauseAnimations","Pausar Animações","Congela GIFs e transições",o.pauseAnimations)}
-                ${this.renderToolButton("disableSounds","Parar Sons","Muta mídias da página",o.disableSounds)}
-                ${this.renderToolButton("readerMode","Modo Leitura","Texto limpo sem distrações",o.readerMode)}
+                ${this.renderToolButton("pageSpeech","Leitor de Sites","Leitura em voz alta (TTS)",l.speech)}
+                ${this.renderToolButton("pageStructure","Estrutura da Página","Navegação por títulos e seções",l.pageStructure)}
+                ${this.renderToolButton("readingGuide","Guia de Leitura","Régua horizontal móvel",l.readingGuide)}
+                ${this.renderToolButton("readingMask","Máscara Leitura","Foco na linha atual",l.readingMask)}
+                ${this.renderToolButton("magnifier","Lupa de Conteúdo","Lente de aumento no mouse",l.magnifier)}
+                ${this.renderToolButton("highlightLinks","Destacar Links","Bordas e realce amarelo",l.highlightLinks)}
+                ${this.renderToolButton("highlightHeadings","Destacar Títulos","Marcações H1 a H6",l.highlightHeadings)}
+                ${this.renderToolButton("hideImages","Ocultar Imagens","Diminui poluição visual",l.hideImages)}
+                ${this.renderToolButton("pauseAnimations","Pausar Animações","Congela GIFs e transições",l.pauseAnimations)}
+                ${this.renderToolButton("disableSounds","Parar Sons","Muta mídias da página",l.disableSounds)}
+                ${this.renderToolButton("readerMode","Modo Leitura","Texto limpo sem distrações",l.readerMode)}
               </div>
             </div>
 
             <!-- Category: Color Control -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${o.contrast}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.contrast}</span>
                 <span>Controle de Cores</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("contrastMode","Contraste","Escuro, Claro, Invertido",o.contrast)}
-                ${this.renderToolButton("saturationMode","Saturação","Monocromático e Níveis",o.saturation)}
-                ${this.renderToolButton("colorblindMode","Modo Daltônico","Filtros Protanopia / Trit.",o.colorblind)}
+                ${this.renderToolButton("contrastMode","Contraste","Escuro, Claro, Invertido",l.contrast)}
+                ${this.renderToolButton("saturationMode","Saturação","Monocromático e Níveis",l.saturation)}
+                ${this.renderToolButton("colorblindMode","Modo Daltônico","Filtros Protanopia / Trit.",l.colorblind)}
               </div>
             </div>
 
@@ -868,7 +575,7 @@
               cursor: pointer;
               transition: background 0.2s;
             ">
-              <span style="width: 16px; height: 16px;">${o.reset}</span>
+              <span style="width: 16px; height: 16px;">${l.reset}</span>
               <span>Limpar configurações</span>
             </button>
 
@@ -884,7 +591,7 @@
 
         </div>
       </div>
-    `)}renderToolButton(e,t,i,n){return`
+    `)}renderToolButton(e,t,i,a){return`
       <button class="ht-tool-btn" data-tool="${e}" style="
         display: flex;
         flex-direction: column;
@@ -901,14 +608,14 @@
       ">
         <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <div class="ht-tool-icon" style="width: 28px; height: 28px; color: #475569;">
-            ${n}
+            ${a}
           </div>
           <span class="ht-tool-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; display: inline-block;"></span>
         </div>
         <strong style="font-size: 0.9rem; color: #1e293b; margin-bottom: 2px;">${t}</strong>
         <span class="ht-tool-sub" style="font-size: 0.75rem; color: #64748b; line-height: 1.2;">${i}</span>
       </button>
-    `}attachEvents(){if(!this.element)return;const e=this.element.querySelector(".ht-addons-close-btn");e==null||e.addEventListener("click",()=>{s.setState({isAddonsOpen:!1})});const t=this.element.querySelector(".ht-addons-backdrop");t==null||t.addEventListener("click",a=>{a.target===t&&s.setState({isAddonsOpen:!1})});const i=this.element.querySelector(".ht-btn-reset-all");i==null||i.addEventListener("click",()=>{s.reset()}),this.element.querySelectorAll(".ht-tool-btn").forEach(a=>{a.addEventListener("click",()=>{const r=a.getAttribute("data-tool");r&&this.handleToolClick(r)})})}handleToolClick(e){const t=s.getState();switch(e){case"signTranslator":s.setState({isTranslatorOpen:!t.isTranslatorOpen});break;case"synonymsMeanings":s.setState({isDictionaryOpen:!0});break;case"fontSize":s.setState({fontSizeLevel:(t.fontSizeLevel+1)%3});break;case"textStyle":s.setState({dyslexicFont:!t.dyslexicFont});break;case"lineHeight":s.setState({lineHeightLevel:(t.lineHeightLevel+1)%3});break;case"letterSpacing":s.setState({letterSpacingLevel:(t.letterSpacingLevel+1)%3});break;case"highlightLetters":s.setState({highlightLetters:!t.highlightLetters});break;case"pageSpeech":s.setState({pageSpeechActive:!t.pageSpeechActive});break;case"pageStructure":s.setState({isPageStructureOpen:!0});break;case"readingGuide":s.setState({readingGuideActive:!t.readingGuideActive});break;case"readingMask":s.setState({readingMaskActive:!t.readingMaskActive});break;case"magnifier":s.setState({magnifierActive:!t.magnifierActive});break;case"highlightLinks":s.setState({highlightLinks:!t.highlightLinks});break;case"highlightHeadings":s.setState({highlightHeadings:!t.highlightHeadings});break;case"hideImages":s.setState({hideImages:!t.hideImages});break;case"pauseAnimations":s.setState({pauseAnimations:!t.pauseAnimations});break;case"disableSounds":s.setState({disableSounds:!t.disableSounds});break;case"readerMode":s.setState({readerMode:!t.readerMode});break;case"contrastMode":{const i=["none","high-contrast-dark","high-contrast-light","invert"],n=i[(i.indexOf(t.contrastMode)+1)%i.length];s.setState({contrastMode:n});break}case"saturationMode":{const i=["normal","monochrome","low-saturation","high-saturation"],n=i[(i.indexOf(t.saturationMode)+1)%i.length];s.setState({saturationMode:n});break}case"colorblindMode":{const i=["none","protanopia","deuteranopia","tritanopia","achromatopsia"],n=i[(i.indexOf(t.colorblindMode)+1)%i.length];s.setState({colorblindMode:n});break}}}updateActiveIndicators(){if(!this.element)return;const e=s.getState();let t=0;const i={signTranslator:{active:e.isTranslatorOpen},synonymsMeanings:{active:e.isDictionaryOpen},fontSize:{active:e.fontSizeLevel>0,label:e.fontSizeLevel===0?"+0%":e.fontSizeLevel===1?"+15%":"+30%"},textStyle:{active:e.dyslexicFont},lineHeight:{active:e.lineHeightLevel>0,label:e.lineHeightLevel===0?"Padrão":e.lineHeightLevel===1?"1.8x":"2.2x"},letterSpacing:{active:e.letterSpacingLevel>0,label:e.letterSpacingLevel===0?"Padrão":e.letterSpacingLevel===1?"0.12em":"0.24em"},highlightLetters:{active:e.highlightLetters},pageSpeech:{active:e.pageSpeechActive},pageStructure:{active:e.isPageStructureOpen},readingGuide:{active:e.readingGuideActive},readingMask:{active:e.readingMaskActive},magnifier:{active:e.magnifierActive},highlightLinks:{active:e.highlightLinks},highlightHeadings:{active:e.highlightHeadings},hideImages:{active:e.hideImages},pauseAnimations:{active:e.pauseAnimations},disableSounds:{active:e.disableSounds},readerMode:{active:e.readerMode},contrastMode:{active:e.contrastMode!=="none",label:e.contrastMode==="none"?"Padrão":e.contrastMode},saturationMode:{active:e.saturationMode!=="normal",label:e.saturationMode==="normal"?"Padrão":e.saturationMode},colorblindMode:{active:e.colorblindMode!=="none",label:e.colorblindMode==="none"?"Padrão":e.colorblindMode}};Object.entries(i).forEach(([a,r])=>{var u;const d=(u=this.element)==null?void 0:u.querySelector(`[data-tool="${a}"]`);if(d){const c=d.querySelector(".ht-tool-status-dot"),m=d.querySelector(".ht-tool-icon"),h=d.querySelector(".ht-tool-sub");r.active?(t++,d.style.borderColor="#0070f3",d.style.background="#f0f7ff",c&&(c.style.background="#0070f3"),m&&(m.style.color="#0070f3")):(d.style.borderColor="#e2e8f0",d.style.background="#f8fafc",c&&(c.style.background="#cbd5e1"),m&&(m.style.color="#475569")),r.label&&h&&(h.innerText=`Ativo: ${r.label}`)}});const n=this.element.querySelector(".ht-active-counter-badge");n&&(n.innerHTML=`${t} ${t===1?"ativo":"ativos"}`)}destroy(){var e;(e=this.element)==null||e.remove()}}class j{constructor(e){l(this,"element",null);l(this,"onSignSelected");this.onSignSelected=e,this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-dictionary-modal ht-skip",this.element.setAttribute("role","dialog"),this.element.setAttribute("aria-modal","true"),this.element.setAttribute("aria-label","Dicionário de Libras"),this.element.style.display="none",this.render(),document.body.appendChild(this.element),s.subscribe(e=>{if(this.element&&(this.element.style.display=e.isDictionaryOpen?"flex":"none",e.isDictionaryOpen)){const t=this.element.querySelector(".ht-dict-search-input");t==null||t.focus()}})}render(){this.element&&(this.element.innerHTML=`
+    `}attachEvents(){if(!this.element)return;const e=this.element.querySelector(".ht-addons-close-btn");e==null||e.addEventListener("click",()=>{s.setState({isAddonsOpen:!1})});const t=this.element.querySelector(".ht-addons-backdrop");t==null||t.addEventListener("click",o=>{o.target===t&&s.setState({isAddonsOpen:!1})});const i=this.element.querySelector(".ht-btn-reset-all");i==null||i.addEventListener("click",()=>{s.reset()}),this.element.querySelectorAll(".ht-tool-btn").forEach(o=>{o.addEventListener("click",()=>{const n=o.getAttribute("data-tool");n&&this.handleToolClick(n)})})}handleToolClick(e){const t=s.getState();switch(e){case"signTranslator":s.setState({isTranslatorOpen:!t.isTranslatorOpen});break;case"synonymsMeanings":s.setState({isDictionaryOpen:!0});break;case"fontSize":s.setState({fontSizeLevel:(t.fontSizeLevel+1)%3});break;case"textStyle":s.setState({dyslexicFont:!t.dyslexicFont});break;case"lineHeight":s.setState({lineHeightLevel:(t.lineHeightLevel+1)%3});break;case"letterSpacing":s.setState({letterSpacingLevel:(t.letterSpacingLevel+1)%3});break;case"highlightLetters":s.setState({highlightLetters:!t.highlightLetters});break;case"pageSpeech":s.setState({pageSpeechActive:!t.pageSpeechActive});break;case"pageStructure":s.setState({isPageStructureOpen:!0});break;case"readingGuide":s.setState({readingGuideActive:!t.readingGuideActive});break;case"readingMask":s.setState({readingMaskActive:!t.readingMaskActive});break;case"magnifier":s.setState({magnifierActive:!t.magnifierActive});break;case"highlightLinks":s.setState({highlightLinks:!t.highlightLinks});break;case"highlightHeadings":s.setState({highlightHeadings:!t.highlightHeadings});break;case"hideImages":s.setState({hideImages:!t.hideImages});break;case"pauseAnimations":s.setState({pauseAnimations:!t.pauseAnimations});break;case"disableSounds":s.setState({disableSounds:!t.disableSounds});break;case"readerMode":s.setState({readerMode:!t.readerMode});break;case"contrastMode":{const i=["none","high-contrast-dark","high-contrast-light","invert"],a=i[(i.indexOf(t.contrastMode)+1)%i.length];s.setState({contrastMode:a});break}case"saturationMode":{const i=["normal","monochrome","low-saturation","high-saturation"],a=i[(i.indexOf(t.saturationMode)+1)%i.length];s.setState({saturationMode:a});break}case"colorblindMode":{const i=["none","protanopia","deuteranopia","tritanopia","achromatopsia"],a=i[(i.indexOf(t.colorblindMode)+1)%i.length];s.setState({colorblindMode:a});break}}}updateActiveIndicators(){if(!this.element)return;const e=s.getState();let t=0;const i={signTranslator:{active:e.isTranslatorOpen},synonymsMeanings:{active:e.isDictionaryOpen},fontSize:{active:e.fontSizeLevel>0,label:e.fontSizeLevel===0?"+0%":e.fontSizeLevel===1?"+15%":"+30%"},textStyle:{active:e.dyslexicFont},lineHeight:{active:e.lineHeightLevel>0,label:e.lineHeightLevel===0?"Padrão":e.lineHeightLevel===1?"1.8x":"2.2x"},letterSpacing:{active:e.letterSpacingLevel>0,label:e.letterSpacingLevel===0?"Padrão":e.letterSpacingLevel===1?"0.12em":"0.24em"},highlightLetters:{active:e.highlightLetters},pageSpeech:{active:e.pageSpeechActive},pageStructure:{active:e.isPageStructureOpen},readingGuide:{active:e.readingGuideActive},readingMask:{active:e.readingMaskActive},magnifier:{active:e.magnifierActive},highlightLinks:{active:e.highlightLinks},highlightHeadings:{active:e.highlightHeadings},hideImages:{active:e.hideImages},pauseAnimations:{active:e.pauseAnimations},disableSounds:{active:e.disableSounds},readerMode:{active:e.readerMode},contrastMode:{active:e.contrastMode!=="none",label:e.contrastMode==="none"?"Padrão":e.contrastMode},saturationMode:{active:e.saturationMode!=="normal",label:e.saturationMode==="normal"?"Padrão":e.saturationMode},colorblindMode:{active:e.colorblindMode!=="none",label:e.colorblindMode==="none"?"Padrão":e.colorblindMode}};Object.entries(i).forEach(([o,n])=>{var v;const d=(v=this.element)==null?void 0:v.querySelector(`[data-tool="${o}"]`);if(d){const c=d.querySelector(".ht-tool-status-dot"),b=d.querySelector(".ht-tool-icon"),y=d.querySelector(".ht-tool-sub");n.active?(t++,d.style.borderColor="#0070f3",d.style.background="#f0f7ff",c&&(c.style.background="#0070f3"),b&&(b.style.color="#0070f3")):(d.style.borderColor="#e2e8f0",d.style.background="#f8fafc",c&&(c.style.background="#cbd5e1"),b&&(b.style.color="#475569")),n.label&&y&&(y.innerText=`Ativo: ${n.label}`)}});const a=this.element.querySelector(".ht-active-counter-badge");a&&(a.innerHTML=`${t} ${t===1?"ativo":"ativos"}`)}destroy(){var e;(e=this.element)==null||e.remove()}}class C{constructor(e){r(this,"element",null);r(this,"onSignSelected");this.onSignSelected=e,this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-dictionary-modal ht-skip",this.element.setAttribute("role","dialog"),this.element.setAttribute("aria-modal","true"),this.element.setAttribute("aria-label","Dicionário de Libras"),this.element.style.display="none",this.render(),document.body.appendChild(this.element),s.subscribe(e=>{if(this.element&&(this.element.style.display=e.isDictionaryOpen?"flex":"none",e.isDictionaryOpen)){const t=this.element.querySelector(".ht-dict-search-input");t==null||t.focus()}})}render(){this.element&&(this.element.innerHTML=`
       <div class="ht-modal-backdrop" style="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2147483645;display:flex;align-items:center;justify-content:center;padding:20px;">
         <div class="ht-modal-card" style="background:#ffffff;border-radius:16px;max-width:540px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 40px rgba(0,0,0,0.25);overflow:hidden;position:relative;">
           
@@ -916,12 +623,12 @@
           <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #eef0f3;">
             <div style="display:flex;align-items:center;gap:10px;">
               <div style="width:36px;height:36px;border-radius:10px;background:#eef6ff;color:#0070f3;display:flex;align-items:center;justify-content:center;">
-                <span style="width:20px;height:20px;display:inline-block;">${o.dictionary}</span>
+                <span style="width:20px;height:20px;display:inline-block;">${l.dictionary}</span>
               </div>
               <h2 style="margin:0;font-size:1.2rem;font-weight:700;color:#1a202c;">Dicionário de Libras</h2>
             </div>
             <button class="ht-dict-close-btn" style="background:none;border:none;cursor:pointer;color:#718096;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;" aria-label="Fechar dicionário">
-              <span style="width:20px;height:20px;">${o.close}</span>
+              <span style="width:20px;height:20px;">${l.close}</span>
             </button>
           </div>
 
@@ -939,32 +646,32 @@
 
           <!-- Footer -->
           <div style="padding:14px 24px;background:#f8fafc;border-top:1px solid #eef0f3;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:0.85rem;color:#718096;">Total de termos cadastrados: ${Object.keys(w).length}</span>
+            <span style="font-size:0.85rem;color:#718096;">Total de termos cadastrados: ${Object.keys(x).length}</span>
             <button class="ht-dict-close-btn2" style="background:#0070f3;color:#ffffff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.88rem;cursor:pointer;">Concluído</button>
           </div>
 
         </div>
       </div>
-    `,this.attachEvents())}renderList(e=""){const t=Object.keys(w).filter(i=>i.includes(e.toLowerCase()));return t.length===0?`
+    `,this.attachEvents())}renderList(e=""){const t=Object.keys(x).filter(i=>i.includes(e.toLowerCase()));return t.length===0?`
         <div style="text-align:center;padding:32px;color:#a0aec0;">
           <p style="margin:0;font-size:0.95rem;">Nenhum sinal encontrado para "${e}".</p>
           <p style="margin:6px 0 0;font-size:0.85rem;">Tente pesquisar por termos comuns como "acessibilidade", "libras", "olá", "obrigado".</p>
         </div>
-      `:t.map(i=>{const n=w[i],a=i.charAt(0).toUpperCase()+i.slice(1);return`
+      `:t.map(i=>{const a=x[i],o=i.charAt(0).toUpperCase()+i.slice(1);return`
         <div class="ht-dict-item" data-term="${i}" style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;background:#ffffff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;transition:box-shadow 0.2s;">
           <div style="flex:1;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <strong style="font-size:1rem;color:#1a202c;">${a}</strong>
-              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${n.category}</span>
+              <strong style="font-size:1rem;color:#1a202c;">${o}</strong>
+              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${a.category}</span>
             </div>
-            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${n.definition}</p>
-            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${n.description}</p>
+            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${a.definition}</p>
+            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${a.description}</p>
           </div>
           <button class="ht-dict-sign-btn" data-term="${i}" style="background:#0070f3;color:#ffffff;border:none;border-radius:8px;padding:8px 12px;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;">
             <span>Ver Sinal</span>
           </button>
         </div>
-      `}).join("")}attachEvents(){if(!this.element)return;this.element.querySelectorAll(".ht-dict-close-btn, .ht-dict-close-btn2").forEach(a=>{a.addEventListener("click",()=>{s.setState({isDictionaryOpen:!1})})});const t=this.element.querySelector(".ht-modal-backdrop");t==null||t.addEventListener("click",a=>{a.target===t&&s.setState({isDictionaryOpen:!1})});const i=this.element.querySelector(".ht-dict-search-input"),n=this.element.querySelector(".ht-dict-list");i==null||i.addEventListener("input",a=>{const r=a.target.value;n&&(n.innerHTML=this.renderList(r),this.attachSignButtons())}),this.attachSignButtons()}attachSignButtons(){if(!this.element)return;this.element.querySelectorAll(".ht-dict-sign-btn").forEach(t=>{t.addEventListener("click",()=>{const i=t.getAttribute("data-term");i&&(s.setState({isDictionaryOpen:!1,isTranslatorOpen:!0}),this.onSignSelected(i))})})}destroy(){var e;(e=this.element)==null||e.remove()}}class I{constructor(){l(this,"element",null);this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-page-structure-modal ht-skip",this.element.setAttribute("role","dialog"),this.element.setAttribute("aria-modal","true"),this.element.setAttribute("aria-label","Estrutura da Página e Navegação por Títulos"),this.element.style.display="none",document.body.appendChild(this.element),s.subscribe(e=>{this.element&&(e.isPageStructureOpen?(this.render(),this.element.style.display="flex"):this.element.style.display="none")})}scanStructure(){const e=Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6, nav, main, header, footer, [role="heading"], [role="banner"], [role="navigation"], [role="main"]')),t=[];return e.forEach(i=>{if(i.closest(".ht-widget-root")||i.closest(".ht-skip")||i.closest("#vlibras-app-root"))return;const n=(i.innerText||i.textContent||"").trim().replace(/\s+/g," ");if(!n&&!i.getAttribute("aria-label"))return;const a=i.tagName.toLowerCase();let r=1,d=n;a.startsWith("h")&&a.length===2?r=parseInt(a[1],10):a==="header"||i.getAttribute("role")==="banner"?(r=1,d=d||"Cabeçalho do Site"):a==="nav"||i.getAttribute("role")==="navigation"?(r=2,d=d||"Menu de Navegação"):a==="main"||i.getAttribute("role")==="main"?(r=1,d=d||"Conteúdo Principal"):a==="footer"&&(r=1,d=d||"Rodapé da Página"),d.length>80&&(d=d.slice(0,80)+"..."),t.push({element:i,tag:a.toUpperCase(),level:r,text:d})}),t}render(){if(!this.element)return;const e=this.scanStructure();this.element.innerHTML=`
+      `}).join("")}attachEvents(){if(!this.element)return;this.element.querySelectorAll(".ht-dict-close-btn, .ht-dict-close-btn2").forEach(o=>{o.addEventListener("click",()=>{s.setState({isDictionaryOpen:!1})})});const t=this.element.querySelector(".ht-modal-backdrop");t==null||t.addEventListener("click",o=>{o.target===t&&s.setState({isDictionaryOpen:!1})});const i=this.element.querySelector(".ht-dict-search-input"),a=this.element.querySelector(".ht-dict-list");i==null||i.addEventListener("input",o=>{const n=o.target.value;a&&(a.innerHTML=this.renderList(n),this.attachSignButtons())}),this.attachSignButtons()}attachSignButtons(){if(!this.element)return;this.element.querySelectorAll(".ht-dict-sign-btn").forEach(t=>{t.addEventListener("click",()=>{const i=t.getAttribute("data-term");i&&(s.setState({isDictionaryOpen:!1,isTranslatorOpen:!0}),this.onSignSelected(i))})})}destroy(){var e;(e=this.element)==null||e.remove()}}class H{constructor(){r(this,"element",null);this.init()}init(){this.element=document.createElement("div"),this.element.className="ht-widget-root ht-page-structure-modal ht-skip",this.element.setAttribute("role","dialog"),this.element.setAttribute("aria-modal","true"),this.element.setAttribute("aria-label","Estrutura da Página e Navegação por Títulos"),this.element.style.display="none",document.body.appendChild(this.element),s.subscribe(e=>{this.element&&(e.isPageStructureOpen?(this.render(),this.element.style.display="flex"):this.element.style.display="none")})}scanStructure(){const e=Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6, nav, main, header, footer, [role="heading"], [role="banner"], [role="navigation"], [role="main"]')),t=[];return e.forEach(i=>{if(i.closest(".ht-widget-root")||i.closest(".ht-skip")||i.closest("#vlibras-app-root"))return;const a=(i.innerText||i.textContent||"").trim().replace(/\s+/g," ");if(!a&&!i.getAttribute("aria-label"))return;const o=i.tagName.toLowerCase();let n=1,d=a;o.startsWith("h")&&o.length===2?n=parseInt(o[1],10):o==="header"||i.getAttribute("role")==="banner"?(n=1,d=d||"Cabeçalho do Site"):o==="nav"||i.getAttribute("role")==="navigation"?(n=2,d=d||"Menu de Navegação"):o==="main"||i.getAttribute("role")==="main"?(n=1,d=d||"Conteúdo Principal"):o==="footer"&&(n=1,d=d||"Rodapé da Página"),d.length>80&&(d=d.slice(0,80)+"..."),t.push({element:i,tag:o.toUpperCase(),level:n,text:d})}),t}render(){if(!this.element)return;const e=this.scanStructure();this.element.innerHTML=`
       <div class="ht-structure-backdrop" style="
         position: fixed;
         inset: 0;
@@ -1007,7 +714,7 @@
                 align-items: center;
                 justify-content: center;
               ">
-                <span style="width: 20px; height: 20px; display: inline-block;">${o.pageStructure}</span>
+                <span style="width: 20px; height: 20px; display: inline-block;">${l.pageStructure}</span>
               </div>
               <div>
                 <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">Estrutura da Página</h2>
@@ -1027,7 +734,7 @@
               align-items: center;
               justify-content: center;
             " aria-label="Fechar estrutura da página">
-              <span style="width: 18px; height: 18px;">${o.close}</span>
+              <span style="width: 18px; height: 18px;">${l.close}</span>
             </button>
           </div>
 
@@ -1044,13 +751,13 @@
               <div style="text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.95rem;">
                 Nenhum cabeçalho ou seção estrutural identificado nesta página.
               </div>
-            `:e.map((a,r)=>`
-              <button class="ht-structure-item-btn" data-index="${r}" style="
+            `:e.map((o,n)=>`
+              <button class="ht-structure-item-btn" data-index="${n}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
                 padding: 10px 14px;
-                margin-left: ${(a.level-1)*16}px;
+                margin-left: ${(o.level-1)*16}px;
                 background: #f8fafc;
                 border: 1px solid #e2e8f0;
                 border-radius: 8px;
@@ -1067,16 +774,16 @@
                   padding: 2px 7px;
                   border-radius: 4px;
                   letter-spacing: 0.05em;
-                ">${a.tag}</span>
+                ">${o.tag}</span>
                 <span style="
                   font-size: 0.88rem;
                   color: #1e293b;
-                  font-weight: ${a.level===1?"700":"500"};
+                  font-weight: ${o.level===1?"700":"500"};
                   line-height: 1.35;
                   overflow: hidden;
                   text-overflow: ellipsis;
                   white-space: nowrap;
-                ">${a.text}</span>
+                ">${o.text}</span>
               </button>
             `).join("")}
           </div>
@@ -1097,4 +804,4 @@
           </div>
         </div>
       </div>
-    `;const t=this.element.querySelector(".ht-structure-close-btn");t==null||t.addEventListener("click",()=>{s.setState({isPageStructureOpen:!1})});const i=this.element.querySelector(".ht-structure-backdrop");i==null||i.addEventListener("click",a=>{a.target===i&&s.setState({isPageStructureOpen:!1})}),this.element.querySelectorAll(".ht-structure-item-btn").forEach(a=>{a.addEventListener("click",()=>{var d;const r=a.getAttribute("data-index");if(r!==null){const u=parseInt(r,10),c=(d=e[u])==null?void 0:d.element;if(c){s.setState({isPageStructureOpen:!1,isAddonsOpen:!1}),c.scrollIntoView({behavior:"smooth",block:"center"});const m=c.style.transition,h=c.style.outline,b=c.style.outlineOffset;c.style.transition="outline 0.2s ease",c.style.outline="4px solid #0070f3",c.style.outlineOffset="4px",c.hasAttribute("tabindex")||c.setAttribute("tabindex","-1"),c.focus(),setTimeout(()=>{c.style.outline=h,c.style.outlineOffset=b,c.style.transition=m},1800)}}})})}destroy(){var e;(e=this.element)==null||e.remove()}}class v{constructor(e={}){l(this,"options");l(this,"styleManager");l(this,"collectorManager");l(this,"speechManager");l(this,"audioManager");l(this,"readingToolsManager");l(this,"launcher");l(this,"translatorWindow");l(this,"addonsPanel");l(this,"dictionaryModal");l(this,"pageStructureModal");this.options={...g,...e},s.setState({avatar:this.options.avatar,opacity:this.options.opacity}),this.options.highContrast&&s.setState({contrastMode:"high-contrast-dark"}),this.styleManager=new E,this.speechManager=new C,this.audioManager=new O,this.readingToolsManager=new z,x.init(),this.translatorWindow=new q,this.addonsPanel=new P,this.dictionaryModal=new j(t=>{this.translate(t)}),this.pageStructureModal=new I,this.collectorManager=new $(t=>{this.translate(t)}),this.launcher=new B(this.options.side,this.options.align),s.subscribe(t=>{this.styleManager.apply(t)}),this.styleManager.apply(s.getState()),this.setupKeyboardShortcuts(),console.log("%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)","color: #0070f3; font-weight: bold;","color: inherit;")}setupKeyboardShortcuts(){window.addEventListener("keydown",e=>{if(e.altKey&&(e.key==="a"||e.key==="A")){e.preventDefault();const t=s.getState().isAddonsOpen;s.setState({isAddonsOpen:!t})}if(e.altKey&&(e.key==="l"||e.key==="L")){e.preventDefault();const t=s.getState().isTranslatorOpen;s.setState({isTranslatorOpen:!t})}e.key==="Escape"&&s.setState({isAddonsOpen:!1,isDictionaryOpen:!1,isCollectorActive:!1,isPageStructureOpen:!1})})}openTranslator(){s.setState({isTranslatorOpen:!0})}closeTranslator(){s.setState({isTranslatorOpen:!1,isCollectorActive:!1})}openAddons(){s.setState({isAddonsOpen:!0})}closeAddons(){s.setState({isAddonsOpen:!1})}translate(e){this.translatorWindow.translateText(e)}setAvatar(e){s.setState({avatar:e}),x.setAvatar(e)}reset(){s.reset()}destroy(){this.styleManager.destroy(),this.collectorManager.destroy(),this.speechManager.stop(),this.audioManager.destroy(),this.readingToolsManager.destroy(),this.launcher.destroy(),this.translatorWindow.destroy(),this.addonsPanel.destroy(),this.dictionaryModal.destroy(),this.pageStructureModal.destroy()}}const D=v,G=v,F=v;typeof window<"u"&&(window.Mahoraga=v,window.MahoragaWidget=v,window.HT=v,window.HandTalkWidget=v),p.HT=F,p.HandTalkWidget=v,p.Mahoraga=G,p.MahoragaWidget=D,p.default=v,Object.defineProperties(p,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}})});
+    `;const t=this.element.querySelector(".ht-structure-close-btn");t==null||t.addEventListener("click",()=>{s.setState({isPageStructureOpen:!1})});const i=this.element.querySelector(".ht-structure-backdrop");i==null||i.addEventListener("click",o=>{o.target===i&&s.setState({isPageStructureOpen:!1})}),this.element.querySelectorAll(".ht-structure-item-btn").forEach(o=>{o.addEventListener("click",()=>{var d;const n=o.getAttribute("data-index");if(n!==null){const v=parseInt(n,10),c=(d=e[v])==null?void 0:d.element;if(c){s.setState({isPageStructureOpen:!1,isAddonsOpen:!1}),c.scrollIntoView({behavior:"smooth",block:"center"});const b=c.style.transition,y=c.style.outline,I=c.style.outlineOffset;c.style.transition="outline 0.2s ease",c.style.outline="4px solid #0070f3",c.style.outlineOffset="4px",c.hasAttribute("tabindex")||c.setAttribute("tabindex","-1"),c.focus(),setTimeout(()=>{c.style.outline=y,c.style.outlineOffset=I,c.style.transition=b},1800)}}})})}destroy(){var e;(e=this.element)==null||e.remove()}}class g{constructor(e={}){r(this,"options");r(this,"styleManager");r(this,"collectorManager");r(this,"speechManager");r(this,"audioManager");r(this,"readingToolsManager");r(this,"launcher");r(this,"addonsPanel");r(this,"dictionaryModal");r(this,"pageStructureModal");this.options={...p,...e},s.setState({avatar:this.options.avatar,opacity:this.options.opacity}),this.options.highContrast&&s.setState({contrastMode:"high-contrast-dark"}),this.styleManager=new S,this.speechManager=new A,this.audioManager=new L,this.readingToolsManager=new E,m.init(),this.addonsPanel=new O,this.dictionaryModal=new C(t=>{this.translate(t)}),this.pageStructureModal=new H,this.collectorManager=new M(t=>{this.translate(t)}),this.launcher=new $(this.options.side,this.options.align),s.subscribe(t=>{this.styleManager.apply(t)}),this.styleManager.apply(s.getState()),this.setupKeyboardShortcuts(),console.log("%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)","color: #0070f3; font-weight: bold;","color: inherit;")}setupKeyboardShortcuts(){window.addEventListener("keydown",e=>{if(e.altKey&&(e.key==="a"||e.key==="A")){e.preventDefault();const t=s.getState().isAddonsOpen;s.setState({isAddonsOpen:!t})}if(e.altKey&&(e.key==="l"||e.key==="L")){e.preventDefault();const t=s.getState().isTranslatorOpen;s.setState({isTranslatorOpen:!t})}e.key==="Escape"&&s.setState({isAddonsOpen:!1,isDictionaryOpen:!1,isCollectorActive:!1,isPageStructureOpen:!1})})}openTranslator(){s.setState({isTranslatorOpen:!0}),m.openPlayer()}closeTranslator(){s.setState({isTranslatorOpen:!1,isCollectorActive:!1}),m.closePlayer()}openAddons(){s.setState({isAddonsOpen:!0})}closeAddons(){s.setState({isAddonsOpen:!1})}translate(e){m.translateAndPlay(e)}setAvatar(e){s.setState({avatar:e}),m.setAvatar(e)}reset(){s.reset()}destroy(){this.styleManager.destroy(),this.collectorManager.destroy(),this.speechManager.stop(),this.audioManager.destroy(),this.readingToolsManager.destroy(),this.launcher.destroy(),this.addonsPanel.destroy(),this.dictionaryModal.destroy(),this.pageStructureModal.destroy()}}const z=g,B=g,P=g;typeof window<"u"&&(window.Mahoraga=g,window.MahoragaWidget=g,window.HT=g,window.HandTalkWidget=g),h.HT=P,h.HandTalkWidget=g,h.Mahoraga=B,h.MahoragaWidget=z,h.default=g,Object.defineProperties(h,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}})});
