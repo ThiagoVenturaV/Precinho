@@ -235,7 +235,7 @@ class M {
     }), localStorage.removeItem(y);
   }
 }
-const s = new M();
+const a = new M();
 class A {
   constructor() {
     r(this, "styleTag", null);
@@ -402,7 +402,7 @@ class L {
     this.onSelectTextCallback = e, this.init();
   }
   init() {
-    document.addEventListener("mouseover", this.handleMouseOver.bind(this), { passive: !0 }), document.addEventListener("mouseout", this.handleMouseOut.bind(this), { passive: !0 }), document.addEventListener("click", this.handleClick.bind(this), !0), document.addEventListener("mouseup", this.handleTextSelection.bind(this)), s.subscribe((e) => {
+    document.addEventListener("mouseover", this.handleMouseOver.bind(this), { passive: !0 }), document.addEventListener("mouseout", this.handleMouseOut.bind(this), { passive: !0 }), document.addEventListener("click", this.handleClick.bind(this), !0), document.addEventListener("mouseup", this.handleTextSelection.bind(this)), a.subscribe((e) => {
       this.isActive = e.isCollectorActive, this.isActive ? document.body.classList.add("ht-collector-mode") : (document.body.classList.remove("ht-collector-mode"), this.clearHover());
     });
   }
@@ -428,22 +428,22 @@ class L {
    * Native VLibras text extraction algorithm
    */
   extractTextFromElement(e) {
-    var t, i, a, o, n, d, p;
-    return (t = e.dataset.vlibrasGloss) != null && t.trim() ? e.dataset.vlibrasGloss.trim() : e.tagName === "IMG" ? ((i = e.alt) == null ? void 0 : i.trim()) || "" : e.tagName === "INPUT" ? ((a = e.value) == null ? void 0 : a.trim()) || "" : e.tagName === "BUTTON" ? ((o = e.value) == null ? void 0 : o.trim()) || ((n = e.innerText) == null ? void 0 : n.trim()) || "" : e.tagName === "SELECT" ? ((p = (d = e.selectedOptions[0]) == null ? void 0 : d.innerText) == null ? void 0 : p.trim()) || "" : (e.innerText || e.textContent || "").trim();
+    var t, i, s, o, n, d, p;
+    return (t = e.dataset.vlibrasGloss) != null && t.trim() ? e.dataset.vlibrasGloss.trim() : e.tagName === "IMG" ? ((i = e.alt) == null ? void 0 : i.trim()) || "" : e.tagName === "INPUT" ? ((s = e.value) == null ? void 0 : s.trim()) || "" : e.tagName === "BUTTON" ? ((o = e.value) == null ? void 0 : o.trim()) || ((n = e.innerText) == null ? void 0 : n.trim()) || "" : e.tagName === "SELECT" ? ((p = (d = e.selectedOptions[0]) == null ? void 0 : d.innerText) == null ? void 0 : p.trim()) || "" : (e.innerText || e.textContent || "").trim();
   }
   handleClick(e) {
     const t = e.target;
     if (!t || this.isIgnored(t))
       return;
-    const i = window.getSelection(), a = i ? i.toString().trim() : "";
-    if (a && a.length > 0 && a.length <= 1e3) {
-      e.preventDefault(), e.stopPropagation(), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(a);
+    const i = window.getSelection(), s = i ? i.toString().trim() : "";
+    if (s && s.length > 0 && s.length <= 1e3) {
+      e.preventDefault(), e.stopPropagation(), this.clearHover(), a.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(s);
       return;
     }
     if (this.isActive) {
       e.preventDefault(), e.stopPropagation();
       const o = this.extractTextFromElement(t);
-      o && (t.classList.add("vlibras--active"), setTimeout(() => t.classList.remove("vlibras--active"), 1e3), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(o));
+      o && (t.classList.add("vlibras--active"), setTimeout(() => t.classList.remove("vlibras--active"), 1e3), this.clearHover(), a.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(o));
     }
   }
   /**
@@ -455,8 +455,8 @@ class L {
       return;
     const i = window.getSelection();
     if (!i || i.isCollapsed) return;
-    const a = i.toString().trim();
-    a.length > 1 && a.length <= 1e3 && (this.isActive || s.getState().isTranslatorOpen) && this.onSelectTextCallback(a);
+    const s = i.toString().trim();
+    s.length > 1 && s.length <= 1e3 && (this.isActive || a.getState().isTranslatorOpen) && this.onSelectTextCallback(s);
   }
   destroy() {
     this.clearHover(), document.body.classList.remove("ht-collector-mode"), document.removeEventListener("mouseover", this.handleMouseOver.bind(this)), document.removeEventListener("mouseout", this.handleMouseOut.bind(this)), document.removeEventListener("click", this.handleClick.bind(this), !0), document.removeEventListener("mouseup", this.handleTextSelection.bind(this));
@@ -470,7 +470,7 @@ class T {
     typeof window < "u" && "speechSynthesis" in window && (this.synth = window.speechSynthesis), this.init();
   }
   init() {
-    document.addEventListener("mouseover", this.handleMouseOver.bind(this), { passive: !0 }), s.subscribe((e) => {
+    document.addEventListener("mouseover", this.handleMouseOver.bind(this), { passive: !0 }), a.subscribe((e) => {
       this.isActive = e.pageSpeechActive, this.isActive || this.stop();
     });
   }
@@ -480,8 +480,8 @@ class T {
     if (!t || t.closest(".ht-widget-root") || t.closest(".ht-skip")) return;
     if (["P", "H1", "H2", "H3", "H4", "H5", "H6", "BUTTON", "A", "LI", "LABEL"].includes(t.tagName) && t !== this.hoveredElement) {
       this.hoveredElement = t;
-      const a = (t.innerText || t.getAttribute("aria-label") || "").trim();
-      a && this.speak(a);
+      const s = (t.innerText || t.getAttribute("aria-label") || "").trim();
+      s && this.speak(s);
     }
   }
   speak(e) {
@@ -501,10 +501,10 @@ class E {
     this.init();
   }
   init() {
-    s.subscribe((e) => {
+    a.subscribe((e) => {
       e.disableSounds ? this.muteAll() : this.unmuteAll();
     }), this.observer = new MutationObserver(() => {
-      s.getState().disableSounds && this.muteAll();
+      a.getState().disableSounds && this.muteAll();
     }), this.observer.observe(document.body, {
       childList: !0,
       subtree: !0
@@ -538,16 +538,16 @@ class $ {
       this.isInitializing = !0;
       try {
         if (await this.loadScript("https://vlibras.gov.br/app/vlibras-plugin.js"), (e = window.VLibras) != null && e.Widget) {
-          const a = s.getState().avatar === "MARYA" ? "hosana" : "icaro";
+          const s = a.getState().avatar === "MARYA" ? "hosana" : "icaro";
           new window.VLibras.Widget({
             rootPath: "https://vlibras.gov.br/app",
-            avatar: a,
+            avatar: s,
             position: "R"
           }), this.isLoaded = !0, console.log("%c[Mahoraga - VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!", "color: #0070f3; font-weight: bold;", "color: inherit;");
         }
         this.setupRootWatcher(), this.hookNativeTranslation();
-        let t = s.getState().isTranslatorOpen;
-        s.subscribe((i) => {
+        let t = a.getState().isTranslatorOpen;
+        a.subscribe((i) => {
           i.isTranslatorOpen && !t ? this.openPlayer() : !i.isTranslatorOpen && t && this.closePlayer(), t = i.isTranslatorOpen, i.avatar !== this.currentAvatar && (this.currentAvatar = i.avatar, this.setAvatar(i.avatar));
         });
       } catch (t) {
@@ -562,20 +562,20 @@ class $ {
     const t = () => {
       if (window.plugin && !("__mahoragaHooked" in window.plugin)) {
         window.plugin.__mahoragaHooked = !0;
-        const a = window.plugin.translate;
-        typeof a == "function" && (window.plugin.translate = async (o) => {
-          s.setState({ currentText: o, isPlaying: !0, isTranslatorOpen: !0 });
+        const s = window.plugin.translate;
+        typeof s == "function" && (window.plugin.translate = async (o) => {
+          a.setState({ currentText: o, isPlaying: !0, isTranslatorOpen: !0 });
           const n = await this.translateTextToGloss(o);
-          return s.setState({ currentGloss: n, isPlaying: !1 }), a(o);
+          return a.setState({ currentGloss: n, isPlaying: !1 }), s(o);
         }, e = !0);
       }
       if (window.vlibras && !("__mahoragaHooked" in window.vlibras)) {
         window.vlibras.__mahoragaHooked = !0;
-        const a = window.vlibras.translateAndPlay;
-        typeof a == "function" && (window.vlibras.translateAndPlay = async (o) => {
-          s.setState({ currentText: o, isPlaying: !0, isTranslatorOpen: !0 });
+        const s = window.vlibras.translateAndPlay;
+        typeof s == "function" && (window.vlibras.translateAndPlay = async (o) => {
+          a.setState({ currentText: o, isPlaying: !0, isTranslatorOpen: !0 });
           const n = await this.translateTextToGloss(o);
-          return s.setState({ currentGloss: n, isPlaying: !1 }), a(o);
+          return a.setState({ currentGloss: n, isPlaying: !1 }), s(o);
         }, e = !0);
       }
     };
@@ -602,11 +602,11 @@ class $ {
       }
     `, e.shadowRoot.appendChild(t), new MutationObserver(() => {
       var o;
-      const a = (o = e.shadowRoot) == null ? void 0 : o.querySelectorAll("button");
-      a == null || a.forEach((n) => {
+      const s = (o = e.shadowRoot) == null ? void 0 : o.querySelectorAll("button");
+      s == null || s.forEach((n) => {
         const d = (n.getAttribute("aria-label") || "").toLowerCase();
         (d.includes("fechar") || d.includes("close")) && !n.hasAttribute("data-ht-sync") && (n.setAttribute("data-ht-sync", "true"), n.addEventListener("click", () => {
-          s.setState({ isTranslatorOpen: !1 }), this.closePlayer();
+          a.setState({ isTranslatorOpen: !1 }), this.closePlayer();
         }));
       });
     }).observe(e.shadowRoot, { childList: !0, subtree: !0 });
@@ -617,15 +617,15 @@ class $ {
         t();
         return;
       }
-      const a = document.createElement("script");
-      a.src = e, a.async = !0, a.onload = () => t(), a.onerror = () => i(new Error(`Erro ao carregar script ${e}`)), document.head.appendChild(a);
+      const s = document.createElement("script");
+      s.src = e, s.async = !0, s.onload = () => t(), s.onerror = () => i(new Error(`Erro ao carregar script ${e}`)), document.head.appendChild(s);
     });
   }
   /**
    * Opens the official VLibras 3D WebGL player window
    */
   openPlayer() {
-    var a, o;
+    var s, o;
     try {
       const n = localStorage.getItem("@vlibras-widget");
       n && n.includes('"isOpen":false') && localStorage.setItem("@vlibras-widget", n.replace('"isOpen":false', '"isOpen":true'));
@@ -634,7 +634,7 @@ class $ {
     const e = document.getElementById("vlibras-app-root");
     if (e && (e.style.display = "", e.style.pointerEvents = "", this.ensureShadowFix(e), e.removeAttribute("data-active"), requestAnimationFrame(() => {
       e.setAttribute("data-active", "true");
-    })), typeof ((a = window.VLibrasWidget) == null ? void 0 : a.open) == "function") {
+    })), typeof ((s = window.VLibrasWidget) == null ? void 0 : s.open) == "function") {
       window.VLibrasWidget.open();
       return;
     }
@@ -661,9 +661,9 @@ class $ {
    * Switches avatar between Thiago (Ícaro) and Marya (Hosana)
    */
   setAvatar(e) {
-    var i, a, o;
+    var i, s, o;
     const t = e === "MARYA" ? "hosana" : "icaro";
-    (a = (i = window.plugin) == null ? void 0 : i.player) != null && a.changeAvatar ? window.plugin.player.changeAvatar(t) : (o = window.vlibras) != null && o.changeAvatar && window.vlibras.changeAvatar(t);
+    (s = (i = window.plugin) == null ? void 0 : i.player) != null && s.changeAvatar ? window.plugin.player.changeAvatar(t) : (o = window.vlibras) != null && o.changeAvatar && window.vlibras.changeAvatar(t);
   }
   /**
    * Translates Portuguese text to Libras grammatical glosses using the official open-source VLibras service
@@ -687,32 +687,29 @@ class $ {
    */
   async translateAndPlay(e) {
     if (!e || !e.trim()) return "";
-    this.openPlayer(), s.setState({ currentText: e, isPlaying: !0, isTranslatorOpen: !0 });
+    this.openPlayer(), a.setState({ currentText: e, isPlaying: !0, isTranslatorOpen: !0 });
     const t = await this.translateTextToGloss(e);
-    s.setState({ currentGloss: t });
+    a.setState({ currentGloss: t });
     const i = () => {
-      var a, o;
-      return typeof ((a = window.plugin) == null ? void 0 : a.translate) == "function" ? (window.plugin.translate(e), !0) : typeof ((o = window.vlibras) == null ? void 0 : o.translateAndPlay) == "function" ? (window.vlibras.translateAndPlay(e), !0) : !1;
+      var s, o;
+      return typeof ((s = window.plugin) == null ? void 0 : s.translate) == "function" ? (window.plugin.translate(e), !0) : typeof ((o = window.vlibras) == null ? void 0 : o.translateAndPlay) == "function" ? (window.vlibras.translateAndPlay(e), !0) : !1;
     };
     if (i())
-      setTimeout(() => s.setState({ isPlaying: !1 }), 400);
+      setTimeout(() => a.setState({ isPlaying: !1 }), 400);
     else {
-      let a = 0;
+      let s = 0;
       const o = setInterval(() => {
-        a++, (i() || a > 25) && (clearInterval(o), s.setState({ isPlaying: !1 }));
+        s++, (i() || s > 25) && (clearInterval(o), a.setState({ isPlaying: !1 }));
       }, 250);
     }
     return t;
   }
 }
 const u = new $(), l = {
-  // Lateral Launcher - Accessibility Person Symbol (solid white silhouette)
+  // Lateral Launcher - Universal Accessibility Symbol (Official FontAwesome / Fonticons)
   accessibilityPerson: `
-    <svg viewBox="0 0 40 40" fill="currentColor">
-      <circle cx="20" cy="9" r="3.3"/>
-      <path d="M9 13.8h22c.9 0 1.6.7 1.6 1.6s-.7 1.6-1.6 1.6H24v5.8h-1.6V23h-4.8v-.2H16v-5.8H9c-.9 0-1.6-.7-1.6-1.6s.7-1.6 1.6-1.6z"/>
-      <path d="M16.2 21h3.3v9.5c0 .9-.7 1.5-1.6 1.5s-1.7-.6-1.7-1.5V21z"/>
-      <path d="M20.5 21h3.3v9.5c0 .9-.7 1.5-1.6 1.5s-1.7-.6-1.7-1.5V21z"/>
+    <svg viewBox="0 0 512 512" fill="currentColor">
+      <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm161.5-86.1c-12.2-5.2-26.3 .4-31.5 12.6s.4 26.3 12.6 31.5l11.9 5.1c17.3 7.4 35.2 12.9 53.6 16.3l0 50.1c0 4.3-.7 8.6-2.1 12.6l-28.7 86.1c-4.2 12.6 2.6 26.2 15.2 30.4s26.2-2.6 30.4-15.2l24.4-73.2c1.3-3.8 4.8-6.4 8.8-6.4s7.6 2.6 8.8 6.4l24.4 73.2c4.2 12.6 17.8 19.4 30.4 15.2s19.4-17.8 15.2-30.4l-28.7-86.1c-1.4-4.1-2.1-8.3-2.1-12.6l0-50.1c18.4-3.5 36.3-8.9 53.6-16.3l11.9-5.1c12.2-5.2 17.8-19.3 12.6-31.5s-19.3-17.8-31.5-12.6L338.7 175c-26.1 11.2-54.2 17-82.7 17s-56.5-5.8-82.7-17l-11.9-5.1zM256 160a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/>
     </svg>
   `,
   // Lateral Launcher - Libras / Sign Language Hands Symbol (official VLibras SVG path)
@@ -730,11 +727,8 @@ const u = new $(), l = {
     </svg>
   `,
   accessibility: `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="4" r="2"/>
-      <path d="m4.93 10.93 4.24-4.24a2 2 0 0 1 2.83 0l4.24 4.24"/>
-      <path d="M12 7v8"/>
-      <path d="m8 19 4-4 4 4"/>
+    <svg viewBox="0 0 512 512" fill="currentColor">
+      <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm161.5-86.1c-12.2-5.2-26.3 .4-31.5 12.6s.4 26.3 12.6 31.5l11.9 5.1c17.3 7.4 35.2 12.9 53.6 16.3l0 50.1c0 4.3-.7 8.6-2.1 12.6l-28.7 86.1c-4.2 12.6 2.6 26.2 15.2 30.4s26.2-2.6 30.4-15.2l24.4-73.2c1.3-3.8 4.8-6.4 8.8-6.4s7.6 2.6 8.8 6.4l24.4 73.2c4.2 12.6 17.8 19.4 30.4 15.2s19.4-17.8 15.2-30.4l-28.7-86.1c-1.4-4.1-2.1-8.3-2.1-12.6l0-50.1c18.4-3.5 36.3-8.9 53.6-16.3l11.9-5.1c12.2-5.2 17.8-19.3 12.6-31.5s-19.3-17.8-31.5-12.6L338.7 175c-26.1 11.2-54.2 17-82.7 17s-56.5-5.8-82.7-17l-11.9-5.1zM256 160a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/>
     </svg>
   `,
   contrast: `
@@ -905,7 +899,7 @@ class O {
     this.init();
   }
   init() {
-    this.createGuide(), this.createMask(), this.createMagnifier(), window.addEventListener("mousemove", this.handleMouseMove.bind(this), { passive: !0 }), s.subscribe((e) => {
+    this.createGuide(), this.createMask(), this.createMagnifier(), window.addEventListener("mousemove", this.handleMouseMove.bind(this), { passive: !0 }), a.subscribe((e) => {
       this.guideElement && (this.guideElement.style.display = e.readingGuideActive ? "block" : "none"), this.maskElement && (this.maskElement.style.display = e.readingMaskActive ? "block" : "none"), this.magnifierElement && (this.magnifierElement.style.display = e.magnifierActive ? "block" : "none");
     });
   }
@@ -954,17 +948,17 @@ class O {
     `, document.body.appendChild(this.magnifierElement);
   }
   handleMouseMove(e) {
-    const t = s.getState();
+    const t = a.getState();
     if (t.readingGuideActive && this.guideElement && (this.guideElement.style.top = `${e.clientY}px`), t.readingMaskActive && this.maskElement) {
-      const a = Math.max(0, e.clientY - 35);
+      const s = Math.max(0, e.clientY - 35);
       this.maskElement.style.background = `
         linear-gradient(
           to bottom,
           rgba(0, 0, 0, 0.75) 0px,
-          rgba(0, 0, 0, 0.75) ${a}px,
-          transparent ${a}px,
-          transparent ${a + 70}px,
-          rgba(0, 0, 0, 0.75) ${a + 70}px,
+          rgba(0, 0, 0, 0.75) ${s}px,
+          transparent ${s}px,
+          transparent ${s + 70}px,
+          rgba(0, 0, 0, 0.75) ${s + 70}px,
           rgba(0, 0, 0, 0.75) 100%
         )
       `;
@@ -973,10 +967,10 @@ class O {
       this.magnifierElement.style.left = `${e.clientX}px`, this.magnifierElement.style.top = `${e.clientY}px`;
       const i = document.elementFromPoint(e.clientX, e.clientY);
       if (i && !i.closest(".ht-widget-root") && !i.closest(".ht-skip")) {
-        const a = (i.innerText || i.textContent || "").trim().slice(0, 150);
+        const s = (i.innerText || i.textContent || "").trim().slice(0, 150);
         this.magnifierElement.innerHTML = `
           <div style="padding: 16px; font-size: 20px; font-weight: bold; color: #111; line-height: 1.4; display: flex; align-items: center; justify-content: center; height: 100%; text-align: center;">
-            ${a || `<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${l.magnifier}</span>`}
+            ${s || `<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${l.magnifier}</span>`}
           </div>
         `;
       }
@@ -995,7 +989,7 @@ class C {
     this.side = e, this.align = t, this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-launcher-container ht-skip", this.element.setAttribute("role", "region"), this.element.setAttribute("aria-label", "Atalhos de Acessibilidade e Tradutor de Libras"), this.render(), document.body.appendChild(this.element), this.attachEvents(), s.subscribe((e) => {
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-launcher-container ht-skip", this.element.setAttribute("role", "region"), this.element.setAttribute("aria-label", "Atalhos de Acessibilidade e Tradutor de Libras"), this.render(), document.body.appendChild(this.element), this.attachEvents(), a.subscribe((e) => {
       if (!this.element) return;
       const t = this.element.querySelector(".ht-lateral-btn-addons"), i = this.element.querySelector(".ht-lateral-btn-libras");
       t && (e.isAddonsOpen ? (t.classList.add("ht-lateral-active"), t.style.background = "#0a3875") : (t.classList.remove("ht-lateral-active"), t.style.background = "transparent")), i && (e.isTranslatorOpen ? (i.classList.add("ht-lateral-active"), i.style.background = "#0a3875") : (i.classList.remove("ht-lateral-active"), i.style.background = "transparent"));
@@ -1006,7 +1000,7 @@ class C {
     const e = this.side !== "left";
     let t = "";
     e ? t += "right: 0; left: auto;" : t += "left: 0; right: auto;", this.align === "top" ? t += "top: 120px;" : this.align === "bottom" ? t += "bottom: 120px;" : t += "top: 50%; transform: translateY(-50%);";
-    const i = e ? "12px 0 0 12px" : "0 12px 12px 0", a = e ? "border: 2px solid #ffffff; border-right: none;" : "border: 2px solid #ffffff; border-left: none;";
+    const i = e ? "12px 0 0 12px" : "0 12px 12px 0", s = e ? "border: 2px solid #ffffff; border-right: none;" : "border: 2px solid #ffffff; border-left: none;";
     this.element.innerHTML = `
       <div class="ht-lateral-launcher" style="
         position: fixed;
@@ -1015,7 +1009,7 @@ class C {
         display: flex;
         flex-direction: column;
         background: #1351b4;
-        ${a}
+        ${s}
         border-radius: ${i};
         box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.22);
         overflow: hidden;
@@ -1077,19 +1071,19 @@ class C {
     if (!this.element) return;
     const e = this.element.querySelector(".ht-lateral-btn-addons"), t = this.element.querySelector(".ht-lateral-btn-libras"), i = this.element.querySelector(".ht-lateral-launcher");
     if (i) {
-      const a = this.side !== "left";
+      const s = this.side !== "left";
       i.addEventListener("mouseenter", () => {
-        this.align === "center" ? i.style.transform = a ? "translateY(-50%) translateX(-3px)" : "translateY(-50%) translateX(3px)" : i.style.transform = a ? "translateX(-3px)" : "translateX(3px)";
+        this.align === "center" ? i.style.transform = s ? "translateY(-50%) translateX(-3px)" : "translateY(-50%) translateX(3px)" : i.style.transform = s ? "translateX(-3px)" : "translateX(3px)";
       }), i.addEventListener("mouseleave", () => {
         this.align === "center" ? i.style.transform = "translateY(-50%)" : i.style.transform = "none";
       });
     }
     e == null || e.addEventListener("click", () => {
-      const a = s.getState();
-      s.setState({ isAddonsOpen: !a.isAddonsOpen });
+      const s = a.getState();
+      a.setState({ isAddonsOpen: !s.isAddonsOpen });
     }), t == null || t.addEventListener("click", () => {
-      const o = !s.getState().isTranslatorOpen;
-      s.setState({ isTranslatorOpen: o }), o ? u.openPlayer() : u.closePlayer();
+      const o = !a.getState().isTranslatorOpen;
+      a.setState({ isTranslatorOpen: o }), o ? u.openPlayer() : u.closePlayer();
     });
   }
   destroy() {
@@ -1103,7 +1097,7 @@ class H {
     this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-addons-panel ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-label", "Painel de Recursos de Acessibilidade"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), this.attachEvents(), s.subscribe((e) => {
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-addons-panel ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-label", "Painel de Recursos de Acessibilidade"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), this.attachEvents(), a.subscribe((e) => {
       if (this.element) {
         if (this.element.style.display = e.isAddonsOpen ? "flex" : "none", e.isAddonsOpen) {
           const t = this.element.querySelector(".ht-addons-card");
@@ -1295,7 +1289,7 @@ class H {
       </div>
     `);
   }
-  renderToolButton(e, t, i, a) {
+  renderToolButton(e, t, i, s) {
     return `
       <button class="ht-tool-btn" data-tool="${e}" style="
         display: flex;
@@ -1313,7 +1307,7 @@ class H {
       ">
         <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <div class="ht-tool-icon" style="width: 28px; height: 28px; color: #475569;">
-            ${a}
+            ${s}
           </div>
           <span class="ht-tool-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; display: inline-block;"></span>
         </div>
@@ -1326,15 +1320,15 @@ class H {
     if (!this.element) return;
     const e = this.element.querySelector(".ht-addons-close-btn");
     e == null || e.addEventListener("click", () => {
-      s.setState({ isAddonsOpen: !1 });
+      a.setState({ isAddonsOpen: !1 });
     });
     const t = this.element.querySelector(".ht-addons-backdrop");
     t == null || t.addEventListener("click", (o) => {
-      o.target === t && s.setState({ isAddonsOpen: !1 });
+      o.target === t && a.setState({ isAddonsOpen: !1 });
     });
     const i = this.element.querySelector(".ht-btn-reset-all");
     i == null || i.addEventListener("click", () => {
-      s.reset();
+      a.reset();
     }), this.element.querySelectorAll(".ht-tool-btn").forEach((o) => {
       o.addEventListener("click", () => {
         const n = o.getAttribute("data-tool");
@@ -1343,82 +1337,82 @@ class H {
     });
   }
   handleToolClick(e) {
-    const t = s.getState();
+    const t = a.getState();
     switch (e) {
       case "signTranslator":
-        s.setState({ isTranslatorOpen: !t.isTranslatorOpen });
+        a.setState({ isTranslatorOpen: !t.isTranslatorOpen });
         break;
       case "synonymsMeanings":
-        s.setState({ isDictionaryOpen: !0 });
+        a.setState({ isDictionaryOpen: !0 });
         break;
       case "fontSize":
-        s.setState({ fontSizeLevel: (t.fontSizeLevel + 1) % 3 });
+        a.setState({ fontSizeLevel: (t.fontSizeLevel + 1) % 3 });
         break;
       case "textStyle":
-        s.setState({ dyslexicFont: !t.dyslexicFont });
+        a.setState({ dyslexicFont: !t.dyslexicFont });
         break;
       case "lineHeight":
-        s.setState({ lineHeightLevel: (t.lineHeightLevel + 1) % 3 });
+        a.setState({ lineHeightLevel: (t.lineHeightLevel + 1) % 3 });
         break;
       case "letterSpacing":
-        s.setState({ letterSpacingLevel: (t.letterSpacingLevel + 1) % 3 });
+        a.setState({ letterSpacingLevel: (t.letterSpacingLevel + 1) % 3 });
         break;
       case "highlightLetters":
-        s.setState({ highlightLetters: !t.highlightLetters });
+        a.setState({ highlightLetters: !t.highlightLetters });
         break;
       case "pageSpeech":
-        s.setState({ pageSpeechActive: !t.pageSpeechActive });
+        a.setState({ pageSpeechActive: !t.pageSpeechActive });
         break;
       case "pageStructure":
-        s.setState({ isPageStructureOpen: !0 });
+        a.setState({ isPageStructureOpen: !0 });
         break;
       case "readingGuide":
-        s.setState({ readingGuideActive: !t.readingGuideActive });
+        a.setState({ readingGuideActive: !t.readingGuideActive });
         break;
       case "readingMask":
-        s.setState({ readingMaskActive: !t.readingMaskActive });
+        a.setState({ readingMaskActive: !t.readingMaskActive });
         break;
       case "magnifier":
-        s.setState({ magnifierActive: !t.magnifierActive });
+        a.setState({ magnifierActive: !t.magnifierActive });
         break;
       case "highlightLinks":
-        s.setState({ highlightLinks: !t.highlightLinks });
+        a.setState({ highlightLinks: !t.highlightLinks });
         break;
       case "highlightHeadings":
-        s.setState({ highlightHeadings: !t.highlightHeadings });
+        a.setState({ highlightHeadings: !t.highlightHeadings });
         break;
       case "hideImages":
-        s.setState({ hideImages: !t.hideImages });
+        a.setState({ hideImages: !t.hideImages });
         break;
       case "pauseAnimations":
-        s.setState({ pauseAnimations: !t.pauseAnimations });
+        a.setState({ pauseAnimations: !t.pauseAnimations });
         break;
       case "disableSounds":
-        s.setState({ disableSounds: !t.disableSounds });
+        a.setState({ disableSounds: !t.disableSounds });
         break;
       case "readerMode":
-        s.setState({ readerMode: !t.readerMode });
+        a.setState({ readerMode: !t.readerMode });
         break;
       case "contrastMode": {
-        const i = ["none", "high-contrast-dark", "high-contrast-light", "invert"], a = i[(i.indexOf(t.contrastMode) + 1) % i.length];
-        s.setState({ contrastMode: a });
+        const i = ["none", "high-contrast-dark", "high-contrast-light", "invert"], s = i[(i.indexOf(t.contrastMode) + 1) % i.length];
+        a.setState({ contrastMode: s });
         break;
       }
       case "saturationMode": {
-        const i = ["normal", "monochrome", "low-saturation", "high-saturation"], a = i[(i.indexOf(t.saturationMode) + 1) % i.length];
-        s.setState({ saturationMode: a });
+        const i = ["normal", "monochrome", "low-saturation", "high-saturation"], s = i[(i.indexOf(t.saturationMode) + 1) % i.length];
+        a.setState({ saturationMode: s });
         break;
       }
       case "colorblindMode": {
-        const i = ["none", "protanopia", "deuteranopia", "tritanopia", "achromatopsia"], a = i[(i.indexOf(t.colorblindMode) + 1) % i.length];
-        s.setState({ colorblindMode: a });
+        const i = ["none", "protanopia", "deuteranopia", "tritanopia", "achromatopsia"], s = i[(i.indexOf(t.colorblindMode) + 1) % i.length];
+        a.setState({ colorblindMode: s });
         break;
       }
     }
   }
   updateActiveIndicators() {
     if (!this.element) return;
-    const e = s.getState();
+    const e = a.getState();
     let t = 0;
     const i = {
       signTranslator: { active: e.isTranslatorOpen },
@@ -1451,8 +1445,8 @@ class H {
         n.active ? (t++, d.style.borderColor = "#0070f3", d.style.background = "#f0f7ff", c && (c.style.background = "#0070f3"), f && (f.style.color = "#0070f3")) : (d.style.borderColor = "#e2e8f0", d.style.background = "#f8fafc", c && (c.style.background = "#cbd5e1"), f && (f.style.color = "#475569")), n.label && m && (m.innerText = `Ativo: ${n.label}`);
       }
     });
-    const a = this.element.querySelector(".ht-active-counter-badge");
-    a && (a.innerHTML = `${t} ${t === 1 ? "ativo" : "ativos"}`);
+    const s = this.element.querySelector(".ht-active-counter-badge");
+    s && (s.innerHTML = `${t} ${t === 1 ? "ativo" : "ativos"}`);
   }
   destroy() {
     var e;
@@ -1466,7 +1460,7 @@ class z {
     this.onSignSelected = e, this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-dictionary-modal ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-modal", "true"), this.element.setAttribute("aria-label", "Dicionário de Libras"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), s.subscribe((e) => {
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-dictionary-modal ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-modal", "true"), this.element.setAttribute("aria-label", "Dicionário de Libras"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), a.subscribe((e) => {
       if (this.element && (this.element.style.display = e.isDictionaryOpen ? "flex" : "none", e.isDictionaryOpen)) {
         const t = this.element.querySelector(".ht-dict-search-input");
         t == null || t.focus();
@@ -1521,16 +1515,16 @@ class z {
           <p style="margin:6px 0 0;font-size:0.85rem;">Tente pesquisar por termos comuns como "acessibilidade", "libras", "olá", "obrigado".</p>
         </div>
       ` : t.map((i) => {
-      const a = b[i], o = i.charAt(0).toUpperCase() + i.slice(1);
+      const s = b[i], o = i.charAt(0).toUpperCase() + i.slice(1);
       return `
         <div class="ht-dict-item" data-term="${i}" style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;background:#ffffff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;transition:box-shadow 0.2s;">
           <div style="flex:1;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
               <strong style="font-size:1rem;color:#1a202c;">${o}</strong>
-              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${a.category}</span>
+              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${s.category}</span>
             </div>
-            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${a.definition}</p>
-            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${a.description}</p>
+            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${s.definition}</p>
+            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${s.description}</p>
           </div>
           <button class="ht-dict-sign-btn" data-term="${i}" style="background:#0070f3;color:#ffffff;border:none;border-radius:8px;padding:8px 12px;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;">
             <span>Ver Sinal</span>
@@ -1543,17 +1537,17 @@ class z {
     if (!this.element) return;
     this.element.querySelectorAll(".ht-dict-close-btn, .ht-dict-close-btn2").forEach((o) => {
       o.addEventListener("click", () => {
-        s.setState({ isDictionaryOpen: !1 });
+        a.setState({ isDictionaryOpen: !1 });
       });
     });
     const t = this.element.querySelector(".ht-modal-backdrop");
     t == null || t.addEventListener("click", (o) => {
-      o.target === t && s.setState({ isDictionaryOpen: !1 });
+      o.target === t && a.setState({ isDictionaryOpen: !1 });
     });
-    const i = this.element.querySelector(".ht-dict-search-input"), a = this.element.querySelector(".ht-dict-list");
+    const i = this.element.querySelector(".ht-dict-search-input"), s = this.element.querySelector(".ht-dict-list");
     i == null || i.addEventListener("input", (o) => {
       const n = o.target.value;
-      a && (a.innerHTML = this.renderList(n), this.attachSignButtons());
+      s && (s.innerHTML = this.renderList(n), this.attachSignButtons());
     }), this.attachSignButtons();
   }
   attachSignButtons() {
@@ -1561,7 +1555,7 @@ class z {
     this.element.querySelectorAll(".ht-dict-sign-btn").forEach((t) => {
       t.addEventListener("click", () => {
         const i = t.getAttribute("data-term");
-        i && (s.setState({ isDictionaryOpen: !1, isTranslatorOpen: !0 }), this.onSignSelected(i));
+        i && (a.setState({ isDictionaryOpen: !1, isTranslatorOpen: !0 }), this.onSignSelected(i));
       });
     });
   }
@@ -1576,7 +1570,7 @@ class B {
     this.init();
   }
   init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-page-structure-modal ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-modal", "true"), this.element.setAttribute("aria-label", "Estrutura da Página e Navegação por Títulos"), this.element.style.display = "none", document.body.appendChild(this.element), s.subscribe((e) => {
+    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-page-structure-modal ht-skip", this.element.setAttribute("role", "dialog"), this.element.setAttribute("aria-modal", "true"), this.element.setAttribute("aria-label", "Estrutura da Página e Navegação por Títulos"), this.element.style.display = "none", document.body.appendChild(this.element), a.subscribe((e) => {
       this.element && (e.isPageStructureOpen ? (this.render(), this.element.style.display = "flex") : this.element.style.display = "none");
     });
   }
@@ -1587,10 +1581,10 @@ class B {
     return e.forEach((i) => {
       if (i.closest(".ht-widget-root") || i.closest(".ht-skip") || i.closest("#vlibras-app-root"))
         return;
-      const a = (i.innerText || i.textContent || "").trim().replace(/\s+/g, " ");
-      if (!a && !i.getAttribute("aria-label")) return;
+      const s = (i.innerText || i.textContent || "").trim().replace(/\s+/g, " ");
+      if (!s && !i.getAttribute("aria-label")) return;
       const o = i.tagName.toLowerCase();
-      let n = 1, d = a;
+      let n = 1, d = s;
       o.startsWith("h") && o.length === 2 ? n = parseInt(o[1], 10) : o === "header" || i.getAttribute("role") === "banner" ? (n = 1, d = d || "Cabeçalho do Site") : o === "nav" || i.getAttribute("role") === "navigation" ? (n = 2, d = d || "Menu de Navegação") : o === "main" || i.getAttribute("role") === "main" ? (n = 1, d = d || "Conteúdo Principal") : o === "footer" && (n = 1, d = d || "Rodapé da Página"), d.length > 80 && (d = d.slice(0, 80) + "..."), t.push({
         element: i,
         tag: o.toUpperCase(),
@@ -1738,11 +1732,11 @@ class B {
     `;
     const t = this.element.querySelector(".ht-structure-close-btn");
     t == null || t.addEventListener("click", () => {
-      s.setState({ isPageStructureOpen: !1 });
+      a.setState({ isPageStructureOpen: !1 });
     });
     const i = this.element.querySelector(".ht-structure-backdrop");
     i == null || i.addEventListener("click", (o) => {
-      o.target === i && s.setState({ isPageStructureOpen: !1 });
+      o.target === i && a.setState({ isPageStructureOpen: !1 });
     }), this.element.querySelectorAll(".ht-structure-item-btn").forEach((o) => {
       o.addEventListener("click", () => {
         var d;
@@ -1750,7 +1744,7 @@ class B {
         if (n !== null) {
           const p = parseInt(n, 10), c = (d = e[p]) == null ? void 0 : d.element;
           if (c) {
-            s.setState({ isPageStructureOpen: !1, isAddonsOpen: !1 }), c.scrollIntoView({ behavior: "smooth", block: "center" });
+            a.setState({ isPageStructureOpen: !1, isAddonsOpen: !1 }), c.scrollIntoView({ behavior: "smooth", block: "center" });
             const f = c.style.transition, m = c.style.outline, x = c.style.outlineOffset;
             c.style.transition = "outline 0.2s ease", c.style.outline = "4px solid #0070f3", c.style.outlineOffset = "4px", c.hasAttribute("tabindex") || c.setAttribute("tabindex", "-1"), c.focus(), setTimeout(() => {
               c.style.outline = m, c.style.outlineOffset = x, c.style.transition = f;
@@ -1777,30 +1771,30 @@ class g {
     r(this, "addonsPanel");
     r(this, "dictionaryModal");
     r(this, "pageStructureModal");
-    this.options = { ...S, ...e }, s.setState({
+    this.options = { ...S, ...e }, a.setState({
       avatar: this.options.avatar,
       opacity: this.options.opacity
-    }), this.options.highContrast && s.setState({ contrastMode: "high-contrast-dark" }), this.styleManager = new A(), this.speechManager = new T(), this.audioManager = new E(), this.readingToolsManager = new O(), u.init(), this.addonsPanel = new H(), this.dictionaryModal = new z((t) => {
+    }), this.options.highContrast && a.setState({ contrastMode: "high-contrast-dark" }), this.styleManager = new A(), this.speechManager = new T(), this.audioManager = new E(), this.readingToolsManager = new O(), u.init(), this.addonsPanel = new H(), this.dictionaryModal = new z((t) => {
       this.translate(t);
     }), this.pageStructureModal = new B(), this.collectorManager = new L((t) => {
       this.translate(t);
-    }), this.launcher = new C(this.options.side, this.options.align), s.subscribe((t) => {
+    }), this.launcher = new C(this.options.side, this.options.align), a.subscribe((t) => {
       this.styleManager.apply(t);
-    }), this.styleManager.apply(s.getState()), this.setupKeyboardShortcuts(), console.log("%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)", "color: #0070f3; font-weight: bold;", "color: inherit;");
+    }), this.styleManager.apply(a.getState()), this.setupKeyboardShortcuts(), console.log("%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)", "color: #0070f3; font-weight: bold;", "color: inherit;");
   }
   setupKeyboardShortcuts() {
     window.addEventListener("keydown", (e) => {
       if (e.altKey && (e.key === "a" || e.key === "A")) {
         e.preventDefault();
-        const t = s.getState().isAddonsOpen;
-        s.setState({ isAddonsOpen: !t });
+        const t = a.getState().isAddonsOpen;
+        a.setState({ isAddonsOpen: !t });
       }
       if (e.altKey && (e.key === "l" || e.key === "L")) {
         e.preventDefault();
-        const t = s.getState().isTranslatorOpen;
-        s.setState({ isTranslatorOpen: !t });
+        const t = a.getState().isTranslatorOpen;
+        a.setState({ isTranslatorOpen: !t });
       }
-      e.key === "Escape" && s.setState({
+      e.key === "Escape" && a.setState({
         isAddonsOpen: !1,
         isDictionaryOpen: !1,
         isCollectorActive: !1,
@@ -1809,25 +1803,25 @@ class g {
     });
   }
   openTranslator() {
-    s.setState({ isTranslatorOpen: !0 }), u.openPlayer();
+    a.setState({ isTranslatorOpen: !0 }), u.openPlayer();
   }
   closeTranslator() {
-    s.setState({ isTranslatorOpen: !1, isCollectorActive: !1 }), u.closePlayer();
+    a.setState({ isTranslatorOpen: !1, isCollectorActive: !1 }), u.closePlayer();
   }
   openAddons() {
-    s.setState({ isAddonsOpen: !0 });
+    a.setState({ isAddonsOpen: !0 });
   }
   closeAddons() {
-    s.setState({ isAddonsOpen: !1 });
+    a.setState({ isAddonsOpen: !1 });
   }
   translate(e) {
     u.translateAndPlay(e);
   }
   setAvatar(e) {
-    s.setState({ avatar: e }), u.setAvatar(e);
+    a.setState({ avatar: e }), u.setAvatar(e);
   }
   reset() {
-    s.reset();
+    a.reset();
   }
   destroy() {
     this.styleManager.destroy(), this.collectorManager.destroy(), this.speechManager.stop(), this.audioManager.destroy(), this.readingToolsManager.destroy(), this.launcher.destroy(), this.addonsPanel.destroy(), this.dictionaryModal.destroy(), this.pageStructureModal.destroy();
