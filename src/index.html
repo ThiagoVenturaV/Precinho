@@ -55,27 +55,38 @@
 <body>
   <app-root></app-root>
 
-  <!-- Widget VLibras: Acessibilidade Digital em Língua Brasileira de Sinais (LIBRAS) -->
-  <div vw class="enabled" aria-label="Acessibilidade em Língua Brasileira de Sinais (VLibras)">
-    <div vw-access-button class="active" aria-label="Abrir tradutor para Libras"></div>
-    <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
-    </div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js" defer></script>
+  <!-- Mahoraga Accessibility Widget: Acessibilidade Digital Completa & Tradutor de Libras (REA) -->
+  <link rel="stylesheet" href="/assets/mahoraga/mahoraga-widget.css" data-beasties-skip />
+  <script src="/assets/mahoraga/mahoraga-widget.umd.js" defer></script>
   <script>
-    function initVLibras() {
-      if (window.VLibras && window.VLibras.Widget) {
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-      } else {
-        setTimeout(initVLibras, 250);
+    (function() {
+      if (typeof window === 'undefined') return;
+      function initMahoraga() {
+        var WidgetClass = window.Mahoraga || window.HT;
+        if (typeof WidgetClass === 'function') {
+          try {
+            window.mahoraga = new WidgetClass({
+              token: 'precinho-pague-menos',
+              avatar: 'THIAGO',
+              align: 'bottom',
+              side: 'right',
+              highContrast: false,
+              opacity: 100
+            });
+            console.log('[Mahoraga] Widget de acessibilidade inicializado com sucesso.');
+          } catch (e) {
+            console.error('[Mahoraga] Erro ao instanciar widget:', e);
+          }
+        } else {
+          setTimeout(initMahoraga, 150);
+        }
       }
-    }
-    if (document.readyState === 'complete') {
-      initVLibras();
-    } else {
-      window.addEventListener('load', initVLibras);
-    }
+      if (document.readyState === 'complete') {
+        initMahoraga();
+      } else {
+        window.addEventListener('load', initMahoraga);
+      }
+    })();
   </script>
 </body>
 </html>
