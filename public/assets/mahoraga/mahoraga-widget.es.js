@@ -1,7 +1,7 @@
-var A = Object.defineProperty;
-var L = (h, e, t) => e in h ? A(h, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : h[e] = t;
-var l = (h, e, t) => L(h, typeof e != "symbol" ? e + "" : e, t);
-const T = {
+var w = Object.defineProperty;
+var k = (h, e, t) => e in h ? w(h, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : h[e] = t;
+var r = (h, e, t) => k(h, typeof e != "symbol" ? e + "" : e, t);
+const S = {
   token: "mahoraga-accessibility-widget",
   avatar: "THIAGO",
   align: "center",
@@ -49,7 +49,7 @@ const T = {
       pageColors: !0
     }
   }
-}, y = {
+}, v = {
   isTranslatorOpen: !1,
   isAddonsOpen: !1,
   isDictionaryOpen: !1,
@@ -81,7 +81,7 @@ const T = {
   contrastMode: "none",
   saturationMode: "normal",
   colorblindMode: "none"
-}, x = {
+}, b = {
   acessibilidade: {
     definition: "Qualidade do que é acessível, que permite a inclusão e o uso autônomo por qualquer pessoa.",
     category: "Geral",
@@ -162,20 +162,20 @@ const T = {
     category: "Personagem",
     description: "Sinal de amiga inteligente com sorriso comunicativo."
   }
-}, w = "ht_accessibility_state";
-class E {
+}, y = "ht_accessibility_state";
+class M {
   constructor() {
-    l(this, "state");
-    l(this, "listeners", /* @__PURE__ */ new Set());
+    r(this, "state");
+    r(this, "listeners", /* @__PURE__ */ new Set());
     this.state = this.loadPersistedState();
   }
   loadPersistedState() {
     try {
-      const e = localStorage.getItem(w);
+      const e = localStorage.getItem(y);
       if (e) {
         const t = JSON.parse(e);
         return {
-          ...y,
+          ...v,
           ...t,
           // Don't auto-open panels on page refresh
           isTranslatorOpen: t.isTranslatorOpen ?? !1,
@@ -189,7 +189,7 @@ class E {
     } catch (e) {
       console.warn("[HandTalk] Erro ao carregar preferências do localStorage:", e);
     }
-    return { ...y };
+    return { ...v };
   }
   persist() {
     try {
@@ -212,7 +212,7 @@ class E {
         saturationMode: this.state.saturationMode,
         colorblindMode: this.state.colorblindMode
       };
-      localStorage.setItem(w, JSON.stringify(e));
+      localStorage.setItem(y, JSON.stringify(e));
     } catch (e) {
       console.warn("[HandTalk] Erro ao salvar preferências:", e);
     }
@@ -230,16 +230,16 @@ class E {
   reset() {
     const e = this.state.isTranslatorOpen;
     this.setState({
-      ...y,
+      ...v,
       isTranslatorOpen: e
-    }), localStorage.removeItem(w);
+    }), localStorage.removeItem(y);
   }
 }
-const s = new E();
-class $ {
+const s = new M();
+class A {
   constructor() {
-    l(this, "styleTag", null);
-    l(this, "svgFilterTag", null);
+    r(this, "styleTag", null);
+    r(this, "svgFilterTag", null);
     this.init();
   }
   init() {
@@ -394,11 +394,11 @@ class $ {
     (e = this.styleTag) == null || e.remove(), (t = this.svgFilterTag) == null || t.remove();
   }
 }
-class C {
+class L {
   constructor(e) {
-    l(this, "currentHoverEl", null);
-    l(this, "isActive", !1);
-    l(this, "onSelectTextCallback");
+    r(this, "currentHoverEl", null);
+    r(this, "isActive", !1);
+    r(this, "onSelectTextCallback");
     this.onSelectTextCallback = e, this.init();
   }
   init() {
@@ -428,22 +428,22 @@ class C {
    * Native VLibras text extraction algorithm
    */
   extractTextFromElement(e) {
-    var t, i, n, a, o, d, u;
-    return (t = e.dataset.vlibrasGloss) != null && t.trim() ? e.dataset.vlibrasGloss.trim() : e.tagName === "IMG" ? ((i = e.alt) == null ? void 0 : i.trim()) || "" : e.tagName === "INPUT" ? ((n = e.value) == null ? void 0 : n.trim()) || "" : e.tagName === "BUTTON" ? ((a = e.value) == null ? void 0 : a.trim()) || ((o = e.innerText) == null ? void 0 : o.trim()) || "" : e.tagName === "SELECT" ? ((u = (d = e.selectedOptions[0]) == null ? void 0 : d.innerText) == null ? void 0 : u.trim()) || "" : (e.innerText || e.textContent || "").trim();
+    var t, i, a, o, n, d, p;
+    return (t = e.dataset.vlibrasGloss) != null && t.trim() ? e.dataset.vlibrasGloss.trim() : e.tagName === "IMG" ? ((i = e.alt) == null ? void 0 : i.trim()) || "" : e.tagName === "INPUT" ? ((a = e.value) == null ? void 0 : a.trim()) || "" : e.tagName === "BUTTON" ? ((o = e.value) == null ? void 0 : o.trim()) || ((n = e.innerText) == null ? void 0 : n.trim()) || "" : e.tagName === "SELECT" ? ((p = (d = e.selectedOptions[0]) == null ? void 0 : d.innerText) == null ? void 0 : p.trim()) || "" : (e.innerText || e.textContent || "").trim();
   }
   handleClick(e) {
     const t = e.target;
     if (!t || this.isIgnored(t))
       return;
-    const i = window.getSelection(), n = i ? i.toString().trim() : "";
-    if (n && n.length > 0 && n.length <= 1e3) {
-      e.preventDefault(), e.stopPropagation(), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(n);
+    const i = window.getSelection(), a = i ? i.toString().trim() : "";
+    if (a && a.length > 0 && a.length <= 1e3) {
+      e.preventDefault(), e.stopPropagation(), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(a);
       return;
     }
     if (this.isActive) {
       e.preventDefault(), e.stopPropagation();
-      const a = this.extractTextFromElement(t);
-      a && (t.classList.add("vlibras--active"), setTimeout(() => t.classList.remove("vlibras--active"), 1e3), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(a));
+      const o = this.extractTextFromElement(t);
+      o && (t.classList.add("vlibras--active"), setTimeout(() => t.classList.remove("vlibras--active"), 1e3), this.clearHover(), s.setState({ isCollectorActive: !1 }), this.onSelectTextCallback(o));
     }
   }
   /**
@@ -455,18 +455,18 @@ class C {
       return;
     const i = window.getSelection();
     if (!i || i.isCollapsed) return;
-    const n = i.toString().trim();
-    n.length > 1 && n.length <= 1e3 && this.onSelectTextCallback(n);
+    const a = i.toString().trim();
+    a.length > 1 && a.length <= 1e3 && (this.isActive || s.getState().isTranslatorOpen) && this.onSelectTextCallback(a);
   }
   destroy() {
     this.clearHover(), document.body.classList.remove("ht-collector-mode"), document.removeEventListener("mouseover", this.handleMouseOver.bind(this)), document.removeEventListener("mouseout", this.handleMouseOut.bind(this)), document.removeEventListener("click", this.handleClick.bind(this), !0), document.removeEventListener("mouseup", this.handleTextSelection.bind(this));
   }
 }
-class O {
+class T {
   constructor() {
-    l(this, "synth", null);
-    l(this, "isActive", !1);
-    l(this, "hoveredElement", null);
+    r(this, "synth", null);
+    r(this, "isActive", !1);
+    r(this, "hoveredElement", null);
     typeof window < "u" && "speechSynthesis" in window && (this.synth = window.speechSynthesis), this.init();
   }
   init() {
@@ -480,8 +480,8 @@ class O {
     if (!t || t.closest(".ht-widget-root") || t.closest(".ht-skip")) return;
     if (["P", "H1", "H2", "H3", "H4", "H5", "H6", "BUTTON", "A", "LI", "LABEL"].includes(t.tagName) && t !== this.hoveredElement) {
       this.hoveredElement = t;
-      const n = (t.innerText || t.getAttribute("aria-label") || "").trim();
-      n && this.speak(n);
+      const a = (t.innerText || t.getAttribute("aria-label") || "").trim();
+      a && this.speak(a);
     }
   }
   speak(e) {
@@ -494,10 +494,10 @@ class O {
     this.synth && this.synth.cancel();
   }
 }
-class z {
+class E {
   constructor() {
-    l(this, "mutedElements", []);
-    l(this, "observer", null);
+    r(this, "mutedElements", []);
+    r(this, "observer", null);
     this.init();
   }
   init() {
@@ -525,11 +525,11 @@ class z {
     this.unmuteAll(), (e = this.observer) == null || e.disconnect();
   }
 }
-class H {
+class $ {
   constructor() {
-    l(this, "isLoaded", !1);
-    l(this, "isInitializing", !1);
-    l(this, "currentAvatar", "THIAGO");
+    r(this, "isLoaded", !1);
+    r(this, "isInitializing", !1);
+    r(this, "currentAvatar", "THIAGO");
     this.init();
   }
   async init() {
@@ -538,15 +538,17 @@ class H {
       this.isInitializing = !0;
       try {
         if (await this.loadScript("https://vlibras.gov.br/app/vlibras-plugin.js"), (e = window.VLibras) != null && e.Widget) {
-          const i = s.getState().avatar === "MARYA" ? "hosana" : "icaro";
+          const a = s.getState().avatar === "MARYA" ? "hosana" : "icaro";
           new window.VLibras.Widget({
             rootPath: "https://vlibras.gov.br/app",
-            avatar: i,
+            avatar: a,
             position: "R"
           }), this.isLoaded = !0, console.log("%c[Mahoraga - VLibras]%c Motor 3D oficial do VLibras conectado com sucesso!", "color: #0070f3; font-weight: bold;", "color: inherit;");
         }
-        this.setupRootWatcher(), this.hookNativeTranslation(), s.subscribe((t) => {
-          t.avatar !== this.currentAvatar && (this.currentAvatar = t.avatar, this.setAvatar(t.avatar));
+        this.setupRootWatcher(), this.hookNativeTranslation();
+        let t = s.getState().isTranslatorOpen;
+        s.subscribe((i) => {
+          i.isTranslatorOpen && !t ? this.openPlayer() : !i.isTranslatorOpen && t && this.closePlayer(), t = i.isTranslatorOpen, i.avatar !== this.currentAvatar && (this.currentAvatar = i.avatar, this.setAvatar(i.avatar));
         });
       } catch (t) {
         console.warn("[VLibras] Falha ao carregar motor VLibras:", t);
@@ -560,20 +562,20 @@ class H {
     const t = () => {
       if (window.plugin && !("__mahoragaHooked" in window.plugin)) {
         window.plugin.__mahoragaHooked = !0;
-        const n = window.plugin.translate;
-        typeof n == "function" && (window.plugin.translate = async (a) => {
-          s.setState({ currentText: a, isPlaying: !0, isTranslatorOpen: !0 });
-          const o = await this.translateTextToGloss(a);
-          return s.setState({ currentGloss: o, isPlaying: !1 }), n(a);
+        const a = window.plugin.translate;
+        typeof a == "function" && (window.plugin.translate = async (o) => {
+          s.setState({ currentText: o, isPlaying: !0, isTranslatorOpen: !0 });
+          const n = await this.translateTextToGloss(o);
+          return s.setState({ currentGloss: n, isPlaying: !1 }), a(o);
         }, e = !0);
       }
       if (window.vlibras && !("__mahoragaHooked" in window.vlibras)) {
         window.vlibras.__mahoragaHooked = !0;
-        const n = window.vlibras.translateAndPlay;
-        typeof n == "function" && (window.vlibras.translateAndPlay = async (a) => {
-          s.setState({ currentText: a, isPlaying: !0, isTranslatorOpen: !0 });
-          const o = await this.translateTextToGloss(a);
-          return s.setState({ currentGloss: o, isPlaying: !1 }), n(a);
+        const a = window.vlibras.translateAndPlay;
+        typeof a == "function" && (window.vlibras.translateAndPlay = async (o) => {
+          s.setState({ currentText: o, isPlaying: !0, isTranslatorOpen: !0 });
+          const n = await this.translateTextToGloss(o);
+          return s.setState({ currentGloss: n, isPlaying: !1 }), a(o);
         }, e = !0);
       }
     };
@@ -599,11 +601,11 @@ class H {
         visibility: hidden !important;
       }
     `, e.shadowRoot.appendChild(t), new MutationObserver(() => {
-      var a;
-      const n = (a = e.shadowRoot) == null ? void 0 : a.querySelectorAll("button");
-      n == null || n.forEach((o) => {
-        const d = (o.getAttribute("aria-label") || "").toLowerCase();
-        (d.includes("fechar") || d.includes("close")) && !o.hasAttribute("data-ht-sync") && (o.setAttribute("data-ht-sync", "true"), o.addEventListener("click", () => {
+      var o;
+      const a = (o = e.shadowRoot) == null ? void 0 : o.querySelectorAll("button");
+      a == null || a.forEach((n) => {
+        const d = (n.getAttribute("aria-label") || "").toLowerCase();
+        (d.includes("fechar") || d.includes("close")) && !n.hasAttribute("data-ht-sync") && (n.setAttribute("data-ht-sync", "true"), n.addEventListener("click", () => {
           s.setState({ isTranslatorOpen: !1 }), this.closePlayer();
         }));
       });
@@ -615,28 +617,28 @@ class H {
         t();
         return;
       }
-      const n = document.createElement("script");
-      n.src = e, n.async = !0, n.onload = () => t(), n.onerror = () => i(new Error(`Erro ao carregar script ${e}`)), document.head.appendChild(n);
+      const a = document.createElement("script");
+      a.src = e, a.async = !0, a.onload = () => t(), a.onerror = () => i(new Error(`Erro ao carregar script ${e}`)), document.head.appendChild(a);
     });
   }
   /**
    * Opens the official VLibras 3D WebGL player window
    */
   openPlayer() {
-    var n, a;
+    var a, o;
     try {
-      const o = localStorage.getItem("@vlibras-widget");
-      o && o.includes('"isOpen":false') && localStorage.setItem("@vlibras-widget", o.replace('"isOpen":false', '"isOpen":true'));
+      const n = localStorage.getItem("@vlibras-widget");
+      n && n.includes('"isOpen":false') && localStorage.setItem("@vlibras-widget", n.replace('"isOpen":false', '"isOpen":true'));
     } catch {
     }
     const e = document.getElementById("vlibras-app-root");
     if (e && (e.style.display = "", e.style.pointerEvents = "", this.ensureShadowFix(e), e.removeAttribute("data-active"), requestAnimationFrame(() => {
       e.setAttribute("data-active", "true");
-    })), typeof ((n = window.VLibrasWidget) == null ? void 0 : n.open) == "function") {
+    })), typeof ((a = window.VLibrasWidget) == null ? void 0 : a.open) == "function") {
       window.VLibrasWidget.open();
       return;
     }
-    const t = document.getElementById("vlibras-access-wrapper"), i = (a = t == null ? void 0 : t.shadowRoot) == null ? void 0 : a.querySelector("#vlibras-button");
+    const t = document.getElementById("vlibras-access-wrapper"), i = (o = t == null ? void 0 : t.shadowRoot) == null ? void 0 : o.querySelector("#vlibras-button");
     if (i) {
       i.click();
       return;
@@ -659,9 +661,9 @@ class H {
    * Switches avatar between Thiago (Ícaro) and Marya (Hosana)
    */
   setAvatar(e) {
-    var i, n, a;
+    var i, a, o;
     const t = e === "MARYA" ? "hosana" : "icaro";
-    (n = (i = window.plugin) == null ? void 0 : i.player) != null && n.changeAvatar ? window.plugin.player.changeAvatar(t) : (a = window.vlibras) != null && a.changeAvatar && window.vlibras.changeAvatar(t);
+    (a = (i = window.plugin) == null ? void 0 : i.player) != null && a.changeAvatar ? window.plugin.player.changeAvatar(t) : (o = window.vlibras) != null && o.changeAvatar && window.vlibras.changeAvatar(t);
   }
   /**
    * Translates Portuguese text to Libras grammatical glosses using the official open-source VLibras service
@@ -689,21 +691,21 @@ class H {
     const t = await this.translateTextToGloss(e);
     s.setState({ currentGloss: t });
     const i = () => {
-      var n, a;
-      return typeof ((n = window.plugin) == null ? void 0 : n.translate) == "function" ? (window.plugin.translate(e), !0) : typeof ((a = window.vlibras) == null ? void 0 : a.translateAndPlay) == "function" ? (window.vlibras.translateAndPlay(e), !0) : !1;
+      var a, o;
+      return typeof ((a = window.plugin) == null ? void 0 : a.translate) == "function" ? (window.plugin.translate(e), !0) : typeof ((o = window.vlibras) == null ? void 0 : o.translateAndPlay) == "function" ? (window.vlibras.translateAndPlay(e), !0) : !1;
     };
     if (i())
       setTimeout(() => s.setState({ isPlaying: !1 }), 400);
     else {
-      let n = 0;
-      const a = setInterval(() => {
-        n++, (i() || n > 25) && (clearInterval(a), s.setState({ isPlaying: !1 }));
+      let a = 0;
+      const o = setInterval(() => {
+        a++, (i() || a > 25) && (clearInterval(o), s.setState({ isPlaying: !1 }));
       }, 250);
     }
     return t;
   }
 }
-const m = new H(), r = {
+const u = new $(), l = {
   // Lateral Launcher - Accessibility Person Symbol (solid white silhouette)
   accessibilityPerson: `
     <svg viewBox="0 0 40 40" fill="currentColor">
@@ -882,34 +884,10 @@ const m = new H(), r = {
       <path d="M12 7v6"/>
     </svg>
   `,
-  collector: `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-      <path d="m13 13 6 6"/>
-    </svg>
-  `,
-  repeat: `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="1 4 1 10 7 10"/>
-      <polyline points="23 20 23 14 17 14"/>
-      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
-    </svg>
-  `,
-  speed: `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <polyline points="12 6 12 12 16 14"/>
-    </svg>
-  `,
   close: `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="18" y1="6" x2="6" y2="18"/>
       <line x1="6" y1="6" x2="18" y2="18"/>
-    </svg>
-  `,
-  minimize: `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="5" y1="12" x2="19" y2="12"/>
     </svg>
   `,
   reset: `
@@ -917,21 +895,13 @@ const m = new H(), r = {
       <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
       <path d="M3 3v5h5"/>
     </svg>
-  `,
-  swap: `
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m16 3 4 4-4 4"/>
-      <path d="M20 7H4"/>
-      <path d="m8 21-4-4 4-4"/>
-      <path d="M4 17h16"/>
-    </svg>
   `
 };
-class B {
+class O {
   constructor() {
-    l(this, "guideElement", null);
-    l(this, "maskElement", null);
-    l(this, "magnifierElement", null);
+    r(this, "guideElement", null);
+    r(this, "maskElement", null);
+    r(this, "magnifierElement", null);
     this.init();
   }
   init() {
@@ -986,15 +956,15 @@ class B {
   handleMouseMove(e) {
     const t = s.getState();
     if (t.readingGuideActive && this.guideElement && (this.guideElement.style.top = `${e.clientY}px`), t.readingMaskActive && this.maskElement) {
-      const n = Math.max(0, e.clientY - 35);
+      const a = Math.max(0, e.clientY - 35);
       this.maskElement.style.background = `
         linear-gradient(
           to bottom,
           rgba(0, 0, 0, 0.75) 0px,
-          rgba(0, 0, 0, 0.75) ${n}px,
-          transparent ${n}px,
-          transparent ${n + 70}px,
-          rgba(0, 0, 0, 0.75) ${n + 70}px,
+          rgba(0, 0, 0, 0.75) ${a}px,
+          transparent ${a}px,
+          transparent ${a + 70}px,
+          rgba(0, 0, 0, 0.75) ${a + 70}px,
           rgba(0, 0, 0, 0.75) 100%
         )
       `;
@@ -1003,10 +973,10 @@ class B {
       this.magnifierElement.style.left = `${e.clientX}px`, this.magnifierElement.style.top = `${e.clientY}px`;
       const i = document.elementFromPoint(e.clientX, e.clientY);
       if (i && !i.closest(".ht-widget-root") && !i.closest(".ht-skip")) {
-        const n = (i.innerText || i.textContent || "").trim().slice(0, 150);
+        const a = (i.innerText || i.textContent || "").trim().slice(0, 150);
         this.magnifierElement.innerHTML = `
           <div style="padding: 16px; font-size: 20px; font-weight: bold; color: #111; line-height: 1.4; display: flex; align-items: center; justify-content: center; height: 100%; text-align: center;">
-            ${n || `<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${r.magnifier}</span>`}
+            ${a || `<span style="width: 32px; height: 32px; display: inline-flex; color: #64748b;">${l.magnifier}</span>`}
           </div>
         `;
       }
@@ -1017,11 +987,11 @@ class B {
     (e = this.guideElement) == null || e.remove(), (t = this.maskElement) == null || t.remove(), (i = this.magnifierElement) == null || i.remove();
   }
 }
-class q {
+class C {
   constructor(e = "right", t = "center") {
-    l(this, "element", null);
-    l(this, "side", "right");
-    l(this, "align", "center");
+    r(this, "element", null);
+    r(this, "side", "right");
+    r(this, "align", "center");
     this.side = e, this.align = t, this.init();
   }
   init() {
@@ -1036,7 +1006,7 @@ class q {
     const e = this.side !== "left";
     let t = "";
     e ? t += "right: 0; left: auto;" : t += "left: 0; right: auto;", this.align === "top" ? t += "top: 120px;" : this.align === "bottom" ? t += "bottom: 120px;" : t += "top: 50%; transform: translateY(-50%);";
-    const i = e ? "12px 0 0 12px" : "0 12px 12px 0", n = e ? "border: 2px solid #ffffff; border-right: none;" : "border: 2px solid #ffffff; border-left: none;";
+    const i = e ? "12px 0 0 12px" : "0 12px 12px 0", a = e ? "border: 2px solid #ffffff; border-right: none;" : "border: 2px solid #ffffff; border-left: none;";
     this.element.innerHTML = `
       <div class="ht-lateral-launcher" style="
         position: fixed;
@@ -1045,7 +1015,7 @@ class q {
         display: flex;
         flex-direction: column;
         background: #1351b4;
-        ${n}
+        ${a}
         border-radius: ${i};
         box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.22);
         overflow: hidden;
@@ -1069,7 +1039,7 @@ class q {
           transition: background 0.15s ease;
         " title="Recursos Assistivos de Acessibilidade (Alt+A)" aria-label="Abrir painel de acessibilidade e recursos assistivos">
           <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
-            ${r.accessibilityPerson}
+            ${l.accessibilityPerson}
           </span>
         </button>
 
@@ -1096,7 +1066,7 @@ class q {
           transition: background 0.15s ease;
         " title="Tradutor de Libras com Avatar 3D (Alt+L)" aria-label="Abrir tradutor de Libras em 3D">
           <span style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
-            ${r.librasHands}
+            ${l.librasHands}
           </span>
         </button>
 
@@ -1107,19 +1077,19 @@ class q {
     if (!this.element) return;
     const e = this.element.querySelector(".ht-lateral-btn-addons"), t = this.element.querySelector(".ht-lateral-btn-libras"), i = this.element.querySelector(".ht-lateral-launcher");
     if (i) {
-      const n = this.side !== "left";
+      const a = this.side !== "left";
       i.addEventListener("mouseenter", () => {
-        this.align === "center" ? i.style.transform = n ? "translateY(-50%) translateX(-3px)" : "translateY(-50%) translateX(3px)" : i.style.transform = n ? "translateX(-3px)" : "translateX(3px)";
+        this.align === "center" ? i.style.transform = a ? "translateY(-50%) translateX(-3px)" : "translateY(-50%) translateX(3px)" : i.style.transform = a ? "translateX(-3px)" : "translateX(3px)";
       }), i.addEventListener("mouseleave", () => {
         this.align === "center" ? i.style.transform = "translateY(-50%)" : i.style.transform = "none";
       });
     }
     e == null || e.addEventListener("click", () => {
-      const n = s.getState();
-      s.setState({ isAddonsOpen: !n.isAddonsOpen });
+      const a = s.getState();
+      s.setState({ isAddonsOpen: !a.isAddonsOpen });
     }), t == null || t.addEventListener("click", () => {
-      const n = s.getState();
-      s.setState({ isTranslatorOpen: !n.isTranslatorOpen });
+      const o = !s.getState().isTranslatorOpen;
+      s.setState({ isTranslatorOpen: o }), o ? u.openPlayer() : u.closePlayer();
     });
   }
   destroy() {
@@ -1127,391 +1097,9 @@ class q {
     (e = this.element) == null || e.remove();
   }
 }
-class P {
+class H {
   constructor() {
-    l(this, "element", null);
-    l(this, "isMinimized", !1);
-    l(this, "isDragging", !1);
-    l(this, "dragStartX", 0);
-    l(this, "dragStartY", 0);
-    this.init();
-  }
-  init() {
-    this.element = document.createElement("div"), this.element.className = "ht-widget-root ht-translator-window ht-skip", this.element.setAttribute("role", "region"), this.element.setAttribute("aria-label", "Janela de Tradução em Libras Mahoraga"), this.element.style.display = "none", this.render(), document.body.appendChild(this.element), this.attachEvents(), s.subscribe((e, t) => {
-      if (!this.element) return;
-      this.element.style.display = e.isTranslatorOpen ? "flex" : "none", e.isTranslatorOpen && !t.isTranslatorOpen && m.openPlayer();
-      const i = this.element.querySelector(".ht-translator-subtitle-text");
-      i && (i.innerText = e.currentText || "Selecione ou clique em qualquer texto para traduzir em Libras");
-      const n = this.element.querySelector(".ht-translator-subtitle-gloss");
-      n && (e.currentGloss ? (n.innerHTML = `<span style="width: 14px; height: 14px; display: inline-flex; vertical-align: -2px; margin-right: 4px;">${r.libras}</span> Glosa Libras: [${e.currentGloss}]`, n.style.display = "block") : n.style.display = "none");
-      const a = this.element.querySelector(".ht-translator-card");
-      a && (a.style.background = e.opacity === 100 ? "#ffffff" : e.opacity === 50 ? "rgba(255, 255, 255, 0.82)" : "rgba(255, 255, 255, 0.45)");
-      const o = this.element.querySelector(".ht-avatar-name-badge"), d = this.element.querySelector(".ht-avatar-status-name"), u = e.avatar === "MARYA", c = u ? "Marya" : "Thiago", g = u ? "Hosana" : "Ícaro";
-      o && (o.innerText = c), d && (d.innerText = `Avatar 3D: ${c} (${g})`);
-      const p = this.element.querySelector(".ht-btn-collector");
-      p && (e.isCollectorActive ? (p.classList.add("ht-btn-active"), p.style.background = "#0070f3", p.style.color = "#ffffff") : (p.classList.remove("ht-btn-active"), p.style.background = "#f1f5f9", p.style.color = "#334155"));
-      const f = this.element.querySelector(".ht-btn-speed span");
-      f && (f.innerText = `${e.speed}x`);
-    });
-  }
-  async translateText(e) {
-    !e || !e.trim() || await m.translateAndPlay(e);
-  }
-  render() {
-    this.element && (this.element.innerHTML = `
-      <div class="ht-translator-card" style="
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        width: 340px;
-        background: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        z-index: 2147483642;
-        transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        backdrop-filter: blur(12px);
-      ">
-        
-        <!-- Header / Drag bar -->
-        <div class="ht-translator-header" style="
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 10px 14px;
-          border-bottom: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.85);
-          cursor: grab;
-          user-select: none;
-        ">
-          <!-- Avatar Switcher (Thiago <-> Marya) -->
-          <button class="ht-btn-avatar-switch" style="
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #eef6ff;
-            border: 1px solid #c7e0ff;
-            border-radius: 20px;
-            padding: 4px 10px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #0070f3;
-            cursor: pointer;
-            outline: none;
-          " title="Alternar entre Thiago (Ícaro) e Marya (Hosana)">
-            <span style="width: 14px; height: 14px; display: inline-block;">${r.libras}</span>
-            <span class="ht-avatar-name-badge">Thiago</span>
-            <span style="width: 12px; height: 12px; display: inline-flex; color: #64748b;">${r.swap}</span>
-          </button>
-
-          <!-- Window Controls -->
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <button class="ht-btn-minimize" style="
-              width: 28px;
-              height: 28px;
-              border-radius: 6px;
-              background: none;
-              border: none;
-              color: #64748b;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            " aria-label="Minimizar janela">
-              <span style="width: 16px; height: 16px;">${r.minimize}</span>
-            </button>
-            <button class="ht-btn-close" style="
-              width: 28px;
-              height: 28px;
-              border-radius: 6px;
-              background: none;
-              border: none;
-              color: #64748b;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            " aria-label="Fechar tradutor de Libras">
-              <span style="width: 16px; height: 16px;">${r.close}</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Body / Live 3D Motor Status & Subtitles -->
-        <div class="ht-translator-body" style="
-          padding: 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        ">
-          
-          <!-- 3D Engine Card -->
-          <div style="
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            border-radius: 14px;
-            padding: 14px;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
-          ">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;"></span>
-                <span style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em; color: #94a3b8; text-transform: uppercase;">VLibras 3D Engine</span>
-              </div>
-              <button class="ht-btn-focus-3d" style="
-                background: rgba(255,255,255,0.12);
-                border: 1px solid rgba(255,255,255,0.2);
-                color: #ffffff;
-                font-size: 0.72rem;
-                font-weight: 600;
-                padding: 3px 8px;
-                border-radius: 6px;
-                cursor: pointer;
-              ">Focar Avatar 3D</button>
-            </div>
-
-            <div class="ht-avatar-status-name" style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">
-              Avatar 3D: Thiago (Ícaro)
-            </div>
-
-            <p style="font-size: 0.75rem; color: #94a3b8; margin: 0; line-height: 1.4;">
-              Motor oficial open-source do Governo Federal e UFPB. Sinalização em Libras autêntica com expressões faciais e datilologia.
-            </p>
-          </div>
-
-          <!-- Subtitle Box -->
-          <div class="ht-translator-subtitle" style="
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-          ">
-            <div style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">
-              Texto Selecionado:
-            </div>
-            <div class="ht-translator-subtitle-text" style="
-              font-size: 0.85rem;
-              color: #0f172a;
-              font-weight: 500;
-              line-height: 1.4;
-              max-height: 80px;
-              overflow-y: auto;
-            ">
-              Clique em qualquer texto do site para traduzir em Libras
-            </div>
-            
-            <!-- Libras Grammatical Gloss -->
-            <div class="ht-translator-subtitle-gloss" style="
-              display: none;
-              font-size: 0.75rem;
-              color: #0284c7;
-              font-weight: 700;
-              background: #f0f9ff;
-              border: 1px dashed #bae6fd;
-              border-radius: 6px;
-              padding: 6px 8px;
-              line-height: 1.35;
-              text-transform: uppercase;
-              word-break: break-word;
-            "></div>
-          </div>
-
-        </div>
-
-        <!-- Toolbar / Controls -->
-        <div class="ht-translator-toolbar" style="
-          padding: 8px 12px;
-          border-top: 1px solid rgba(0,0,0,0.06);
-          background: rgba(255,255,255,0.92);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 6px;
-        ">
-          <!-- Text Collector Button -->
-          <button class="ht-btn-collector" style="
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            padding: 7px 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-          " title="Seletor de Texto: clique em qualquer elemento do site">
-            <span style="width: 14px; height: 14px; display: inline-block;">${r.collector}</span>
-            <span>Seletor</span>
-          </button>
-
-          <!-- Speed Selector Button -->
-          <button class="ht-btn-speed" style="
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            padding: 7px 9px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-          " title="Alterar velocidade da sinalização">
-            <span style="width: 14px; height: 14px; display: inline-block;">${r.speed}</span>
-            <span>1x</span>
-          </button>
-
-          <!-- Repeat Button -->
-          <button class="ht-btn-repeat" style="
-            width: 32px;
-            height: 32px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          " title="Repetir tradução">
-            <span style="width: 16px; height: 16px;">${r.repeat}</span>
-          </button>
-
-          <!-- Dictionary Button -->
-          <button class="ht-btn-dictionary" style="
-            width: 32px;
-            height: 32px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          " title="Dicionário de Libras e Sinônimos">
-            <span style="width: 16px; height: 16px;">${r.dictionary}</span>
-          </button>
-
-          <!-- Opacity Button -->
-          <button class="ht-btn-opacity" style="
-            width: 32px;
-            height: 32px;
-            background: #f1f5f9;
-            color: #334155;
-            border: none;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          " title="Alternar transparência da janela">
-            <span style="width: 16px; height: 16px;">${r.contrast}</span>
-          </button>
-        </div>
-
-      </div>
-    `);
-  }
-  attachEvents() {
-    if (!this.element) return;
-    const e = this.element.querySelector(".ht-btn-avatar-switch");
-    e == null || e.addEventListener("click", () => {
-      const p = s.getState().avatar, f = p === "THIAGO" || p === "HUGO" ? "MARYA" : "THIAGO";
-      s.setState({ avatar: f }), m.setAvatar(f);
-    });
-    const t = this.element.querySelector(".ht-btn-focus-3d");
-    t == null || t.addEventListener("click", () => {
-      m.openPlayer();
-    });
-    const i = this.element.querySelector(".ht-btn-close");
-    i == null || i.addEventListener("click", () => {
-      s.setState({ isTranslatorOpen: !1, isCollectorActive: !1 }), m.closePlayer();
-    });
-    const n = this.element.querySelector(".ht-btn-minimize");
-    n == null || n.addEventListener("click", () => {
-      this.toggleMinimize();
-    });
-    const a = this.element.querySelector(".ht-btn-collector");
-    a == null || a.addEventListener("click", () => {
-      const p = s.getState().isCollectorActive;
-      s.setState({ isCollectorActive: !p });
-    });
-    const o = this.element.querySelector(".ht-btn-speed");
-    o == null || o.addEventListener("click", () => {
-      var S, M;
-      const p = [1, 1.5, 2, 0.5], f = s.getState().speed, v = (p.indexOf(f) + 1) % p.length, k = p[v];
-      s.setState({ speed: k }), (M = (S = window.plugin) == null ? void 0 : S.player) != null && M.setSpeed && window.plugin.player.setSpeed(k);
-    });
-    const d = this.element.querySelector(".ht-btn-repeat");
-    d == null || d.addEventListener("click", () => {
-      const p = s.getState().currentText;
-      p && this.translateText(p);
-    });
-    const u = this.element.querySelector(".ht-btn-dictionary");
-    u == null || u.addEventListener("click", () => {
-      s.setState({ isDictionaryOpen: !0 });
-    });
-    const c = this.element.querySelector(".ht-btn-opacity");
-    c == null || c.addEventListener("click", () => {
-      const p = [100, 50, 0], f = s.getState().opacity, v = (p.indexOf(f) + 1) % p.length;
-      s.setState({ opacity: p[v] });
-    });
-    const g = this.element.querySelector(".ht-translator-header");
-    g == null || g.addEventListener("mousedown", this.handleMouseDown.bind(this)), window.addEventListener("mousemove", this.handleMouseMove.bind(this)), window.addEventListener("mouseup", this.handleMouseUp.bind(this));
-  }
-  toggleMinimize() {
-    var i, n;
-    this.isMinimized = !this.isMinimized;
-    const e = (i = this.element) == null ? void 0 : i.querySelector(".ht-translator-body"), t = (n = this.element) == null ? void 0 : n.querySelector(".ht-translator-toolbar");
-    e && t && (this.isMinimized ? (e.style.display = "none", t.style.display = "none") : (e.style.display = "flex", t.style.display = "flex"));
-  }
-  handleMouseDown(e) {
-    var n;
-    if (e.target.closest("button")) return;
-    this.isDragging = !0;
-    const t = (n = this.element) == null ? void 0 : n.querySelector(".ht-translator-card");
-    if (!t) return;
-    const i = t.getBoundingClientRect();
-    this.dragStartX = e.clientX - i.left, this.dragStartY = e.clientY - i.top, t.style.cursor = "grabbing";
-  }
-  handleMouseMove(e) {
-    var c;
-    if (!this.isDragging) return;
-    const t = (c = this.element) == null ? void 0 : c.querySelector(".ht-translator-card");
-    if (!t) return;
-    const i = e.clientX - this.dragStartX, n = e.clientY - this.dragStartY, a = window.innerWidth - t.offsetWidth - 10, o = window.innerHeight - t.offsetHeight - 10, d = Math.max(10, Math.min(a, i)), u = Math.max(10, Math.min(o, n));
-    t.style.left = `${d}px`, t.style.top = `${u}px`, t.style.right = "auto", t.style.bottom = "auto";
-  }
-  handleMouseUp() {
-    var e;
-    if (this.isDragging) {
-      this.isDragging = !1;
-      const t = (e = this.element) == null ? void 0 : e.querySelector(".ht-translator-card");
-      t && (t.style.cursor = "default");
-    }
-  }
-  destroy() {
-    var e;
-    (e = this.element) == null || e.remove();
-  }
-}
-class j {
-  constructor() {
-    l(this, "element", null);
+    r(this, "element", null);
     this.init();
   }
   init() {
@@ -1569,7 +1157,7 @@ class j {
                 align-items: center;
                 justify-content: center;
               ">
-                <span style="width: 22px; height: 22px; display: inline-block;">${r.accessibility}</span>
+                <span style="width: 22px; height: 22px; display: inline-block;">${l.accessibility}</span>
               </div>
               <div>
                 <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">Recursos Assistivos</h2>
@@ -1589,7 +1177,7 @@ class j {
               align-items: center;
               justify-content: center;
             " aria-label="Fechar recursos assistivos">
-              <span style="width: 20px; height: 20px;">${r.close}</span>
+              <span style="width: 20px; height: 20px;">${l.close}</span>
             </button>
           </div>
 
@@ -1606,61 +1194,61 @@ class j {
             <!-- Category: AI Assistant / Libras -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.libras}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.libras}</span>
                 <span>Tradutor de Libras 3D</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("signTranslator", "Tradutor de Libras", "Avatar 3D em tempo real", r.libras)}
-                ${this.renderToolButton("synonymsMeanings", "Dicionário Libras", "Sinais e significados", r.dictionary)}
+                ${this.renderToolButton("signTranslator", "Tradutor de Libras", "Avatar 3D em tempo real", l.libras)}
+                ${this.renderToolButton("synonymsMeanings", "Dicionário Libras", "Sinais e significados", l.dictionary)}
               </div>
             </div>
 
             <!-- Category: Font Control -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.fontSize}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.fontSize}</span>
                 <span>Controle de Fonte</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("fontSize", "Tamanho da Fonte", "3 opções (+0%, +15%, +30%)", r.fontSize)}
-                ${this.renderToolButton("textStyle", "Fonte Legível", "Adaptada para dislexia", r.dyslexicFont)}
-                ${this.renderToolButton("lineHeight", "Espaço Linhas", "3 opções de entrelinha", r.lineHeight)}
-                ${this.renderToolButton("letterSpacing", "Espaço Letras", "3 opções de espaçamento", r.letterSpacing)}
-                ${this.renderToolButton("highlightLetters", "Destacar Letras", "Primeira letra colorida", r.highlightLetters)}
+                ${this.renderToolButton("fontSize", "Tamanho da Fonte", "3 opções (+0%, +15%, +30%)", l.fontSize)}
+                ${this.renderToolButton("textStyle", "Fonte Legível", "Adaptada para dislexia", l.dyslexicFont)}
+                ${this.renderToolButton("lineHeight", "Espaço Linhas", "3 opções de entrelinha", l.lineHeight)}
+                ${this.renderToolButton("letterSpacing", "Espaço Letras", "3 opções de espaçamento", l.letterSpacing)}
+                ${this.renderToolButton("highlightLetters", "Destacar Letras", "Primeira letra colorida", l.highlightLetters)}
               </div>
             </div>
 
             <!-- Category: Navigation & Reading -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.readingGuide}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.readingGuide}</span>
                 <span>Navegação & Leitura</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("pageSpeech", "Leitor de Sites", "Leitura em voz alta (TTS)", r.speech)}
-                ${this.renderToolButton("pageStructure", "Estrutura da Página", "Navegação por títulos e seções", r.pageStructure)}
-                ${this.renderToolButton("readingGuide", "Guia de Leitura", "Régua horizontal móvel", r.readingGuide)}
-                ${this.renderToolButton("readingMask", "Máscara Leitura", "Foco na linha atual", r.readingMask)}
-                ${this.renderToolButton("magnifier", "Lupa de Conteúdo", "Lente de aumento no mouse", r.magnifier)}
-                ${this.renderToolButton("highlightLinks", "Destacar Links", "Bordas e realce amarelo", r.highlightLinks)}
-                ${this.renderToolButton("highlightHeadings", "Destacar Títulos", "Marcações H1 a H6", r.highlightHeadings)}
-                ${this.renderToolButton("hideImages", "Ocultar Imagens", "Diminui poluição visual", r.hideImages)}
-                ${this.renderToolButton("pauseAnimations", "Pausar Animações", "Congela GIFs e transições", r.pauseAnimations)}
-                ${this.renderToolButton("disableSounds", "Parar Sons", "Muta mídias da página", r.disableSounds)}
-                ${this.renderToolButton("readerMode", "Modo Leitura", "Texto limpo sem distrações", r.readerMode)}
+                ${this.renderToolButton("pageSpeech", "Leitor de Sites", "Leitura em voz alta (TTS)", l.speech)}
+                ${this.renderToolButton("pageStructure", "Estrutura da Página", "Navegação por títulos e seções", l.pageStructure)}
+                ${this.renderToolButton("readingGuide", "Guia de Leitura", "Régua horizontal móvel", l.readingGuide)}
+                ${this.renderToolButton("readingMask", "Máscara Leitura", "Foco na linha atual", l.readingMask)}
+                ${this.renderToolButton("magnifier", "Lupa de Conteúdo", "Lente de aumento no mouse", l.magnifier)}
+                ${this.renderToolButton("highlightLinks", "Destacar Links", "Bordas e realce amarelo", l.highlightLinks)}
+                ${this.renderToolButton("highlightHeadings", "Destacar Títulos", "Marcações H1 a H6", l.highlightHeadings)}
+                ${this.renderToolButton("hideImages", "Ocultar Imagens", "Diminui poluição visual", l.hideImages)}
+                ${this.renderToolButton("pauseAnimations", "Pausar Animações", "Congela GIFs e transições", l.pauseAnimations)}
+                ${this.renderToolButton("disableSounds", "Parar Sons", "Muta mídias da página", l.disableSounds)}
+                ${this.renderToolButton("readerMode", "Modo Leitura", "Texto limpo sem distrações", l.readerMode)}
               </div>
             </div>
 
             <!-- Category: Color Control -->
             <div>
               <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${r.contrast}</span>
+                <span style="width: 16px; height: 16px; display: inline-flex; color: #0070f3;">${l.contrast}</span>
                 <span>Controle de Cores</span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                ${this.renderToolButton("contrastMode", "Contraste", "Escuro, Claro, Invertido", r.contrast)}
-                ${this.renderToolButton("saturationMode", "Saturação", "Monocromático e Níveis", r.saturation)}
-                ${this.renderToolButton("colorblindMode", "Modo Daltônico", "Filtros Protanopia / Trit.", r.colorblind)}
+                ${this.renderToolButton("contrastMode", "Contraste", "Escuro, Claro, Invertido", l.contrast)}
+                ${this.renderToolButton("saturationMode", "Saturação", "Monocromático e Níveis", l.saturation)}
+                ${this.renderToolButton("colorblindMode", "Modo Daltônico", "Filtros Protanopia / Trit.", l.colorblind)}
               </div>
             </div>
 
@@ -1689,7 +1277,7 @@ class j {
               cursor: pointer;
               transition: background 0.2s;
             ">
-              <span style="width: 16px; height: 16px;">${r.reset}</span>
+              <span style="width: 16px; height: 16px;">${l.reset}</span>
               <span>Limpar configurações</span>
             </button>
 
@@ -1707,7 +1295,7 @@ class j {
       </div>
     `);
   }
-  renderToolButton(e, t, i, n) {
+  renderToolButton(e, t, i, a) {
     return `
       <button class="ht-tool-btn" data-tool="${e}" style="
         display: flex;
@@ -1725,7 +1313,7 @@ class j {
       ">
         <div style="display: flex; width: 100%; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <div class="ht-tool-icon" style="width: 28px; height: 28px; color: #475569;">
-            ${n}
+            ${a}
           </div>
           <span class="ht-tool-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; display: inline-block;"></span>
         </div>
@@ -1741,16 +1329,16 @@ class j {
       s.setState({ isAddonsOpen: !1 });
     });
     const t = this.element.querySelector(".ht-addons-backdrop");
-    t == null || t.addEventListener("click", (a) => {
-      a.target === t && s.setState({ isAddonsOpen: !1 });
+    t == null || t.addEventListener("click", (o) => {
+      o.target === t && s.setState({ isAddonsOpen: !1 });
     });
     const i = this.element.querySelector(".ht-btn-reset-all");
     i == null || i.addEventListener("click", () => {
       s.reset();
-    }), this.element.querySelectorAll(".ht-tool-btn").forEach((a) => {
-      a.addEventListener("click", () => {
-        const o = a.getAttribute("data-tool");
-        o && this.handleToolClick(o);
+    }), this.element.querySelectorAll(".ht-tool-btn").forEach((o) => {
+      o.addEventListener("click", () => {
+        const n = o.getAttribute("data-tool");
+        n && this.handleToolClick(n);
       });
     });
   }
@@ -1812,18 +1400,18 @@ class j {
         s.setState({ readerMode: !t.readerMode });
         break;
       case "contrastMode": {
-        const i = ["none", "high-contrast-dark", "high-contrast-light", "invert"], n = i[(i.indexOf(t.contrastMode) + 1) % i.length];
-        s.setState({ contrastMode: n });
+        const i = ["none", "high-contrast-dark", "high-contrast-light", "invert"], a = i[(i.indexOf(t.contrastMode) + 1) % i.length];
+        s.setState({ contrastMode: a });
         break;
       }
       case "saturationMode": {
-        const i = ["normal", "monochrome", "low-saturation", "high-saturation"], n = i[(i.indexOf(t.saturationMode) + 1) % i.length];
-        s.setState({ saturationMode: n });
+        const i = ["normal", "monochrome", "low-saturation", "high-saturation"], a = i[(i.indexOf(t.saturationMode) + 1) % i.length];
+        s.setState({ saturationMode: a });
         break;
       }
       case "colorblindMode": {
-        const i = ["none", "protanopia", "deuteranopia", "tritanopia", "achromatopsia"], n = i[(i.indexOf(t.colorblindMode) + 1) % i.length];
-        s.setState({ colorblindMode: n });
+        const i = ["none", "protanopia", "deuteranopia", "tritanopia", "achromatopsia"], a = i[(i.indexOf(t.colorblindMode) + 1) % i.length];
+        s.setState({ colorblindMode: a });
         break;
       }
     }
@@ -1855,26 +1443,26 @@ class j {
       saturationMode: { active: e.saturationMode !== "normal", label: e.saturationMode === "normal" ? "Padrão" : e.saturationMode },
       colorblindMode: { active: e.colorblindMode !== "none", label: e.colorblindMode === "none" ? "Padrão" : e.colorblindMode }
     };
-    Object.entries(i).forEach(([a, o]) => {
-      var u;
-      const d = (u = this.element) == null ? void 0 : u.querySelector(`[data-tool="${a}"]`);
+    Object.entries(i).forEach(([o, n]) => {
+      var p;
+      const d = (p = this.element) == null ? void 0 : p.querySelector(`[data-tool="${o}"]`);
       if (d) {
-        const c = d.querySelector(".ht-tool-status-dot"), g = d.querySelector(".ht-tool-icon"), p = d.querySelector(".ht-tool-sub");
-        o.active ? (t++, d.style.borderColor = "#0070f3", d.style.background = "#f0f7ff", c && (c.style.background = "#0070f3"), g && (g.style.color = "#0070f3")) : (d.style.borderColor = "#e2e8f0", d.style.background = "#f8fafc", c && (c.style.background = "#cbd5e1"), g && (g.style.color = "#475569")), o.label && p && (p.innerText = `Ativo: ${o.label}`);
+        const c = d.querySelector(".ht-tool-status-dot"), f = d.querySelector(".ht-tool-icon"), m = d.querySelector(".ht-tool-sub");
+        n.active ? (t++, d.style.borderColor = "#0070f3", d.style.background = "#f0f7ff", c && (c.style.background = "#0070f3"), f && (f.style.color = "#0070f3")) : (d.style.borderColor = "#e2e8f0", d.style.background = "#f8fafc", c && (c.style.background = "#cbd5e1"), f && (f.style.color = "#475569")), n.label && m && (m.innerText = `Ativo: ${n.label}`);
       }
     });
-    const n = this.element.querySelector(".ht-active-counter-badge");
-    n && (n.innerHTML = `${t} ${t === 1 ? "ativo" : "ativos"}`);
+    const a = this.element.querySelector(".ht-active-counter-badge");
+    a && (a.innerHTML = `${t} ${t === 1 ? "ativo" : "ativos"}`);
   }
   destroy() {
     var e;
     (e = this.element) == null || e.remove();
   }
 }
-class I {
+class z {
   constructor(e) {
-    l(this, "element", null);
-    l(this, "onSignSelected");
+    r(this, "element", null);
+    r(this, "onSignSelected");
     this.onSignSelected = e, this.init();
   }
   init() {
@@ -1894,12 +1482,12 @@ class I {
           <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #eef0f3;">
             <div style="display:flex;align-items:center;gap:10px;">
               <div style="width:36px;height:36px;border-radius:10px;background:#eef6ff;color:#0070f3;display:flex;align-items:center;justify-content:center;">
-                <span style="width:20px;height:20px;display:inline-block;">${r.dictionary}</span>
+                <span style="width:20px;height:20px;display:inline-block;">${l.dictionary}</span>
               </div>
               <h2 style="margin:0;font-size:1.2rem;font-weight:700;color:#1a202c;">Dicionário de Libras</h2>
             </div>
             <button class="ht-dict-close-btn" style="background:none;border:none;cursor:pointer;color:#718096;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;" aria-label="Fechar dicionário">
-              <span style="width:20px;height:20px;">${r.close}</span>
+              <span style="width:20px;height:20px;">${l.close}</span>
             </button>
           </div>
 
@@ -1917,7 +1505,7 @@ class I {
 
           <!-- Footer -->
           <div style="padding:14px 24px;background:#f8fafc;border-top:1px solid #eef0f3;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:0.85rem;color:#718096;">Total de termos cadastrados: ${Object.keys(x).length}</span>
+            <span style="font-size:0.85rem;color:#718096;">Total de termos cadastrados: ${Object.keys(b).length}</span>
             <button class="ht-dict-close-btn2" style="background:#0070f3;color:#ffffff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.88rem;cursor:pointer;">Concluído</button>
           </div>
 
@@ -1926,23 +1514,23 @@ class I {
     `, this.attachEvents());
   }
   renderList(e = "") {
-    const t = Object.keys(x).filter((i) => i.includes(e.toLowerCase()));
+    const t = Object.keys(b).filter((i) => i.includes(e.toLowerCase()));
     return t.length === 0 ? `
         <div style="text-align:center;padding:32px;color:#a0aec0;">
           <p style="margin:0;font-size:0.95rem;">Nenhum sinal encontrado para "${e}".</p>
           <p style="margin:6px 0 0;font-size:0.85rem;">Tente pesquisar por termos comuns como "acessibilidade", "libras", "olá", "obrigado".</p>
         </div>
       ` : t.map((i) => {
-      const n = x[i], a = i.charAt(0).toUpperCase() + i.slice(1);
+      const a = b[i], o = i.charAt(0).toUpperCase() + i.slice(1);
       return `
         <div class="ht-dict-item" data-term="${i}" style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;background:#ffffff;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;transition:box-shadow 0.2s;">
           <div style="flex:1;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <strong style="font-size:1rem;color:#1a202c;">${a}</strong>
-              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${n.category}</span>
+              <strong style="font-size:1rem;color:#1a202c;">${o}</strong>
+              <span style="font-size:0.75rem;background:#edf2f7;color:#4a5568;padding:2px 8px;border-radius:12px;font-weight:600;">${a.category}</span>
             </div>
-            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${n.definition}</p>
-            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${n.description}</p>
+            <p style="margin:0 0 6px;font-size:0.88rem;color:#4a5568;line-height:1.4;">${a.definition}</p>
+            <p style="margin:0;font-size:0.8rem;color:#718096;font-style:italic;"><strong>Gesto em Libras:</strong> ${a.description}</p>
           </div>
           <button class="ht-dict-sign-btn" data-term="${i}" style="background:#0070f3;color:#ffffff;border:none;border-radius:8px;padding:8px 12px;font-size:0.82rem;font-weight:600;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;">
             <span>Ver Sinal</span>
@@ -1953,19 +1541,19 @@ class I {
   }
   attachEvents() {
     if (!this.element) return;
-    this.element.querySelectorAll(".ht-dict-close-btn, .ht-dict-close-btn2").forEach((a) => {
-      a.addEventListener("click", () => {
+    this.element.querySelectorAll(".ht-dict-close-btn, .ht-dict-close-btn2").forEach((o) => {
+      o.addEventListener("click", () => {
         s.setState({ isDictionaryOpen: !1 });
       });
     });
     const t = this.element.querySelector(".ht-modal-backdrop");
-    t == null || t.addEventListener("click", (a) => {
-      a.target === t && s.setState({ isDictionaryOpen: !1 });
+    t == null || t.addEventListener("click", (o) => {
+      o.target === t && s.setState({ isDictionaryOpen: !1 });
     });
-    const i = this.element.querySelector(".ht-dict-search-input"), n = this.element.querySelector(".ht-dict-list");
-    i == null || i.addEventListener("input", (a) => {
-      const o = a.target.value;
-      n && (n.innerHTML = this.renderList(o), this.attachSignButtons());
+    const i = this.element.querySelector(".ht-dict-search-input"), a = this.element.querySelector(".ht-dict-list");
+    i == null || i.addEventListener("input", (o) => {
+      const n = o.target.value;
+      a && (a.innerHTML = this.renderList(n), this.attachSignButtons());
     }), this.attachSignButtons();
   }
   attachSignButtons() {
@@ -1982,9 +1570,9 @@ class I {
     (e = this.element) == null || e.remove();
   }
 }
-class D {
+class B {
   constructor() {
-    l(this, "element", null);
+    r(this, "element", null);
     this.init();
   }
   init() {
@@ -1999,14 +1587,14 @@ class D {
     return e.forEach((i) => {
       if (i.closest(".ht-widget-root") || i.closest(".ht-skip") || i.closest("#vlibras-app-root"))
         return;
-      const n = (i.innerText || i.textContent || "").trim().replace(/\s+/g, " ");
-      if (!n && !i.getAttribute("aria-label")) return;
-      const a = i.tagName.toLowerCase();
-      let o = 1, d = n;
-      a.startsWith("h") && a.length === 2 ? o = parseInt(a[1], 10) : a === "header" || i.getAttribute("role") === "banner" ? (o = 1, d = d || "Cabeçalho do Site") : a === "nav" || i.getAttribute("role") === "navigation" ? (o = 2, d = d || "Menu de Navegação") : a === "main" || i.getAttribute("role") === "main" ? (o = 1, d = d || "Conteúdo Principal") : a === "footer" && (o = 1, d = d || "Rodapé da Página"), d.length > 80 && (d = d.slice(0, 80) + "..."), t.push({
+      const a = (i.innerText || i.textContent || "").trim().replace(/\s+/g, " ");
+      if (!a && !i.getAttribute("aria-label")) return;
+      const o = i.tagName.toLowerCase();
+      let n = 1, d = a;
+      o.startsWith("h") && o.length === 2 ? n = parseInt(o[1], 10) : o === "header" || i.getAttribute("role") === "banner" ? (n = 1, d = d || "Cabeçalho do Site") : o === "nav" || i.getAttribute("role") === "navigation" ? (n = 2, d = d || "Menu de Navegação") : o === "main" || i.getAttribute("role") === "main" ? (n = 1, d = d || "Conteúdo Principal") : o === "footer" && (n = 1, d = d || "Rodapé da Página"), d.length > 80 && (d = d.slice(0, 80) + "..."), t.push({
         element: i,
-        tag: a.toUpperCase(),
-        level: o,
+        tag: o.toUpperCase(),
+        level: n,
         text: d
       });
     }), t;
@@ -2057,7 +1645,7 @@ class D {
                 align-items: center;
                 justify-content: center;
               ">
-                <span style="width: 20px; height: 20px; display: inline-block;">${r.pageStructure}</span>
+                <span style="width: 20px; height: 20px; display: inline-block;">${l.pageStructure}</span>
               </div>
               <div>
                 <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">Estrutura da Página</h2>
@@ -2077,7 +1665,7 @@ class D {
               align-items: center;
               justify-content: center;
             " aria-label="Fechar estrutura da página">
-              <span style="width: 18px; height: 18px;">${r.close}</span>
+              <span style="width: 18px; height: 18px;">${l.close}</span>
             </button>
           </div>
 
@@ -2094,13 +1682,13 @@ class D {
               <div style="text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.95rem;">
                 Nenhum cabeçalho ou seção estrutural identificado nesta página.
               </div>
-            ` : e.map((a, o) => `
-              <button class="ht-structure-item-btn" data-index="${o}" style="
+            ` : e.map((o, n) => `
+              <button class="ht-structure-item-btn" data-index="${n}" style="
                 display: flex;
                 align-items: center;
                 gap: 12px;
                 padding: 10px 14px;
-                margin-left: ${(a.level - 1) * 16}px;
+                margin-left: ${(o.level - 1) * 16}px;
                 background: #f8fafc;
                 border: 1px solid #e2e8f0;
                 border-radius: 8px;
@@ -2117,16 +1705,16 @@ class D {
                   padding: 2px 7px;
                   border-radius: 4px;
                   letter-spacing: 0.05em;
-                ">${a.tag}</span>
+                ">${o.tag}</span>
                 <span style="
                   font-size: 0.88rem;
                   color: #1e293b;
-                  font-weight: ${a.level === 1 ? "700" : "500"};
+                  font-weight: ${o.level === 1 ? "700" : "500"};
                   line-height: 1.35;
                   overflow: hidden;
                   text-overflow: ellipsis;
                   white-space: nowrap;
-                ">${a.text}</span>
+                ">${o.text}</span>
               </button>
             `).join("")}
           </div>
@@ -2153,19 +1741,19 @@ class D {
       s.setState({ isPageStructureOpen: !1 });
     });
     const i = this.element.querySelector(".ht-structure-backdrop");
-    i == null || i.addEventListener("click", (a) => {
-      a.target === i && s.setState({ isPageStructureOpen: !1 });
-    }), this.element.querySelectorAll(".ht-structure-item-btn").forEach((a) => {
-      a.addEventListener("click", () => {
+    i == null || i.addEventListener("click", (o) => {
+      o.target === i && s.setState({ isPageStructureOpen: !1 });
+    }), this.element.querySelectorAll(".ht-structure-item-btn").forEach((o) => {
+      o.addEventListener("click", () => {
         var d;
-        const o = a.getAttribute("data-index");
-        if (o !== null) {
-          const u = parseInt(o, 10), c = (d = e[u]) == null ? void 0 : d.element;
+        const n = o.getAttribute("data-index");
+        if (n !== null) {
+          const p = parseInt(n, 10), c = (d = e[p]) == null ? void 0 : d.element;
           if (c) {
             s.setState({ isPageStructureOpen: !1, isAddonsOpen: !1 }), c.scrollIntoView({ behavior: "smooth", block: "center" });
-            const g = c.style.transition, p = c.style.outline, f = c.style.outlineOffset;
+            const f = c.style.transition, m = c.style.outline, x = c.style.outlineOffset;
             c.style.transition = "outline 0.2s ease", c.style.outline = "4px solid #0070f3", c.style.outlineOffset = "4px", c.hasAttribute("tabindex") || c.setAttribute("tabindex", "-1"), c.focus(), setTimeout(() => {
-              c.style.outline = p, c.style.outlineOffset = f, c.style.transition = g;
+              c.style.outline = m, c.style.outlineOffset = x, c.style.transition = f;
             }, 1800);
           }
         }
@@ -2177,27 +1765,26 @@ class D {
     (e = this.element) == null || e.remove();
   }
 }
-class b {
+class g {
   constructor(e = {}) {
-    l(this, "options");
-    l(this, "styleManager");
-    l(this, "collectorManager");
-    l(this, "speechManager");
-    l(this, "audioManager");
-    l(this, "readingToolsManager");
-    l(this, "launcher");
-    l(this, "translatorWindow");
-    l(this, "addonsPanel");
-    l(this, "dictionaryModal");
-    l(this, "pageStructureModal");
-    this.options = { ...T, ...e }, s.setState({
+    r(this, "options");
+    r(this, "styleManager");
+    r(this, "collectorManager");
+    r(this, "speechManager");
+    r(this, "audioManager");
+    r(this, "readingToolsManager");
+    r(this, "launcher");
+    r(this, "addonsPanel");
+    r(this, "dictionaryModal");
+    r(this, "pageStructureModal");
+    this.options = { ...S, ...e }, s.setState({
       avatar: this.options.avatar,
       opacity: this.options.opacity
-    }), this.options.highContrast && s.setState({ contrastMode: "high-contrast-dark" }), this.styleManager = new $(), this.speechManager = new O(), this.audioManager = new z(), this.readingToolsManager = new B(), m.init(), this.translatorWindow = new P(), this.addonsPanel = new j(), this.dictionaryModal = new I((t) => {
+    }), this.options.highContrast && s.setState({ contrastMode: "high-contrast-dark" }), this.styleManager = new A(), this.speechManager = new T(), this.audioManager = new E(), this.readingToolsManager = new O(), u.init(), this.addonsPanel = new H(), this.dictionaryModal = new z((t) => {
       this.translate(t);
-    }), this.pageStructureModal = new D(), this.collectorManager = new C((t) => {
+    }), this.pageStructureModal = new B(), this.collectorManager = new L((t) => {
       this.translate(t);
-    }), this.launcher = new q(this.options.side, this.options.align), s.subscribe((t) => {
+    }), this.launcher = new C(this.options.side, this.options.align), s.subscribe((t) => {
       this.styleManager.apply(t);
     }), this.styleManager.apply(s.getState()), this.setupKeyboardShortcuts(), console.log("%c[Mahoraga Accessibility Widget]%c Inicializado com sucesso! (REA Re-engineering)", "color: #0070f3; font-weight: bold;", "color: inherit;");
   }
@@ -2222,10 +1809,10 @@ class b {
     });
   }
   openTranslator() {
-    s.setState({ isTranslatorOpen: !0 });
+    s.setState({ isTranslatorOpen: !0 }), u.openPlayer();
   }
   closeTranslator() {
-    s.setState({ isTranslatorOpen: !1, isCollectorActive: !1 });
+    s.setState({ isTranslatorOpen: !1, isCollectorActive: !1 }), u.closePlayer();
   }
   openAddons() {
     s.setState({ isAddonsOpen: !0 });
@@ -2234,24 +1821,24 @@ class b {
     s.setState({ isAddonsOpen: !1 });
   }
   translate(e) {
-    this.translatorWindow.translateText(e);
+    u.translateAndPlay(e);
   }
   setAvatar(e) {
-    s.setState({ avatar: e }), m.setAvatar(e);
+    s.setState({ avatar: e }), u.setAvatar(e);
   }
   reset() {
     s.reset();
   }
   destroy() {
-    this.styleManager.destroy(), this.collectorManager.destroy(), this.speechManager.stop(), this.audioManager.destroy(), this.readingToolsManager.destroy(), this.launcher.destroy(), this.translatorWindow.destroy(), this.addonsPanel.destroy(), this.dictionaryModal.destroy(), this.pageStructureModal.destroy();
+    this.styleManager.destroy(), this.collectorManager.destroy(), this.speechManager.stop(), this.audioManager.destroy(), this.readingToolsManager.destroy(), this.launcher.destroy(), this.addonsPanel.destroy(), this.dictionaryModal.destroy(), this.pageStructureModal.destroy();
   }
 }
-const F = b, N = b, R = b;
-typeof window < "u" && (window.Mahoraga = b, window.MahoragaWidget = b, window.HT = b, window.HandTalkWidget = b);
+const I = g, j = g, q = g;
+typeof window < "u" && (window.Mahoraga = g, window.MahoragaWidget = g, window.HT = g, window.HandTalkWidget = g);
 export {
-  R as HT,
-  b as HandTalkWidget,
-  N as Mahoraga,
-  F as MahoragaWidget,
-  b as default
+  q as HT,
+  g as HandTalkWidget,
+  j as Mahoraga,
+  I as MahoragaWidget,
+  g as default
 };
