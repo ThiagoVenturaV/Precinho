@@ -138,11 +138,8 @@
         visibility: hidden !important;
       }
     `,e.shadowRoot.appendChild(t),new MutationObserver(()=>{var o;const a=(o=e.shadowRoot)==null?void 0:o.querySelectorAll("button");a==null||a.forEach(n=>{const d=(n.getAttribute("aria-label")||"").toLowerCase();(d.includes("fechar")||d.includes("close"))&&!n.hasAttribute("data-ht-sync")&&(n.setAttribute("data-ht-sync","true"),n.addEventListener("click",()=>{s.setState({isTranslatorOpen:!1}),this.closePlayer()}))})}).observe(e.shadowRoot,{childList:!0,subtree:!0})}loadScript(e){return new Promise((t,i)=>{if(document.querySelector(`script[src="${e}"]`)){t();return}const a=document.createElement("script");a.src=e,a.async=!0,a.onload=()=>t(),a.onerror=()=>i(new Error(`Erro ao carregar script ${e}`)),document.head.appendChild(a)})}openPlayer(){var a,o;try{const n=localStorage.getItem("@vlibras-widget");n&&n.includes('"isOpen":false')&&localStorage.setItem("@vlibras-widget",n.replace('"isOpen":false','"isOpen":true'))}catch{}const e=document.getElementById("vlibras-app-root");if(e&&(e.style.display="",e.style.pointerEvents="",this.ensureShadowFix(e),e.removeAttribute("data-active"),requestAnimationFrame(()=>{e.setAttribute("data-active","true")})),typeof((a=window.VLibrasWidget)==null?void 0:a.open)=="function"){window.VLibrasWidget.open();return}const t=document.getElementById("vlibras-access-wrapper"),i=(o=t==null?void 0:t.shadowRoot)==null?void 0:o.querySelector("#vlibras-button");if(i){i.click();return}e&&e.setAttribute("data-active","true")}closePlayer(){const e=document.getElementById("vlibras-app-root");e&&(e.setAttribute("data-active","false"),e.style.pointerEvents="none",e.style.display="none");try{const t=localStorage.getItem("@vlibras-widget");t&&t.includes('"isOpen":true')&&localStorage.setItem("@vlibras-widget",t.replace('"isOpen":true','"isOpen":false'))}catch{}}setAvatar(e){var i,a,o;const t=e==="MARYA"?"hosana":"icaro";(a=(i=window.plugin)==null?void 0:i.player)!=null&&a.changeAvatar?window.plugin.player.changeAvatar(t):(o=window.vlibras)!=null&&o.changeAvatar&&window.vlibras.changeAvatar(t)}async translateTextToGloss(e){try{const t=await fetch("https://traducao2.vlibras.gov.br/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:e})});if(t.ok)return(await t.text()).trim()}catch(t){console.warn("[VLibras] Falha ao consultar serviço de glosas:",t)}return e.toUpperCase()}async translateAndPlay(e){if(!e||!e.trim())return"";this.openPlayer(),s.setState({currentText:e,isPlaying:!0,isTranslatorOpen:!0});const t=await this.translateTextToGloss(e);s.setState({currentGloss:t});const i=()=>{var a,o;return typeof((a=window.plugin)==null?void 0:a.translate)=="function"?(window.plugin.translate(e),!0):typeof((o=window.vlibras)==null?void 0:o.translateAndPlay)=="function"?(window.vlibras.translateAndPlay(e),!0):!1};if(i())setTimeout(()=>s.setState({isPlaying:!1}),400);else{let a=0;const o=setInterval(()=>{a++,(i()||a>25)&&(clearInterval(o),s.setState({isPlaying:!1}))},250)}return t}}const m=new T,l={accessibilityPerson:`
-    <svg viewBox="0 0 40 40" fill="currentColor">
-      <circle cx="20" cy="9" r="3.3"/>
-      <path d="M9 13.8h22c.9 0 1.6.7 1.6 1.6s-.7 1.6-1.6 1.6H24v5.8h-1.6V23h-4.8v-.2H16v-5.8H9c-.9 0-1.6-.7-1.6-1.6s.7-1.6 1.6-1.6z"/>
-      <path d="M16.2 21h3.3v9.5c0 .9-.7 1.5-1.6 1.5s-1.7-.6-1.7-1.5V21z"/>
-      <path d="M20.5 21h3.3v9.5c0 .9-.7 1.5-1.6 1.5s-1.7-.6-1.7-1.5V21z"/>
+    <svg viewBox="0 0 512 512" fill="currentColor">
+      <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm161.5-86.1c-12.2-5.2-26.3 .4-31.5 12.6s.4 26.3 12.6 31.5l11.9 5.1c17.3 7.4 35.2 12.9 53.6 16.3l0 50.1c0 4.3-.7 8.6-2.1 12.6l-28.7 86.1c-4.2 12.6 2.6 26.2 15.2 30.4s26.2-2.6 30.4-15.2l24.4-73.2c1.3-3.8 4.8-6.4 8.8-6.4s7.6 2.6 8.8 6.4l24.4 73.2c4.2 12.6 17.8 19.4 30.4 15.2s19.4-17.8 15.2-30.4l-28.7-86.1c-1.4-4.1-2.1-8.3-2.1-12.6l0-50.1c18.4-3.5 36.3-8.9 53.6-16.3l11.9-5.1c12.2-5.2 17.8-19.3 12.6-31.5s-19.3-17.8-31.5-12.6L338.7 175c-26.1 11.2-54.2 17-82.7 17s-56.5-5.8-82.7-17l-11.9-5.1zM256 160a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/>
     </svg>
   `,librasHands:`
     <svg viewBox="0 0 40 40" fill="currentColor">
@@ -156,11 +153,8 @@
       <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
     </svg>
   `,accessibility:`
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="4" r="2"/>
-      <path d="m4.93 10.93 4.24-4.24a2 2 0 0 1 2.83 0l4.24 4.24"/>
-      <path d="M12 7v8"/>
-      <path d="m8 19 4-4 4 4"/>
+    <svg viewBox="0 0 512 512" fill="currentColor">
+      <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm161.5-86.1c-12.2-5.2-26.3 .4-31.5 12.6s.4 26.3 12.6 31.5l11.9 5.1c17.3 7.4 35.2 12.9 53.6 16.3l0 50.1c0 4.3-.7 8.6-2.1 12.6l-28.7 86.1c-4.2 12.6 2.6 26.2 15.2 30.4s26.2-2.6 30.4-15.2l24.4-73.2c1.3-3.8 4.8-6.4 8.8-6.4s7.6 2.6 8.8 6.4l24.4 73.2c4.2 12.6 17.8 19.4 30.4 15.2s19.4-17.8 15.2-30.4l-28.7-86.1c-1.4-4.1-2.1-8.3-2.1-12.6l0-50.1c18.4-3.5 36.3-8.9 53.6-16.3l11.9-5.1c12.2-5.2 17.8-19.3 12.6-31.5s-19.3-17.8-31.5-12.6L338.7 175c-26.1 11.2-54.2 17-82.7 17s-56.5-5.8-82.7-17l-11.9-5.1zM256 160a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/>
     </svg>
   `,contrast:`
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
