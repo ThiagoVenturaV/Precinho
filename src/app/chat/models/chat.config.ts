@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { sessionHeaders } from '../utils/api-session';
 import { CartLine } from './chat.models';
+import { environment } from '../../../environments/environment';
 
 export interface ChatConfig {
   mode: 'demo' | 'live';
@@ -15,13 +16,16 @@ export interface ChatConfig {
 }
 
 export const CHAT_CONFIG = new InjectionToken<ChatConfig>('PM_CHAT_CONFIG', {
-  factory: () => ({
-    mode: 'live',
-    endpoint: '/api/chat/stream',
-    prescriptionEndpoint: '/api/prescriptions',
-    cartEndpoint: '/api/cart',
-    headers: sessionHeaders,
-    credentials: 'same-origin',
-    mvpCheckout: true,
-  }),
+  factory: () => {
+    const base = environment.apiUrl.replace(/\/$/, '');
+    return {
+      mode: 'live',
+      endpoint: `${base}/chat/stream`,
+      prescriptionEndpoint: `${base}/prescriptions`,
+      cartEndpoint: `${base}/cart`,
+      headers: sessionHeaders,
+      credentials: 'same-origin',
+      mvpCheckout: true,
+    };
+  },
 });
