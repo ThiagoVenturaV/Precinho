@@ -138,6 +138,9 @@ export class ChatStore implements OnDestroy {
         context: {
           allergies: this.allergies(),
           postalCode: this.postalCode(),
+          cidade: this.currentUser()?.cidade || '',
+          estado: this.currentUser()?.estado || '',
+          endereco: this.currentUser()?.endereco || '',
           cart: this.cart().map((line) => ({
             productId: line.product.id,
             quantity: line.quantity,
