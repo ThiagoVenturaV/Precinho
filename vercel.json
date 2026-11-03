@@ -5,15 +5,15 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/api/$1"
+      "destination": "https://finest-mattress-assists-takes.trycloudflare.com/api/$1"
     },
     {
       "source": "/ucp/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/ucp/$1"
+      "destination": "https://finest-mattress-assists-takes.trycloudflare.com/ucp/$1"
     },
     {
       "source": "/acp/(.*)",
-      "destination": "https://147.182.163.228.sslip.io/acp/$1"
+      "destination": "https://finest-mattress-assists-takes.trycloudflare.com/acp/$1"
     },
     {
       "source": "/(.*)",
